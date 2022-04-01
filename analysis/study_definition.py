@@ -391,9 +391,6 @@ study = StudyDefinition(
   registered_eligible = patients.registered_as_of("covid_test_positive_date"),
   
   ## 1/2/3 months since treatment initiation
-  start_date_29d = "start_date + 29 days",
-  start_date_60d = "start_date + 60 days",
-  start_date_90d = "start_date + 90 days",
   ## AND end_date defined above
 
 
@@ -914,7 +911,7 @@ study = StudyDefinition(
                 ethnicity_primis_snomed_codes,
                 returning="category",
                 find_last_match_in_period=True,
-                on_or_before="end_date",
+                on_or_before="today",
                 return_expectations={
                     "category": {"ratios": {"1": 0.4, "2": 0.4, "3": 0.2, "4":0.2,"5": 0.2}},
                     "incidence": 0.75,
@@ -1369,7 +1366,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     on_or_after = "start_date + 1 day",
     return_expectations = {
-      "date": {"earliest": "2021-01-01", "latest" : end_date},
+      "date": {"earliest": "2021-01-01", "latest" : "end_date"},
       "rate": "uniform",
       "incidence": 0.3},
   ),
