@@ -44,11 +44,11 @@ study = StudyDefinition(
     AND (covid_test_positive AND NOT covid_positive_previous_30_days)
     AND registered_treated 
     AND (sotrovimab_covid_therapeutics OR molnupiravir_covid_therapeutics)
-    AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics)
     """,
   ),
   #require covid_test_positive_date<=date_treated?
   #AND NOT pregnancy (sensitivity analysis)
+  #AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics) (sensitivity analysis)
 
   # TREATMENT - NEUTRALISING MONOCLONAL ANTIBODIES OR ANTIVIRALS ----
   
