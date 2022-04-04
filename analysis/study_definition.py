@@ -21,7 +21,6 @@ from datetime import date
 
 campaign_start = "2021-12-16"
 end_date = date.today().isoformat()
-# end date 1-month earlier to account for delay in data update?
 
 ## Define study population and variables
 study = StudyDefinition(
@@ -391,8 +390,8 @@ study = StudyDefinition(
   registered_eligible = patients.registered_as_of("covid_test_positive_date"),
   
   ## 1/2/3 months since treatment initiation
-  ## AND end_date defined above
-
+  ## AND study end date (today)
+  ## end date 1-month earlier to account for delay in data update?
 
   # HIGH RISK GROUPS ----
   
