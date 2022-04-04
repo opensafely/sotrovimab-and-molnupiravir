@@ -45,10 +45,10 @@ study = StudyDefinition(
     AND registered_treated 
     AND (sotrovimab_covid_therapeutics OR molnupiravir_covid_therapeutics)
     AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics)
-    AND NOT pregnancy
     """,
   ),
   #require covid_test_positive_date<=date_treated?
+  #AND NOT pregnancy (sensitivity analysis)
 
   # TREATMENT - NEUTRALISING MONOCLONAL ANTIBODIES OR ANTIVIRALS ----
   
@@ -1066,7 +1066,6 @@ study = StudyDefinition(
     
   ),
   
-  
   ## Housebound
   housebound_opensafely = patients.satisfying(
     """housebound_date
@@ -1102,78 +1101,6 @@ study = StudyDefinition(
     on_or_before = "start_date",
     returning = "binary_flag",
     return_expectations = {"incidence": 0.2}
-  ),
-  
-  ## Shielded
-  shielded_primis = patients.satisfying(
-    """ 
-    severely_clinically_vulnerable
-    AND 
-    NOT less_vulnerable 
-    """, 
-    return_expectations = {
-      "incidence": 0.01,
-    },
-    
-    ### SHIELDED GROUP - first flag all patients with "high risk" codes
-    severely_clinically_vulnerable = patients.with_these_clinical_events(
-      high_risk_primis_snomed_codes, # note no date limits set
-      find_last_match_in_period = True,
-      return_expectations = {"incidence": 0.02,},
-    ),
-    
-    # find date at which the high risk code was added
-    date_severely_clinically_vulnerable = patients.date_of(
-      "severely_clinically_vulnerable", 
-      date_format  ="YYYY-MM-DD",   
-    ),
-    
-    ### NOT SHIELDED GROUP (medium and low risk) - only flag if later than 'shielded'
-    less_vulnerable = patients.with_these_clinical_events(
-      not_high_risk_primis_snomed_codes, 
-      on_or_after = "date_severely_clinically_vulnerable",
-      return_expectations = {"incidence": 0.01,},
-    ),
-  ),
-  
-  # flag the newly expanded shielding group as of 15 feb (should be a subset of the previous flag)
-  shielded_since_feb_15 = patients.satisfying(
-    """severely_clinically_vulnerable_since_feb_15
-                AND NOT new_shielding_status_reduced
-                AND NOT previous_flag
-            """,
-    return_expectations={
-      "incidence": 0.01,
-    },
-    
-    ### SHIELDED GROUP - first flag all patients with "high risk" codes
-    severely_clinically_vulnerable_since_feb_15 = patients.with_these_clinical_events(
-      high_risk_primis_snomed_codes, 
-      on_or_after = "2021-02-15",
-      find_last_match_in_period = False,
-      return_expectations = {"incidence": 0.02,},
-    ),
-    
-    # find date at which the high risk code was added
-    date_vulnerable_since_feb_15 = patients.date_of(
-      "severely_clinically_vulnerable_since_feb_15", 
-      date_format = "YYYY-MM-DD",   
-    ),
-    
-    ### check that patient's shielding status has not since been reduced to a lower risk level 
-    # e.g. due to improved clinical condition of patient
-    new_shielding_status_reduced = patients.with_these_clinical_events(
-      not_high_risk_primis_snomed_codes,
-      on_or_after = "date_vulnerable_since_feb_15",
-      return_expectations = {"incidence": 0.01,},
-    ),
-    
-    # anyone with a previous flag of any risk level will not be added to the new shielding group
-    previous_flag = patients.with_these_clinical_events(
-      combine_codelists(high_risk_primis_snomed_codes, not_high_risk_primis_snomed_codes),
-      on_or_before = "2021-02-14",
-      return_expectations = {"incidence": 0.01,},
-    ),
   ),
   
   ### Serious Mental Illness
@@ -1248,13 +1175,16 @@ study = StudyDefinition(
   bmi=patients.most_recent_bmi(
         on_or_before="start_date",
         minimum_age_at_measurement=18,
-        include_measurement_date=False,
+        include_measurement_date=True,
+        date_format="YYYY-MM-DD",
         return_expectations={
+            "date": {"earliest": "2010-01-01", "latest": "today"},
             "float": {"distribution": "normal", "mean": 28, "stddev": 8},
             "incidence": 0.8,
         }
   ),
   #also use bmi_code_snomed and height and weight?
+  #BMI within 2 years (especially for <18 years old)?
 
   # Diabetes
   diabetes=patients.with_these_clinical_events(
@@ -1345,7 +1275,7 @@ study = StudyDefinition(
       "incidence": 0.05
     },
   ),
-  # with_these_diagnoses?
+  # with_these_diagnoses (sensitivity analysis)
   
   ## Critical care days for COVID-related hospitalisation 
   covid_hospitalisation_critical_care = patients.admitted_to_hospital(
