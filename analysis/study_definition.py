@@ -1105,7 +1105,7 @@ study = StudyDefinition(
   ### Serious Mental Illness
   serious_mental_illness_nhsd = patients.with_these_clinical_events(
     serious_mental_illness_nhsd_snomed_codes,
-    on_or_before = "index_date",
+    on_or_before = "start_date",
     returning = "binary_flag",
     return_expectations = {"incidence": 0.1}
   ),
