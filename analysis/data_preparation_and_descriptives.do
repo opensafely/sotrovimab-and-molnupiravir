@@ -165,14 +165,38 @@ label values d_postest_treat_g2 d_postest_treat_g2
 gen age_group3=(age>=40)+(age>=60)
 label define age 0 "18-39" 1 "40-59" 2 ">=60" 
 label values age age
+
 tab sex,m
+rename sex sex_str
+gen sex=0 if sex_str=="M"
+replace sex=1 if sex_str=="F"
+label define sex 0 "Male" 1 "Female"
+label values sex sex
+
 tab ethnicity,m
+rename ethnicity ethnicity_str
+encode  ethnicity_str ,gen(ethnicity)
+label list ethnicity
+
 tab imd,m
 label define imd 1 "most deprived" 5 "least deprived"
 label values imd imd
+
 tab region_nhs,m
+rename region_nhs region_nhs_str 
+encode  region_nhs_str ,gen(region_nhs)
+label list region_nhs
+
 tab region_covid_therapeutics ,m
+rename region_covid_therapeutics region_covid_therapeutics_str
+encode  region_covid_therapeutics_str ,gen( region_covid_therapeutics )
+label list region_covid_therapeutics
+
 tab stp ,m
+rename stp stp_str
+encode  stp_str ,gen(stp)
+label list stp
+
 tab rural_urban,m
 *comor*
 tab autism_nhsd,m
@@ -259,10 +283,6 @@ save ./output/main.dta, replace
 
 log close
 
-*stratified Cox *
-
-
-*subgroup analysis*
 
 
 
