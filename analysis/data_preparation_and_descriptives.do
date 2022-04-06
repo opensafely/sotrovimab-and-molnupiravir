@@ -48,20 +48,27 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
   rename `var' a
   gen `var' = date(a, "YMD")
   drop a
-  format %d `var'
+  format %td `var'
 }
 *the following date variables had no observation*
-casirivimab_covid_therapeutics
-hiv_aids_nhsd_icd10
-transplant_all_y_codes_opcs4
-transplant_thymus_opcs4
-transplant_conjunctiva_y_code_op
-transplant_conjunctiva_opcs4
-transplant_stomach_opcs4
-transplant_ileum_1_Y_codes_opcs4
-transplant_ileum_2_Y_codes_opcs4
-transplant_ileum_1_opcs4
-transplant_ileum_2_opcs4
+*hiv_aids_nhsd_icd10
+*transplant_all_y_codes_opcs4
+*transplant_thymus_opcs4
+*transplant_conjunctiva_y_code_op
+*transplant_conjunctiva_opcs4
+*transplant_stomach_opcs4
+*transplant_ileum_1_Y_codes_opcs4
+*transplant_ileum_2_Y_codes_opcs4
+*transplant_ileum_1_opcs4
+*transplant_ileum_2_opcs4
+*check casirivimab_covid_therapeutics*
+capture confirm string casirivimab_covid_therapeutics
+if _rc==0 {
+rename casirivimab_covid_therapeutics a
+gen casirivimab_covid_therapeutics = date(a, "YMD")
+drop a
+format %td casirivimab_covid_therapeutics
+}
 
 
 *exclusion criteria*
