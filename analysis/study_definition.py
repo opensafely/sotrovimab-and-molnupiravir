@@ -466,7 +466,7 @@ study = StudyDefinition(
   ),
   
   ## Haematological diseases
-  haematopoietic_stem_cell_transplant_nhsd_snomed = patients.with_these_clinical_events(
+  haematopoietic_stem_cell_snomed = patients.with_these_clinical_events(
     haematopoietic_stem_cell_transplant_nhsd_snomed_codes,
     between = ["start_date - 12 months", "start_date"],
     returning = "date",
@@ -474,7 +474,7 @@ study = StudyDefinition(
     find_last_match_in_period = True,
   ),
   
-  haematopoietic_stem_cell_transplant_nhsd_icd10 = patients.admitted_to_hospital(
+  haematopoietic_stem_cell_icd10 = patients.admitted_to_hospital(
     returning = "date_admitted",
     between = ["start_date - 12 months", "start_date"],
     with_these_diagnoses = haematopoietic_stem_cell_transplant_nhsd_icd10_codes,
@@ -482,7 +482,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
   ),
   
-  haematopoietic_stem_cell_transplant_nhsd_opcs4 = patients.admitted_to_hospital(
+  haematopoietic_stem_cell_opcs4 = patients.admitted_to_hospital(
     returning = "date_admitted",
     between = ["start_date - 12 months", "start_date"],
     with_these_procedures = haematopoietic_stem_cell_transplant_nhsd_opcs4_codes,
@@ -495,7 +495,7 @@ study = StudyDefinition(
     },
   ),
   
-  haematological_malignancies_nhsd_snomed = patients.with_these_clinical_events(
+  haematological_malignancies_snomed = patients.with_these_clinical_events(
     haematological_malignancies_nhsd_snomed_codes,
     between = ["start_date - 24 months", "start_date"],
     returning = "date",
@@ -503,7 +503,7 @@ study = StudyDefinition(
     find_last_match_in_period = True,
   ),
   
-  haematological_malignancies_nhsd_icd10 = patients.admitted_to_hospital(
+  haematological_malignancies_icd10 = patients.admitted_to_hospital(
     returning = "date_admitted",
     between = ["start_date - 24 months", "start_date"],
     with_these_diagnoses = haematological_malignancies_nhsd_icd10_codes,
@@ -527,11 +527,11 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
   ),
   
-  haematological_disease_nhsd = patients.minimum_of("haematopoietic_stem_cell_transplant_nhsd_snomed", 
-                                                    "haematopoietic_stem_cell_transplant_nhsd_icd10", 
-                                                    "haematopoietic_stem_cell_transplant_nhsd_opcs4", 
-                                                    "haematological_malignancies_nhsd_snomed", 
-                                                    "haematological_malignancies_nhsd_icd10",
+  haematological_disease_nhsd = patients.minimum_of("haematopoietic_stem_cell_snomed", 
+                                                    "haematopoietic_stem_cell_icd10", 
+                                                    "haematopoietic_stem_cell_opcs4", 
+                                                    "haematological_malignancies_snomed", 
+                                                    "haematological_malignancies_icd10",
                                                     "sickle_cell_disease_nhsd_snomed", 
                                                     "sickle_cell_disease_nhsd_icd10"), 
   
