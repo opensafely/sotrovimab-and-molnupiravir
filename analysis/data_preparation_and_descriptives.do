@@ -30,19 +30,38 @@ import delimited ./output/input.csv, delimiter(comma) varnames(1) case(preserve)
 describe
 codebook
 
-rename v31 haematopoietic_stem_cell_icd10
-rename v32 haematopoietic_stem_cell_opcs4
-rename v34 haematological_malignancies_icd
-
 *  Convert strings to dates  *
-foreach var of varlist 	sotrovimab_covid_therapeutics-hospitalisation_outcome_date date_treated-sickle_cell_disease_nhsd {
+foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
+        covid_test_positive_date covid_test_positive_date2 covid_symptoms_snomed primary_covid_hospital_discharge ///
+	   any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed ///
+	   haematopoietic_stem_cell_snomed haematopoietic_stem_cell_icd10 haematopoietic_stem_cell_opcs4 ///
+	   haematological_malignancies_snom haematological_malignancies_icd1 sickle_cell_disease_nhsd_snomed sickle_cell_disease_nhsd_icd10 ///
+	   ckd_stage_5_nhsd_snomed ckd_stage_5_nhsd_icd10 liver_disease_nhsd_snomed liver_disease_nhsd_icd10 immunosuppresant_drugs_nhsd ///
+	   oral_steroid_drugs_nhsd immunosupression_nhsd hiv_aids_nhsd_snomed  solid_organ_transplant_nhsd_snom ///
+	   solid_organ_transplant_nhsd_opcs multiple_sclerosis_nhsd_snomed multiple_sclerosis_nhsd_icd10 ///
+	   motor_neurone_disease_nhsd_snome motor_neurone_disease_nhsd_icd10 myasthenia_gravis_nhsd_snomed myasthenia_gravis_nhsd_icd10 ///
+	   huntingtons_disease_nhsd_snomed huntingtons_disease_nhsd_icd10 bmi_date_measured covid_positive_test_30_days_post ///
+	   covid_hospitalisation_outcome_da death_with_covid_on_the_death_ce hospitalisation_outcome_date date_treated start_date ///
+	   downs_syndrome_nhsd haematological_disease_nhsd ckd_stage_5_nhsd liver_disease_nhsd hiv_aids_nhsd solid_organ_transplant_nhsd ///
+	   multiple_sclerosis_nhsd motor_neurone_disease_nhsd myasthenia_gravis_nhsd huntingtons_disease_nhsd sickle_cell_disease_nhsd {
   confirm string variable `var'
   rename `var' a
   gen `var' = date(a, "YMD")
   drop a
   format %d `var'
 }
-
+*the following date variables had no observation*
+casirivimab_covid_therapeutics
+hiv_aids_nhsd_icd10
+transplant_all_y_codes_opcs4
+transplant_thymus_opcs4
+transplant_conjunctiva_y_code_op
+transplant_conjunctiva_opcs4
+transplant_stomach_opcs4
+transplant_ileum_1_Y_codes_opcs4
+transplant_ileum_2_Y_codes_opcs4
+transplant_ileum_1_opcs4
+transplant_ileum_2_opcs4
 
 
 *exclusion criteria*
