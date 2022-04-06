@@ -30,9 +30,9 @@ import delimited ./output/input.csv, delimiter(comma) varnames(1) case(preserve)
 describe
 codebook
 
-rename v18 haematopoietic_stem_cell_icd10
-rename v19 haematopoietic_stem_cell_opcs4
-rename v21 haematological_malignancies_icd
+rename v31 haematopoietic_stem_cell_icd10
+rename v32 haematopoietic_stem_cell_opcs4
+rename v34 haematological_malignancies_icd
 
 *  Convert strings to dates  *
 foreach var of varlist 	sotrovimab_covid_therapeutics-hospitalisation_outcome_date date_treated-sickle_cell_disease_nhsd {
