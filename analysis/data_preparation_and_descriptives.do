@@ -297,7 +297,9 @@ tab drug imd,row chi
 ranksum imd,by(drug)
 tab drug region_nhs,row chi
 tab drug region_covid_therapeutics,row chi
-tab drug stp,row
+*need to address the error of "too many values"*
+tab stp if drug==0
+tab stp if drug==1
 tab drug age_group3 ,row chi
 tab drug d_postest_treat_g2 ,row chi
 tab drug downs_syndrome ,row chi
