@@ -222,4 +222,8 @@ graph export ./output/phtest_psw.svg, as(svg) replace
 
 log close
 
+*secondary outcomes*
+
 *subgroup analysis*
+
+
