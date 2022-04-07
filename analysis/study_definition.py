@@ -62,7 +62,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     return_expectations = {
       "date": {"earliest": "2021-12-16"},
-      "incidence": 0.2
+      "incidence": 0.4
     },
   ),
   
@@ -77,7 +77,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     return_expectations = {
       "date": {"earliest": "2021-12-16"},
-      "incidence": 0.2
+      "incidence": 0.4
     },
   ),
 
@@ -1179,7 +1179,7 @@ study = StudyDefinition(
         return_expectations={
             "date": {"earliest": "2010-01-01", "latest": "today"},
             "float": {"distribution": "normal", "mean": 28, "stddev": 8},
-            "incidence": 0.8,
+            "incidence": 0.95,
         }
   ),
   #also use bmi_code_snomed and height and weight?
@@ -1190,28 +1190,28 @@ study = StudyDefinition(
         diabetes_codes,
         on_or_before="start_date",
         returning="binary_flag",
-        return_expectations={"incidence": 0.01, },
+        return_expectations={"incidence": 0.1, },
   ),
   # Chronic cardiac disease
   chronic_cardiac_disease=patients.with_these_clinical_events(
         chronic_cardiac_dis_codes,
         on_or_before="start_date",
         returning="binary_flag",
-        return_expectations={"incidence": 0.01, },
+        return_expectations={"incidence": 0.1, },
   ),
   # Hypertension
   hypertension=patients.with_these_clinical_events(
         hypertension_codes,
         on_or_before="start_date",
         returning="binary_flag",
-        return_expectations={"incidence": 0.01, },
+        return_expectations={"incidence": 0.1, },
   ),
   # Chronic respiratory disease
   chronic_respiratory_disease=patients.with_these_clinical_events(
         chronic_respiratory_dis_codes,
         on_or_before="start_date",
         returning="binary_flag",
-        return_expectations={"incidence": 0.01, },
+        return_expectations={"incidence": 0.1, },
   ),
 
 # SGTF indicator and Variant
