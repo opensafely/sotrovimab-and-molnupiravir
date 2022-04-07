@@ -107,7 +107,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     return_expectations = {
       "date": {"earliest": "2021-12-16"},
-      "incidence": 0.2
+      "incidence": 0.05
     },
   ),
   
@@ -150,7 +150,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     restrict_to_earliest_specimen_date = False,
     return_expectations = {
-      "incidence": 0.2
+      "incidence": 0.9
     },
   ),
   
