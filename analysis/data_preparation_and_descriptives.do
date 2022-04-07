@@ -118,25 +118,25 @@ stset end_date ,  origin(start_date) failure(failure==1)
 stcox drug
 *secondary outcome: within 2 months*
 gen start_date_2m=start_date+60
-gen failure_2m=(event_date!=.&event_date<=min(study_end_date,start_date_60,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
-replace failure_2m=(event_date!=.&event_date<=min(study_end_date,start_date_60,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
+gen failure_2m=(event_date!=.&event_date<=min(study_end_date,start_date_2m,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
+replace failure_2m=(event_date!=.&event_date<=min(study_end_date,start_date_2m,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
 tab failure_2m,m
 gen end_date_2m=event_date if failure_2m==1
-replace end_date_2m=min(death_date, dereg_date, study_end_date, start_date_60,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_2m==0&drug==1
-replace end_date_2m=min(death_date, dereg_date, study_end_date, start_date_60,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_2m==0&drug==0
-format %td end_date_2m start_date_60
+replace end_date_2m=min(death_date, dereg_date, study_end_date, start_date_2m,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_2m==0&drug==1
+replace end_date_2m=min(death_date, dereg_date, study_end_date, start_date_2m,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_2m==0&drug==0
+format %td end_date_2m start_date_2m
 
 stset end_date_2m ,  origin(start_date) failure(failure_2m==1)
 stcox drug
 *secondary outcome: within 3 months*
 gen start_date_3m=start_date+90
-gen failure_3m=(event_date!=.&event_date<=min(study_end_date,start_date_90,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
-replace failure_3m=(event_date!=.&event_date<=min(study_end_date,start_date_90,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
+gen failure_3m=(event_date!=.&event_date<=min(study_end_date,start_date_3m,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
+replace failure_3m=(event_date!=.&event_date<=min(study_end_date,start_date_3m,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
 tab failure_3m,m
 gen end_date_3m=event_date if failure_3m==1
-replace end_date_3m=min(death_date, dereg_date, study_end_date, start_date_90,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_3m==0&drug==1
-replace end_date_3m=min(death_date, dereg_date, study_end_date, start_date_90,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_3m==0&drug==0
-format %td end_date_3m start_date_90
+replace end_date_3m=min(death_date, dereg_date, study_end_date, start_date_3m,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_3m==0&drug==1
+replace end_date_3m=min(death_date, dereg_date, study_end_date, start_date_3m,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_3m==0&drug==0
+format %td end_date_3m start_date_3m
 
 stset end_date_3m ,  origin(start_date) failure(failure_3m==1)
 stcox drug
