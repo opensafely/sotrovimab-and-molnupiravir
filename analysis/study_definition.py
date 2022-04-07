@@ -1177,7 +1177,7 @@ study = StudyDefinition(
         include_measurement_date=True,
         date_format="YYYY-MM-DD",
         return_expectations={
-            "date": {"earliest": "2010-01-01", "latest": "today"},
+            "date": {"earliest": "2020-01-01", "latest": "today"},
             "float": {"distribution": "normal", "mean": 28, "stddev": 8},
             "incidence": 0.95,
         }
