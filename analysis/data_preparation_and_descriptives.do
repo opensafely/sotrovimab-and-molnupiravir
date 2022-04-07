@@ -165,6 +165,8 @@ label values d_postest_treat_g2 d_postest_treat_g2
 gen age_group3=(age>=40)+(age>=60)
 label define age 0 "18-39" 1 "40-59" 2 ">=60" 
 label values age age
+egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,110) label
+mkspline age_spline = age, cubic nknots(4)
 
 tab sex,m
 rename sex sex_str
@@ -177,10 +179,16 @@ tab ethnicity,m
 rename ethnicity ethnicity_str
 encode  ethnicity_str ,gen(ethnicity)
 label list ethnicity
+replace ethnicity_str="Missing" if ethnicity_str==""
+encode  ethnicity_str ,gen(ethnicity_with_missing)
+label list ethnicity_with_missing
 
 tab imd,m
+replace imd=. if imd==0
 label define imd 1 "most deprived" 5 "least deprived"
 label values imd imd
+gen imd_with_missing=imd
+replace imd_with_missing=9 if imd==.
 
 tab region_nhs,m
 rename region_nhs region_nhs_str 
@@ -214,6 +222,9 @@ gen bmi_10y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*10
 gen bmi_group4=(bmi>=18.5)+(bmi>=25.0)+(bmi>=30.0) if bmi!=.
 label define bmi 0 "underweight" 1 "normal" 2 "overweight" 3 "obese"
 label values bmi_group4 bmi
+gen bmi_g4_with_missing=bmi_group4
+replace bmi_g4_with_missing=9 if bmi_group4==.
+
 tab diabetes,m
 tab chronic_cardiac_disease,m
 tab hypertension,m
