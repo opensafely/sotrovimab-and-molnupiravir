@@ -8,7 +8,7 @@
 *
 *	Data used:		output/main.dta
 *
-*	Output:	        logs/cox.log  logs/phtest.svg
+*	Output:	        logs/cox.log  output/phtest.svg  output/phtest_psw.svg
 *
 ********************************************************************************
 *
@@ -60,7 +60,6 @@ estat phtest,de
 estat phtest, plot(1.drug)
 graph export ./output/phtest.svg, as(svg) replace
 
-
 *un-stratified Cox, missing values as a separate category*
 stcox i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro
 stcox i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign
@@ -74,7 +73,6 @@ stcox i.drug age_spline* i.sex i.stp downs_syndrome solid_cancer haema_disease r
 stcox i.drug age_spline* i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign
 stcox i.drug age_spline* i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease
 estat phtest,de
-
 
 *stratified Cox, complete case*
 stcox i.drug age i.sex, strata(stp)
@@ -104,7 +102,6 @@ stcox i.drug age_spline* i.sex downs_syndrome solid_cancer haema_disease renal_d
 stcox i.drug age_spline* i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status, strata(stp month_after_campaign)
 stcox i.drug age_spline* i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp month_after_campaign)
 estat phtest,de
-
 
 *stratified Cox, missing values as a separate category*
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
@@ -143,16 +140,86 @@ tebalance summarize
 stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
 stcox i.drug
 
+psmatch2 drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+estat phtest,de
 
-*drop psweight
+*age continuous, missing values as a separate categorye*
+psmatch2 drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+
+psmatch2 drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+estat phtest,de
+
+*age: 5-year band, complete case*
+psmatch2 drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+
+psmatch2 drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+estat phtest,de
+
+*age: 5-year band, missing values as a separate categorye*
+psmatch2 drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.month_after_campaign)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+
+psmatch2 drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (i.drug i.age_5y_band i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign b1.bmi_group4 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease)
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
+estat phtest,de
+estat phtest, plot(1.drug)
+graph export ./output/phtest_psw.svg, as(svg) replace
 
 
 log close
-
-
-
-
-
-
 
 *subgroup analysis*
