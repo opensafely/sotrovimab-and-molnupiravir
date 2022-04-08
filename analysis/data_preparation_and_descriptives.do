@@ -293,8 +293,10 @@ by drug,sort: sum bmi,de
 ttest bmi, by( drug )
 by drug,sort: sum d_postest_treat ,de
 ttest d_postest_treat , by( drug )
-by drug,sort: sum month_after_campaign,de
-ttest month_after_campaign , by( drug )
+ranksum d_postest_treat,by(drug)
+by drug,sort: sum week_after_campaign,de
+ttest week_after_campaign , by( drug )
+ranksum week_after_campaign,by(drug)
 
 tab drug sex,row chi
 tab drug ethnicity,row chi
