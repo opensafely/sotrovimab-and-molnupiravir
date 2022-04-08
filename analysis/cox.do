@@ -132,7 +132,7 @@ stcox i.drug age_spline* i.sex downs_syndrome solid_cancer haema_disease renal_d
 
 
 *propensity score weighted Cox*
-do .analysis/ado/psmatch2.ado
+do "analysis/ado/psmatch2.ado"
 *age continuous, complete case*
 psmatch2 drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b5.ethnicity b5.imd i.vaccination_status i.month_after_campaign, logit
 gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
