@@ -85,6 +85,8 @@ drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrov
 drop if molnupiravir_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<= molnupiravir_covid_therapeutics | remdesivir_covid_therapeutics<= molnupiravir_covid_therapeutics | casirivimab_covid_therapeutics<= molnupiravir_covid_therapeutics )
 count if sotrovimab_covid_therapeutics!=. & molnupiravir_covid_therapeutics!=.
 drop if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
+*restrict start_date to 2021Dec16 to 2022Feb10!*
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 *exclude those hospitalised after test positive and before treatment?
 
 drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_covid_on_the_death_ce|start_date>=death_date|start_date>=dereg_date
@@ -102,7 +104,7 @@ tab drug,m
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(04,04,2022)
+gen study_end_date=mdy(04,08,2022)
 gen start_date_29=start_date+29
 *primary outcome*
 gen event_date=min( covid_hospitalisation_outcome_da, death_with_covid_on_the_death_ce )
@@ -194,6 +196,7 @@ tab high_risk_group,m
 *Time between positive test and treatment*
 gen d_postest_treat=start_date - covid_test_positive_date
 tab d_postest_treat,m
+replace d_postest_treat=. if d_postest_treat<0|d_postest_treat>7
 gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=5
 label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days" 
 label values d_postest_treat_g2 d_postest_treat_g2
@@ -212,12 +215,12 @@ label define sex 0 "Male" 1 "Female"
 label values sex sex
 
 tab ethnicity,m
-rename ethnicity ethnicity_str
-encode  ethnicity_str ,gen(ethnicity)
-label list ethnicity
-replace ethnicity_str="Missing" if ethnicity_str==""
-encode  ethnicity_str ,gen(ethnicity_with_missing)
+rename ethnicity ethnicity_with_missing_str
+encode  ethnicity_with_missing_str ,gen(ethnicity_with_missing)
 label list ethnicity_with_missing
+gen ethnicity=ethnicity_with_missing
+replace ethnicity=. if ethnicity_with_missing_str=="Missing"
+label values ethnicity ethnicity_with_missing
 
 tab imd,m
 replace imd=. if imd==0
@@ -250,11 +253,12 @@ tab housebound_opensafely,m
 tab learning_disability_primis,m
 tab serious_mental_illness_nhsd,m
 sum bmi,de
+replace bmi=. if bmi<10|bmi>60
 rename bmi bmi_all
-*latest BMI within recent 2 years*
-gen bmi=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*2&(age+((bmi_date_measured-start_date)/365)>=18)
+*latest BMI within recent 10 years*
+gen bmi=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*10&(age+((bmi_date_measured-start_date)/365)>=18)
 gen bmi_5y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*5&(age+((bmi_date_measured-start_date)/365)>=18)
-gen bmi_10y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*10&(age+((bmi_date_measured-start_date)/365)>=18)
+gen bmi_2y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*2&(age+((bmi_date_measured-start_date)/365)>=18)
 gen bmi_group4=(bmi>=18.5)+(bmi>=25.0)+(bmi>=30.0) if bmi!=.
 label define bmi 0 "underweight" 1 "normal" 2 "overweight" 3 "obese"
 label values bmi_group4 bmi
@@ -277,9 +281,10 @@ label values vaccination_status vac
 tab sgtf,m
 tab variant_recorded ,m
 *calendar time*
-gen month_after_campaign=round((start_date-mdy(12,16,2021))/30)
+gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
-
+gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
+tab week_after_campaign,m
 
 *descriptives by drug groups*
 by drug,sort: sum age,de
