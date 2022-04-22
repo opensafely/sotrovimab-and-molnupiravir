@@ -46,6 +46,7 @@ study = StudyDefinition(
     """,
   ),
   #require covid_test_positive_date<=date_treated?
+  #loose "(covid_test_positive AND NOT covid_positive_previous_30_days)" to increase N?
   #AND NOT pregnancy (sensitivity analysis)
   #AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics) (sensitivity analysis)
 
@@ -65,7 +66,8 @@ study = StudyDefinition(
       "incidence": 0.4
     },
   ),
-  
+  # restrict by status?
+
   ### Molnupiravir
   molnupiravir_covid_therapeutics = patients.with_covid_therapeutics(
     #with_these_statuses = ["Approved", "Treatment Complete"],
@@ -141,7 +143,6 @@ study = StudyDefinition(
   
   ### First positive SARS-CoV-2 test
   # Note patients are eligible for treatment if diagnosed <=5d ago
-  # in the latest 5 days there may be patients identified as eligible who have not yet been treated
   covid_test_positive = patients.with_test_result_in_sgss(
     pathogen = "SARS-CoV-2",
     test_result = "positive",
@@ -373,7 +374,7 @@ study = StudyDefinition(
   ),
   
   has_died = patients.died_from_any_cause(
-    on_or_before = "index_date - 1 day",
+    on_or_before = "start_date - 1 day",
     returning = "binary_flag",
   ),
   
@@ -391,7 +392,7 @@ study = StudyDefinition(
   
   ## 1/2/3 months since treatment initiation
   ## AND study end date (today)
-  ## end date 1-month earlier to account for delay in data update?
+  ## account for delay in data update?
 
   # HIGH RISK GROUPS ----
   
@@ -1183,7 +1184,6 @@ study = StudyDefinition(
         }
   ),
   #also use bmi_code_snomed and height and weight?
-  #BMI within 2 years (especially for <18 years old)?
 
   # Diabetes
   diabetes=patients.with_these_clinical_events(
@@ -1238,6 +1238,19 @@ study = StudyDefinition(
             "category": {"ratios": {"B.1.617.2": 0.7, "VOC-21JAN-02": 0.2, "": 0.1}},
        },
   ),     
+  # new sgtf data in "all tests dataset"
+  sgtf_new=patients.with_test_result_in_sgss(
+       pathogen="SARS-CoV-2",
+       test_result="positive",
+       find_first_match_in_period=True,
+       restrict_to_earliest_specimen_date=False,
+       between=["covid_test_positive_date","covid_test_positive_date + 30 days"],
+       returning="s_gene_target_failure",
+       return_expectations={
+            "rate": "universal",
+            "category": {"ratios": {"0": 0.7, "1": 0.1, "9": 0.1, "": 0.1}},
+       },
+  ), 
 
 
   # OUTCOMES ----
@@ -1265,7 +1278,74 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "start_date + 1 day",
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.05
+    },
+  ),
+  # capture and exclude COVID hospital admission/death on the start date
+
+  # return discharge date to (make sure) exclude day cases
+  covid_hosp_discharge_date = patients.admitted_to_hospital(
+    returning = "date_discharged",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.05
+    },
+  ),  
+  # return admission method to identify planned admissions (for sotro injection)
+  covid_hosp_admission_method = patients.admitted_to_hospital(
+    returning = "admission_method",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.05
+    },
+  ),  
+  # emergency admissions only to exclude incidental COVID or patients receiving sotro in hospitals (planned admission)
+  covid_hosp_date_emergency = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.05
+    },
+  ),
+  # identify and ignore COVID hospital admissions for community mAbs procedure*
+  covid_hosp_date_mabs_procedure = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    with_these_procedures=["X891", "X892"],
+    on_or_after = "start_date",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
@@ -1275,7 +1355,22 @@ study = StudyDefinition(
     },
   ),
   # with_these_diagnoses (sensitivity analysis)
-  
+  covid_hosp_date_not_primary = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.05
+    },
+  ),
+
   ## Critical care days for COVID-related hospitalisation 
   covid_hospitalisation_critical_care = patients.admitted_to_hospital(
     returning = "days_in_critical_care",
@@ -1293,7 +1388,7 @@ study = StudyDefinition(
     covid_icd10_codes,
     returning = "date_of_death",
     date_format = "YYYY-MM-DD",
-    on_or_after = "start_date + 1 day",
+    on_or_after = "start_date",
     return_expectations = {
       "date": {"earliest": "2021-01-01", "latest" : "today"},
       "rate": "uniform",
@@ -1307,7 +1402,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "start_date + 1 day",
+    on_or_after = "start_date",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
