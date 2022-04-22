@@ -6,7 +6,10 @@ from cohortextractor import (codelist, codelist_from_csv, combine_codelists)
 
 
 # --- CODELISTS ---
-
+#SUS-HES mabs
+mabs_procedure_codes = codelist(
+  ["X891", "X892"], system="opcs4", column="code"
+)
 # Chronic cardiac disease
 chronic_cardiac_dis_codes = codelist_from_csv(
     "codelists/opensafely-chronic-cardiac-disease-snomed.csv",
