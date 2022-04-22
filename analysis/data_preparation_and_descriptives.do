@@ -89,6 +89,8 @@ drop if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
 keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 *exclude those hospitalised after test positive and before treatment?
 
+*capture and exclude COVID-hospital admission/death on the start date
+count if start_date==covid_hospitalisation_outcome_da| start_date==death_with_covid_on_the_death_ce
 drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_covid_on_the_death_ce|start_date>=death_date|start_date>=dereg_date
 
 
@@ -104,8 +106,8 @@ tab drug,m
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(04,08,2022)
-gen start_date_29=start_date+29
+gen study_end_date=mdy(04,22,2022)
+gen start_date_29=start_date+28
 *primary outcome*
 gen event_date=min( covid_hospitalisation_outcome_da, death_with_covid_on_the_death_ce )
 gen failure=(event_date!=.&event_date<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
@@ -202,8 +204,8 @@ label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days"
 label values d_postest_treat_g2 d_postest_treat_g2
 *demo*
 gen age_group3=(age>=40)+(age>=60)
-label define age 0 "18-39" 1 "40-59" 2 ">=60" 
-label values age age
+label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
+label values age_group3 age_group3
 egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,110) label
 mkspline age_spline = age, cubic nknots(4)
 
