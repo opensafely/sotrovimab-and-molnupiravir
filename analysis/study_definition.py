@@ -1316,9 +1316,8 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2022-02-28"},
-      "rate": "uniform",
-      "incidence": 0.05
+      "rate": "universal",
+      "category": {"ratios": {"21": 0.7, "22": 0.3}},
     },
   ),  
   # emergency admissions only to exclude incidental COVID or patients receiving sotro in hospitals (planned admission)
