@@ -1,5 +1,5 @@
 ## Adapted codes from https://github.com/opensafely/antibody-and-antiviral-deployment
-## Import code building blocks from cohort extractor package
+## Import code building blocks from cohort extractor package 
 from cohortextractor import (
   StudyDefinition,
   patients,
