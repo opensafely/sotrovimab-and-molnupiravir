@@ -37,6 +37,7 @@ tab failure drug,m col
 
 *un-stratified Cox, with covariate adjustment, complete case*
 stcox i.drug
+stcox i.drug age i.sex
 stcox i.drug age i.sex i.region_nhs
 stcox i.drug age i.sex i.stp
 *region_nhs or region_covid_therapeutics? *
