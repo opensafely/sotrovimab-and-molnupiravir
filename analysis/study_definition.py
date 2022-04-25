@@ -1284,7 +1284,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.20
     },
   ),
   # capture and exclude COVID hospital admission/death on the start date
@@ -1303,7 +1303,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.20
     },
   ),  
   # return admission method to identify planned admissions (for sotro injection)
@@ -1334,7 +1334,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.18
     },
   ),
   # identify and exclude COVID hospital admissions for community mAbs procedure on Day 0 or Day 1*
@@ -1351,7 +1351,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.005
     },
   ),
   # with_these_diagnoses (sensitivity analysis)
@@ -1367,7 +1367,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.23
     },
   ),
 
@@ -1408,7 +1408,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-28"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.3
     },
   ),
 
