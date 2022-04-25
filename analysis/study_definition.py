@@ -1288,8 +1288,9 @@ study = StudyDefinition(
     },
   ),
   # capture and exclude COVID hospital admission/death on the start date
+  # extract multiple COVID hosp events per patient because the first hosp may be for receiving sotro? 
 
-  # return discharge date to (make sure) exclude day cases
+  # return discharge date to (make sure) identify and exclude day cases
   covid_hosp_discharge_date = patients.admitted_to_hospital(
     returning = "date_discharged",
     with_these_primary_diagnoses = covid_icd10_codes,
@@ -1320,7 +1321,7 @@ study = StudyDefinition(
       "category": {"ratios": {"21": 0.7, "22": 0.3}},
     },
   ),  
-  # emergency admissions only to exclude incidental COVID or patients receiving sotro in hospitals (planned admission)
+  # sensitivity analysis: emergency admissions only to ignore incidental COVID or patients receiving sotro in hospitals (planned admission)
   covid_hosp_date_emergency = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_primary_diagnoses = covid_icd10_codes,
@@ -1336,7 +1337,7 @@ study = StudyDefinition(
       "incidence": 0.05
     },
   ),
-  # identify and ignore COVID hospital admissions for community mAbs procedure*
+  # identify and exclude COVID hospital admissions for community mAbs procedure on Day 0 or Day 1*
   covid_hosp_date_mabs_procedure = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_primary_diagnoses = covid_icd10_codes,
