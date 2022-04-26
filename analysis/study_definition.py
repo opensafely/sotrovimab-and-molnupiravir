@@ -40,13 +40,12 @@ study = StudyDefinition(
     """
     age >= 18 AND age < 110
     AND NOT has_died
-    AND (covid_test_positive AND NOT covid_positive_previous_30_days)
     AND registered_treated 
     AND (sotrovimab_covid_therapeutics OR molnupiravir_covid_therapeutics)
     """,
   ),
   #require covid_test_positive_date<=date_treated?
-  #loose "(covid_test_positive AND NOT covid_positive_previous_30_days)" to increase N?
+  #loose "AND (covid_test_positive AND NOT covid_positive_previous_30_days)" to increase N?
   #AND NOT pregnancy (sensitivity analysis)
   #AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics) (sensitivity analysis)
 
@@ -1288,9 +1287,9 @@ study = StudyDefinition(
     },
   ),
   # capture and exclude COVID hospital admission/death on the start date
-  # extract multiple COVID hosp events per patient because the first hosp may be for receiving sotro? 
+  # extract multiple COVID hosp events per patient because the first hosp may be for receiving sotro (Day 0 and 1)? 
 
-  # return discharge date to (make sure) identify and exclude day cases
+  # return discharge date to (make sure) identify and ignore day cases
   covid_hosp_discharge_date = patients.admitted_to_hospital(
     returning = "date_discharged",
     with_these_primary_diagnoses = covid_icd10_codes,
@@ -1337,7 +1336,7 @@ study = StudyDefinition(
       "incidence": 0.18
     },
   ),
-  # identify and exclude COVID hospital admissions for community mAbs procedure on Day 0 or Day 1*
+  # identify and ignore COVID hospital admissions for community mAbs procedure on Day 0 or Day 1*
   covid_hosp_date_mabs_procedure = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_primary_diagnoses = covid_icd10_codes,
