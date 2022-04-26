@@ -1287,7 +1287,7 @@ study = StudyDefinition(
     },
   ),  
   # in case one patient had admission records on both day 0 and 1
-  start_date_1d = start_date + datetime.timedelta(days=1),
+  start_date_1d = "start_date" + datetime.timedelta(days=1),
   date2 = patients.minimum_of(
     "covid_hosp_outcome_date01",
     "start_date_1d",
