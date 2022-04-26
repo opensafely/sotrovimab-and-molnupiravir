@@ -13,11 +13,10 @@ from cohortextractor import (
 ## Import codelists from codelist.py (which pulls them from the codelist folder)
 from codelists import *
 
-
 # DEFINE STUDY POPULATION ----
 
 ## Define study time variables
-from datetime import date
+from datetime import timedelta, date 
 
 campaign_start = "2021-12-16"
 end_date = date.today().isoformat()
@@ -1288,9 +1287,10 @@ study = StudyDefinition(
     },
   ),  
   # in case one patient had admission records on both day 0 and 1
+  start_date_1d = start_date + datetime.timedelta(days=1)
   date2 = patients.minimum_of(
     "covid_hosp_outcome_date01",
-    f"{start_date} + 1 day",
+    "start_date_1d",
   ),
   covid_hosp_outcome_date2 = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1408,7 +1408,7 @@ study = StudyDefinition(
   # in case one patient had admission records on both day 0 and 1
   date2_not_primary = patients.minimum_of(
     "covid_hosp_date01_not_primary",
-    f"{start_date} + 1 day",
+    "start_date_1d",
   ),
   covid_hosp_date2_not_primary = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1500,7 +1500,7 @@ study = StudyDefinition(
   # in case one patient had admission records on both day 0 and 1
   date2_all_cause = patients.minimum_of(
     "hospitalisation_outcome_date01",
-    f"{start_date} + 1 day",
+    "start_date_1d",
   ),  
   hospitalisation_outcome_date2 = patients.admitted_to_hospital(
     returning = "date_admitted",
