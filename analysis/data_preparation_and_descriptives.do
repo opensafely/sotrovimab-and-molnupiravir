@@ -90,7 +90,7 @@ count if sotrovimab_covid_therapeutics!=. & molnupiravir_covid_therapeutics!=.
 drop if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
 *restrict start_date to 2021Dec16 to 2022Feb10!*
 *loose this restriction to increase N?*
-keep if start_date>=mdy(12,16,2021)&start_date<=mdy(03,26,2022)
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 *exclude those hospitalised after test positive and before treatment?
 
 
@@ -261,7 +261,9 @@ label values d_postest_treat_missing d_postest_treat_missing
 gen age_group3=(age>=40)+(age>=60)
 label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
 label values age_group3 age_group3
+tab age_group3,m
 egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,110) label
+tab age_5y_band,m
 mkspline age_spline = age, cubic nknots(4)
 
 tab sex,m
