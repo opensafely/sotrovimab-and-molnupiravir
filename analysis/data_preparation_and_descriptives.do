@@ -79,8 +79,9 @@ keep if age>=18 & age<110
 tab sex,m
 keep if sex=="F"|sex=="M"
 keep if has_died==0
-keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 keep if registered_treated==1
+tab covid_test_positive covid_positive_previous_30_days,m
+*keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
@@ -88,7 +89,8 @@ drop if molnupiravir_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<= mol
 count if sotrovimab_covid_therapeutics!=. & molnupiravir_covid_therapeutics!=.
 drop if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
 *restrict start_date to 2021Dec16 to 2022Feb10!*
-keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
+*loose this restriction to increase N?*
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(03,26,2022)
 *exclude those hospitalised after test positive and before treatment?
 
 
@@ -109,6 +111,7 @@ by drug days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da
 
 by drug, sort: count if covid_hospitalisation_outcome_da==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.
 by days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+by days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==0
 by drug, sort: count if covid_hospitalisation_outcome_da==covid_hosp_date_mabs_procedure&covid_hospitalisation_outcome_da!=.&covid_hospitalisation_outcome_da==covid_hosp_discharge_date
 
 drop if covid_hospitalisation_outcome_da==covid_hosp_discharge_date&covid_hospitalisation_outcome_da!=.
@@ -126,7 +129,7 @@ drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_cov
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(04,25,2022)
+gen study_end_date=mdy(04,26,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -247,9 +250,13 @@ tab high_risk_group,m
 gen d_postest_treat=start_date - covid_test_positive_date
 tab d_postest_treat,m
 replace d_postest_treat=. if d_postest_treat<0|d_postest_treat>7
-gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=5
-label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days" 
+gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=7
+label define d_postest_treat_g2 0 "<3 days" 1 "3-7 days" 
 label values d_postest_treat_g2 d_postest_treat_g2
+gen d_postest_treat_missing=d_postest_treat_g2
+replace d_postest_treat_missing=9 if d_postest_treat_g2==.
+label define d_postest_treat_missing 0 "<3 days" 1 "3-7 days" 9 "missing" 
+label values d_postest_treat_missing d_postest_treat_missing
 *demo*
 gen age_group3=(age>=40)+(age>=60)
 label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
@@ -293,6 +300,7 @@ tab stp ,m
 rename stp stp_str
 encode  stp_str ,gen(stp)
 label list stp
+*combine stps with low N (<50) as "Other"?*
 
 tab rural_urban,m
 *comor*
