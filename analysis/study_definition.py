@@ -867,7 +867,7 @@ study = StudyDefinition(
   
   ## Age
   age = patients.age_as_of(
-    "start_date - 1 days",
+    "start_date - 1 day",
     return_expectations = {
       "rate": "universal",
       "int": {"distribution": "population_ages"},
@@ -1290,7 +1290,7 @@ study = StudyDefinition(
   # in case one patient had admission records on both day 0 and 1
   date2 = patients.minimum_of(
     "covid_hosp_outcome_date01",
-    "start_date + 1 day",
+    f"start_date + 1 day",
   ),
   covid_hosp_outcome_date2 = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1307,7 +1307,6 @@ study = StudyDefinition(
       "incidence": 0.20
     },
   ),
-
   # capture and exclude COVID hospital admission/death on the start date
 
   # return discharge date to (make sure) identify and ignore day cases
@@ -1409,7 +1408,7 @@ study = StudyDefinition(
   # in case one patient had admission records on both day 0 and 1
   date2_not_primary = patients.minimum_of(
     "covid_hosp_date01_not_primary",
-    "start_date + 1 day",
+    f"start_date + 1 day",
   ),
   covid_hosp_date2_not_primary = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1501,7 +1500,7 @@ study = StudyDefinition(
   # in case one patient had admission records on both day 0 and 1
   date2_all_cause = patients.minimum_of(
     "hospitalisation_outcome_date01",
-    "start_date + 1 day",
+    f"start_date + 1 day",
   ),  
   hospitalisation_outcome_date2 = patients.admitted_to_hospital(
     returning = "date_admitted",
