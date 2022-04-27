@@ -1262,7 +1262,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     restrict_to_earliest_specimen_date = False,
     return_expectations = {
-      "date": {"earliest": "2021-12-30"},
+      "date": {"earliest": "2022-01-30"},
       "rate": "exponential_increase",
       "incidence": 0.4
     },
@@ -1280,7 +1280,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.05
     },
@@ -1296,7 +1296,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.05
     },
@@ -1311,7 +1311,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.20
     },
@@ -1329,7 +1329,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.05
     },
@@ -1344,7 +1344,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.05
     },
@@ -1359,7 +1359,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.20
     },
@@ -1392,7 +1392,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.18
     },
@@ -1409,7 +1409,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.01
     },
@@ -1425,7 +1425,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.07
     },
@@ -1441,7 +1441,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.07
     },
@@ -1456,7 +1456,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.23
     },
@@ -1472,7 +1472,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.07
     },
@@ -1487,7 +1487,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.07
     },
@@ -1502,7 +1502,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.23
     },
@@ -1527,7 +1527,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     on_or_after = "start_date",
     return_expectations = {
-      "date": {"earliest": "2021-01-01", "latest" : "today"},
+      "date": {"earliest": "2022-02-01", "latest" : "today"},
       "rate": "uniform",
       "incidence": 0.3},
   ),
@@ -1543,7 +1543,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.1
     },
@@ -1558,7 +1558,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.1
     },
@@ -1572,7 +1572,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.3
     },
@@ -1586,7 +1586,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-16"},
+      "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
       "incidence": 0.1
     },
@@ -1600,7 +1600,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-17"},
+      "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
       "incidence": 0.1
     },
@@ -1614,7 +1614,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
-      "date": {"earliest": "2021-12-18"},
+      "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
       "incidence": 0.3
     },
