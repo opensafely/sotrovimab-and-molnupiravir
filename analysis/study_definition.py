@@ -244,7 +244,7 @@ study = StudyDefinition(
     "sotrovimab_covid_therapeutics",
     "molnupiravir_covid_therapeutics",
   ),
-  start_date_1d = "start_date" + timedelta(days=1),
+  start_date_1d = start_date + timedelta(days=1),
   
   ## Exclusion criteria variables
   
