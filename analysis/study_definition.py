@@ -1282,7 +1282,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.1
     },
   ),  
   # in case one patient had admission records on both day 0 and 1
@@ -1298,7 +1298,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.1
     },
   ),  
   covid_hosp_outcome_date2 = patients.admitted_to_hospital(
@@ -1313,7 +1313,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.20
+      "incidence": 0.40
     },
   ),
   # capture and exclude COVID hospital admission/death on the start date
@@ -1331,7 +1331,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.1
     },
   ),  
   covid_hosp_discharge_date1 = patients.admitted_to_hospital(
@@ -1346,7 +1346,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.05
+      "incidence": 0.1
     },
   ),  
   covid_hosp_discharge_date2 = patients.admitted_to_hospital(
@@ -1361,7 +1361,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.20
+      "incidence": 0.40
     },
   ),  
 
@@ -1378,7 +1378,7 @@ study = StudyDefinition(
     return_expectations = {
       "rate": "universal",
       "category": {"ratios": {"21": 0.7, "22": 0.3}},
-      "incidence": 0.2,
+      "incidence": 0.4,
     },
   ),  
   # sensitivity analysis: emergency admissions only to ignore incidental COVID or patients receiving sotro in hospitals (planned admission)
@@ -1394,7 +1394,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.18
+      "incidence": 0.36
     },
   ),
   # identify and ignore COVID hospital admissions for community mAbs procedure on Day 0 or Day 1*
@@ -1411,7 +1411,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.01
+      "incidence": 0.1
     },
   ),
   # with_these_diagnoses (sensitivity analysis)
@@ -1427,7 +1427,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.07
+      "incidence": 0.14
     },
   ),
   # in case one patient had admission records on both day 0 and 1
@@ -1443,7 +1443,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.07
+      "incidence": 0.14
     },
   ),
   covid_hosp_date2_not_primary = patients.admitted_to_hospital(
@@ -1458,7 +1458,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.23
+      "incidence": 0.46
     },
   ),
 
@@ -1474,7 +1474,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.07
+      "incidence": 0.14
     },
   ),  
   covid_discharge_date1_not_pri = patients.admitted_to_hospital(
@@ -1489,7 +1489,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.07
+      "incidence": 0.14
     },
   ),  
   covid_discharge_date2_not_pri = patients.admitted_to_hospital(
@@ -1504,7 +1504,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.23
+      "incidence": 0.46
     },
   ),  
 
@@ -1516,7 +1516,7 @@ study = StudyDefinition(
     find_first_match_in_period = True,
     return_expectations = {
       "category": {"ratios": {"20": 0.5, "40": 0.5}},
-      "incidence": 0.2,
+      "incidence": 0.4,
     },
   ),
   
@@ -1529,7 +1529,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2021-01-01", "latest" : "today"},
       "rate": "uniform",
-      "incidence": 0.3},
+      "incidence": 0.6},
   ),
   
 
@@ -1545,7 +1545,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.1
+      "incidence": 0.2
     },
   ),
   # in case one patient had admission records on both day 0 and 1
@@ -1560,7 +1560,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.1
+      "incidence": 0.2
     },
   ),
   hospitalisation_outcome_date2 = patients.admitted_to_hospital(
@@ -1574,7 +1574,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.3
+      "incidence": 0.6
     },
   ),
   hosp_discharge_date0 = patients.admitted_to_hospital(
@@ -1588,7 +1588,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-16"},
       "rate": "uniform",
-      "incidence": 0.1
+      "incidence": 0.2
     },
   ),
   hosp_discharge_date1 = patients.admitted_to_hospital(
@@ -1602,7 +1602,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-17"},
       "rate": "uniform",
-      "incidence": 0.1
+      "incidence": 0.2
     },
   ),
   hosp_discharge_date2 = patients.admitted_to_hospital(
@@ -1616,7 +1616,7 @@ study = StudyDefinition(
     return_expectations = {
       "date": {"earliest": "2022-02-18"},
       "rate": "uniform",
-      "incidence": 0.3
+      "incidence": 0.6
     },
   ),
 
