@@ -244,7 +244,6 @@ study = StudyDefinition(
     "sotrovimab_covid_therapeutics",
     "molnupiravir_covid_therapeutics",
   ),
-  start_date_1d = start_date + timedelta(days=1),
   
   ## Exclusion criteria variables
   
@@ -1287,17 +1286,28 @@ study = StudyDefinition(
     },
   ),  
   # in case one patient had admission records on both day 0 and 1
-  date2 = patients.minimum_of(
-    "covid_hosp_outcome_date01",
-    "start_date_1d",
-  ),
+  covid_hosp_outcome_date1 = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    between = ["start_date + 1 day", "start_date + 1 day"],
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-28"},
+      "rate": "uniform",
+      "incidence": 0.20
+    },
+  ),  
   covid_hosp_outcome_date2 = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_primary_diagnoses = covid_icd10_codes,
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "date2 + 1 day",
+    on_or_after = "start_date + 2 days",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
