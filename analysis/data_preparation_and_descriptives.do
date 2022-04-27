@@ -106,8 +106,8 @@ tab drug,m
 
 
 *correcting COVID hosp events: further ignore any day cases or sotro initiators who had COVID hosp record with mab procedure codes on Day 0 or 1 *
-assert  covid_hosp_outcome_date0==start_date if  covid_hosp_outcome_date0!=.
-assert  covid_hosp_outcome_date1==start_date+1 if  covid_hosp_outcome_date1!=.
+count if covid_hosp_outcome_date0!=start_date&covid_hosp_outcome_date0!=.
+count if covid_hosp_outcome_date1!=(start_date+1)&covid_hosp_outcome_date1!=.
 by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
 by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.
@@ -184,8 +184,8 @@ stset end_date_3m ,  origin(start_date) failure(failure_3m==1)
 stcox drug
 *secondary outcome: all-cause hosp/death within 29 days*
 *correct all cause hosp date *
-assert  hospitalisation_outcome_date0==start_date if  hospitalisation_outcome_date0!=.
-assert  hospitalisation_outcome_date1==start_date+1 if  hospitalisation_outcome_date1!=.
+count if hospitalisation_outcome_date0!=start_date&hospitalisation_outcome_date0!=.
+count if hospitalisation_outcome_date1!=(start_date+1)&hospitalisation_outcome_date1!=.
 replace hospitalisation_outcome_date0==. if hospitalisation_outcome_date0==hosp_discharge_date0&hospitalisation_outcome_date0!=.
 replace hospitalisation_outcome_date1==. if hospitalisation_outcome_date1==hosp_discharge_date1&hospitalisation_outcome_date1!=.
 replace hospitalisation_outcome_date0==. if hospitalisation_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
@@ -219,8 +219,8 @@ stset end_date_emergency ,  origin(start_date) failure(failure_emergency==1)
 stcox drug
 *sensitivity analysis for primary outcome: not require covid as primary diagnosis*
 *correct hosp date *
-assert  covid_hosp_date0_not_primary==start_date if  covid_hosp_date0_not_primary!=.
-assert  covid_hosp_date1_not_primary==start_date+1 if  covid_hosp_date1_not_primary!=.
+count if covid_hosp_date0_not_primary!=start_date&covid_hosp_date0_not_primary!=.
+count if covid_hosp_date1_not_primary!=(start_date+1)&covid_hosp_date1_not_primary!=.
 replace covid_hosp_date0_not_primary==. if covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
 replace covid_hosp_date1_not_primary==. if covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
 replace covid_hosp_date0_not_primary==. if covid_hosp_date0_not_primary==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
