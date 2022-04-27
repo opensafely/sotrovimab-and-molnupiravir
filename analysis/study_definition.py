@@ -1527,7 +1527,7 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     on_or_after = "start_date",
     return_expectations = {
-      "date": {"earliest": "2022-02-18"},
+      "date": {"earliest": "2021-01-01", "latest" : "today"},
       "rate": "uniform",
       "incidence": 0.3},
   ),
