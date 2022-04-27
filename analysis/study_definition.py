@@ -16,7 +16,7 @@ from codelists import *
 # DEFINE STUDY POPULATION ----
 
 ## Define study time variables
-from datetime import timedelta, date 
+from datetime import timedelta, date, datetime 
 
 campaign_start = "2021-12-16"
 end_date = date.today().isoformat()
@@ -244,7 +244,7 @@ study = StudyDefinition(
     "sotrovimab_covid_therapeutics",
     "molnupiravir_covid_therapeutics",
   ),
-  
+  start_date_1d = "start_date" + timedelta(days=1),
   
   ## Exclusion criteria variables
   
@@ -1287,7 +1287,6 @@ study = StudyDefinition(
     },
   ),  
   # in case one patient had admission records on both day 0 and 1
-  start_date_1d = "start_date" + timedelta(days=1),
   date2 = patients.minimum_of(
     "covid_hosp_outcome_date01",
     "start_date_1d",
