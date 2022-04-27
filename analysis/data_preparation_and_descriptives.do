@@ -114,10 +114,10 @@ by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.
 by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date0==covid_hosp_outcome_date0
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_outcome_date1
-replace covid_hosp_outcome_date0==. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
-replace covid_hosp_outcome_date1==. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
-replace covid_hosp_outcome_date0==. if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
-replace covid_hosp_outcome_date1==. if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
+replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
+replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
 
 gen covid_hospitalisation_outcome_da=covid_hosp_outcome_date2
 replace covid_hospitalisation_outcome_da=covid_hosp_outcome_date1 if covid_hosp_outcome_date1!=.
@@ -186,10 +186,10 @@ stcox drug
 *correct all cause hosp date *
 count if hospitalisation_outcome_date0!=start_date&hospitalisation_outcome_date0!=.
 count if hospitalisation_outcome_date1!=(start_date+1)&hospitalisation_outcome_date1!=.
-replace hospitalisation_outcome_date0==. if hospitalisation_outcome_date0==hosp_discharge_date0&hospitalisation_outcome_date0!=.
-replace hospitalisation_outcome_date1==. if hospitalisation_outcome_date1==hosp_discharge_date1&hospitalisation_outcome_date1!=.
-replace hospitalisation_outcome_date0==. if hospitalisation_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
-replace hospitalisation_outcome_date1==. if hospitalisation_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace hospitalisation_outcome_date0=. if hospitalisation_outcome_date0==hosp_discharge_date0&hospitalisation_outcome_date0!=.
+replace hospitalisation_outcome_date1=. if hospitalisation_outcome_date1==hosp_discharge_date1&hospitalisation_outcome_date1!=.
+replace hospitalisation_outcome_date0=. if hospitalisation_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace hospitalisation_outcome_date1=. if hospitalisation_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
 
 gen hospitalisation_outcome_date=hospitalisation_outcome_date2
 replace hospitalisation_outcome_date=hospitalisation_outcome_date1 if hospitalisation_outcome_date1!=.
@@ -221,10 +221,10 @@ stcox drug
 *correct hosp date *
 count if covid_hosp_date0_not_primary!=start_date&covid_hosp_date0_not_primary!=.
 count if covid_hosp_date1_not_primary!=(start_date+1)&covid_hosp_date1_not_primary!=.
-replace covid_hosp_date0_not_primary==. if covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
-replace covid_hosp_date1_not_primary==. if covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
-replace covid_hosp_date0_not_primary==. if covid_hosp_date0_not_primary==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
-replace covid_hosp_date1_not_primary==. if covid_hosp_date1_not_primary==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace covid_hosp_date0_not_primary=. if covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
+replace covid_hosp_date1_not_primary=. if covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
+replace covid_hosp_date0_not_primary=. if covid_hosp_date0_not_primary==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
+replace covid_hosp_date1_not_primary=. if covid_hosp_date1_not_primary==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
 
 gen covid_hosp_date_not_primary=covid_hosp_date2_not_primary
 replace covid_hosp_date_not_primary=covid_hosp_date1_not_primary if covid_hosp_date1_not_primary!=.
