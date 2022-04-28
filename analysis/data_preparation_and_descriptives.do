@@ -397,9 +397,11 @@ by drug,sort: sum age,de
 ttest age , by( drug )
 by drug,sort: sum bmi,de
 ttest bmi, by( drug )
+sum d_postest_treat ,de
 by drug,sort: sum d_postest_treat ,de
 ttest d_postest_treat , by( drug )
 ranksum d_postest_treat,by(drug)
+sum week_after_campaign,de
 by drug,sort: sum week_after_campaign,de
 ttest week_after_campaign , by( drug )
 ranksum week_after_campaign,by(drug)
