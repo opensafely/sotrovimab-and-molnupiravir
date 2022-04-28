@@ -202,6 +202,8 @@ gen end_date_allcause=event_date_allcause if failure_allcause==1
 replace end_date_allcause=min(death_date, dereg_date, study_end_date, start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_allcause==0&drug==1
 replace end_date_allcause=min(death_date, dereg_date, study_end_date, start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_allcause==0&drug==0
 format %td event_date_allcause end_date_allcause  
+*further excluding day cases on or after day 2 from this analysis*
+replace end_date_allcause=. if hospitalisation_outcome_date2==hosp_discharge_date2&hospitalisation_outcome_date2!=.&hospitalisation_outcome_date0==.&hospitalisation_outcome_date1==.
 
 stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
 stcox drug
@@ -237,6 +239,8 @@ gen end_date_not_primary=event_date_not_primary if failure_not_primary==1
 replace end_date_not_primary=min(death_date, dereg_date, study_end_date, start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_not_primary==0&drug==1
 replace end_date_not_primary=min(death_date, dereg_date, study_end_date, start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics) if failure_not_primary==0&drug==0
 format %td event_date_not_primary end_date_not_primary  
+*further excluding day cases on or after day 2 from this analysis!*
+replace end_date_not_primary=. if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.
 
 stset end_date_not_primary ,  origin(start_date) failure(failure_not_primary==1)
 stcox drug
@@ -284,12 +288,12 @@ tab high_risk_group,m
 gen d_postest_treat=start_date - covid_test_positive_date
 tab d_postest_treat,m
 replace d_postest_treat=. if d_postest_treat<0|d_postest_treat>7
-gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=7
-label define d_postest_treat_g2 0 "<3 days" 1 "3-7 days" 
+gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=5
+label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days" 
 label values d_postest_treat_g2 d_postest_treat_g2
 gen d_postest_treat_missing=d_postest_treat_g2
 replace d_postest_treat_missing=9 if d_postest_treat_g2==.
-label define d_postest_treat_missing 0 "<3 days" 1 "3-7 days" 9 "missing" 
+label define d_postest_treat_missing 0 "<3 days" 1 "3-5 days" 9 "missing" 
 label values d_postest_treat_missing d_postest_treat_missing
 *demo*
 gen age_group3=(age>=40)+(age>=60)
@@ -411,6 +415,7 @@ tab stp if drug==0
 tab stp if drug==1
 tab drug age_group3 ,row chi
 tab drug d_postest_treat_g2 ,row chi
+tab drug d_postest_treat ,row
 tab drug downs_syndrome ,row chi
 tab drug solid_cancer ,row chi
 tab drug haema_disease ,row chi
