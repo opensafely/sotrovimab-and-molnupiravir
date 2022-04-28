@@ -337,7 +337,7 @@ rename stp stp_str
 encode  stp_str ,gen(stp)
 label list stp
 *combine stps with low N (<50) as "Other"*
-by stp, sort: egen stp_N=_N if stp!=.
+by stp, sort: gen stp_N=_N if stp!=.
 replace stp=99 if stp_N<50
 tab stp ,m
 
