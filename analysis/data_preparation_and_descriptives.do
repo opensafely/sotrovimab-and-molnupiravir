@@ -296,7 +296,7 @@ gen age_group3=(age>=40)+(age>=60)
 label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
 label values age_group3 age_group3
 tab age_group3,m
-egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,110) label
+egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,110) label
 tab age_5y_band,m
 mkspline age_spline = age, cubic nknots(4)
 
@@ -336,7 +336,10 @@ tab stp ,m
 rename stp stp_str
 encode  stp_str ,gen(stp)
 label list stp
-*combine stps with low N (<50) as "Other"?*
+*combine stps with low N (<50) as "Other"*
+by stp, sort: egen stp_N=_N if stp!=.
+replace stp=99 if stp_N<50
+tab stp ,m
 
 tab rural_urban,m
 *comor*
@@ -382,6 +385,8 @@ gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
+*combine 8 and 9 due to small N*
+replace week_after_campaign=8 if week_after_campaign==9
 
 *descriptives by drug groups*
 by drug,sort: sum age,de
