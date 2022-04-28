@@ -31,6 +31,8 @@ tab _t,m
 tab _t drug,m col
 by drug, sort: sum _t ,de
 tab _t drug if failure==1,m col
+tab _t drug if failure==1&end_date==covid_hospitalisation_outcome_da&end_date!=death_with_covid_on_the_death_ce,m col
+tab _t drug if failure==1&end_date==death_with_covid_on_the_death_ce,m col
 tab failure drug,m col
 
 
