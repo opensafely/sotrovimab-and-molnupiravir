@@ -245,10 +245,45 @@ estat phtest, plot(1.drug)
 graph export ./output/phtest_psw.svg, as(svg) replace
 
 
-log close
 
 *secondary outcomes*
+*all-cause hosp/death*
+*follow-up time and events*
+stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
+tab _t drug,m col
+by drug, sort: sum _t ,de
+tab _t drug if failure_allcause==1,m col
+tab _t drug if failure_allcause==1&end_date_allcause==hospitalisation_outcome_date&end_date_allcause!=death_date,m col
+tab _t drug if failure_allcause==1&end_date_allcause==death_date,m col
+tab failure_allcause drug if _st==1,m col
+*stratified Cox, missing values as a separate category*
+stcox i.drug age i.sex, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
+
+*2m covid hosp/death*
+*follow-up time and events*
+stset end_date_2m ,  origin(start_date) failure(failure_2m==1)
+tab _t,m
+tab _t drug,m col
+by drug, sort: sum _t ,de
+tab _t drug if failure_2m==1,m col
+tab _t drug if failure_2m==1&end_date_2m==covid_hospitalisation_outcome_da&end_date_2m!=death_with_covid_on_the_death_ce,m col
+tab _t drug if failure_2m==1&end_date_2m==death_with_covid_on_the_death_ce,m col
+tab failure_2m drug if _st==1,m col
+*stratified Cox, missing values as a separate category*
+stcox i.drug age i.sex, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
+
 
 *subgroup analysis*
 
 
+
+
+log close
