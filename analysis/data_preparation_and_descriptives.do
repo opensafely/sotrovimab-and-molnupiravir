@@ -114,6 +114,13 @@ by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.
 by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date0==covid_hosp_outcome_date0
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_outcome_date1
+*check if any patient discharged in AM and admitted in PM*
+count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date1==.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date1!=.
+count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
+count if covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
+count if covid_hosp_outcome_date2!=.&covid_hosp_discharge_date2==.
+count if covid_hosp_outcome_date2!=.&covid_hosp_outcome_date2>covid_hosp_discharge_date2
+*ignore day cases in day 0/1*
 replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
 replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
 replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&drug==1
@@ -140,9 +147,8 @@ count if start_date==covid_hospitalisation_outcome_da| start_date==death_with_co
 drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_covid_on_the_death_ce|start_date>=death_date|start_date>=dereg_date
 
 
-
 *define outcome and follow-up time*
-gen study_end_date=mdy(04,27,2022)
+gen study_end_date=mdy(05,03,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -208,6 +214,7 @@ replace end_date_allcause=. if hospitalisation_outcome_date2==hosp_discharge_dat
 stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
 stcox drug
 *sensitivity analysis for primary outcome: only emergency admissions, ignore non-emergency admissions*
+*exclude day cases?*
 gen event_date_emergency=min( covid_hosp_date_emergency, death_with_covid_on_the_death_ce )
 gen failure_emergency=(event_date_emergency!=.&event_date_emergency<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
 replace failure_emergency=(event_date_emergency!=.&event_date_emergency<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
@@ -384,6 +391,7 @@ tab sgtf_new, m
 label define sgtf_new 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
 label values sgtf_new sgtf_new
 tab variant_recorded ,m
+tab sgtf variant_recorded ,m
 *calendar time*
 gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
