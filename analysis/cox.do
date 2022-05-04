@@ -360,15 +360,100 @@ stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease l
 
 stcox i.drug##i.vaccination_3 age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if vaccination_3==1, strata(stp)
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if vaccination_3==0, strata(stp)
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if vaccination_status==0, strata(stp)
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if vaccination_3==0, strata(stp)
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing  i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if vaccination_status==0, strata(stp)
 
 stcox i.drug##i.d_postest_treat_g2 age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if d_postest_treat_g2==0, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if d_postest_treat_g2==1, strata(stp)
 
+*use simple model*
+stcox i.drug##i.sex age , strata(stp)
+stcox i.drug age if sex==0, strata(stp)
+stcox i.drug age if sex==1, strata(stp)
+
+stcox i.drug##i.age_group3 i.sex , strata(stp)
+stcox i.drug i.sex  if age_group3==0, strata(stp)
+stcox i.drug i.sex if age_group3==1, strata(stp)
+stcox i.drug i.sex if age_group3==2, strata(stp)
+
+stcox i.drug##i.age_50 i.sex , strata(stp)
+stcox i.drug i.sex  if age_50==0, strata(stp)
+stcox i.drug i.sex  if age_50==1, strata(stp)
+
+stcox i.drug##i.age_55 i.sex , strata(stp)
+stcox i.drug i.sex  if age_55==0, strata(stp)
+stcox i.drug i.sex if age_55==1, strata(stp)
+
+stcox i.drug##i.age_60 i.sex , strata(stp)
+stcox i.drug i.sex if age_60==0, strata(stp)
+stcox i.drug i.sex if age_60==1, strata(stp)
+
+stcox i.drug##i.White age i.sex , strata(stp)
+stcox i.drug age i.sex if White==1, strata(stp)
+stcox i.drug age i.sex if White==0, strata(stp)
+
+stcox i.drug##i.solid_cancer age i.sex , strata(stp)
+stcox i.drug##i.haema_disease age i.sex , strata(stp)
+stcox i.drug##i.renal_disease age i.sex  , strata(stp)
+stcox i.drug##i.imid age i.sex  , strata(stp)
+stcox i.drug##i.immunosupression age i.sex  , strata(stp)
+stcox i.drug##i.solid_organ age i.sex , strata(stp)
+stcox i.drug##i.rare_neuro age i.sex  , strata(stp)
+stcox i.drug age i.sex  if solid_cancer==1, strata(stp)
+stcox i.drug age i.sex if haema_disease==1, strata(stp)
+stcox i.drug age i.sex  if renal_disease==1, strata(stp)
+stcox i.drug age i.sex  if imid==1, strata(stp)
+*stcox i.drug age i.sex if immunosupression==1, strata(stp)
+*stcox i.drug age i.sex if solid_organ==1, strata(stp)
+*stcox i.drug age i.sex if rare_neuro==1, strata(stp)
+
+stcox i.drug##i.bmi_g3 age i.sex , strata(stp)
+stcox i.drug age i.sex  if bmi_g3==1, strata(stp)
+stcox i.drug age i.sex if bmi_g3==2, strata(stp)
+stcox i.drug age i.sex if bmi_g3==3, strata(stp)
+
+stcox i.drug##i.bmi_25 age i.sex , strata(stp)
+stcox i.drug age i.sex if bmi_25==0, strata(stp)
+stcox i.drug age i.sex if bmi_25==1, strata(stp)
+
+stcox i.drug##i.bmi_30 age i.sex , strata(stp)
+stcox i.drug age i.sex if bmi_30==0, strata(stp)
+stcox i.drug age i.sex if bmi_30==1, strata(stp)
+
+stcox i.drug##i.diabetes age i.sex , strata(stp)
+stcox i.drug age i.sex if diabetes ==0, strata(stp)
+stcox i.drug age i.sex if diabetes ==1, strata(stp)
+
+stcox i.drug##i.chronic_cardiac_disease age i.sex , strata(stp)
+stcox i.drug age i.sex  if chronic_cardiac_disease==0, strata(stp)
+stcox i.drug age i.sex  if chronic_cardiac_disease==1, strata(stp)
+
+stcox i.drug##i.hypertension age i.sex , strata(stp)
+stcox i.drug age i.sex if hypertension==0, strata(stp)
+stcox i.drug age i.sex  if hypertension==1, strata(stp)
+
+stcox i.drug##i.chronic_respiratory_disease age i.sex  , strata(stp)
+stcox i.drug age i.sex  if chronic_respiratory_disease==0, strata(stp)
+stcox i.drug age i.sex  if chronic_respiratory_disease==1, strata(stp)
+
+stcox i.drug##i.vaccination_3 age i.sex , strata(stp)
+stcox i.drug age i.sex  if vaccination_3==1, strata(stp)
+*stcox i.drug age i.sex  if vaccination_3==0, strata(stp)
+*stcox i.drug age i.sex if vaccination_status==0, strata(stp)
+
+stcox i.drug##i.d_postest_treat_g2 age i.sex , strata(stp)
+stcox i.drug age i.sex if d_postest_treat_g2==0, strata(stp)
+stcox i.drug age i.sex if d_postest_treat_g2==1, strata(stp)
+
 
 *sensitivity analysis*
+*excluding patients with treatment records of both sotrovimab and molnupiravir, or with treatment records of any other therapies*
+stcox i.drug age i.sex if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
+
 
 
 log close
