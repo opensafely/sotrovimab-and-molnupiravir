@@ -310,6 +310,9 @@ tab age_group3,m
 egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,110) label
 tab age_5y_band,m
 mkspline age_spline = age, cubic nknots(4)
+gen age_50=(age>=50)
+gen age_55=(age>=55)
+gen age_60=(age>=60)
 
 tab sex,m
 rename sex sex_str
@@ -377,6 +380,8 @@ replace bmi_g4_with_missing=9 if bmi_group4==.
 gen bmi_g3=bmi_group4
 replace bmi_g3=1 if bmi_g3==0
 label values bmi_g3 bmi
+gen bmi_25=(bmi>=25) if bmi!=.
+gen bmi_30=(bmi>=30) if bmi!=.
 
 tab diabetes,m
 tab chronic_cardiac_disease,m
