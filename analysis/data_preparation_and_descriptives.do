@@ -325,6 +325,8 @@ label list ethnicity_with_missing
 gen ethnicity=ethnicity_with_missing
 replace ethnicity=. if ethnicity_with_missing_str=="Missing"
 label values ethnicity ethnicity_with_missing
+gen White=1 if ethnicity==6
+replace White=0 if ethnicity!=6&ethnicity!=.
 
 tab imd,m
 replace imd=. if imd==0
@@ -372,6 +374,9 @@ label define bmi 0 "underweight" 1 "normal" 2 "overweight" 3 "obese"
 label values bmi_group4 bmi
 gen bmi_g4_with_missing=bmi_group4
 replace bmi_g4_with_missing=9 if bmi_group4==.
+gen bmi_g3=bmi_group4
+replace bmi_g3=1 if bmi_g3==0
+label values bmi_g3 bmi
 
 tab diabetes,m
 tab chronic_cardiac_disease,m
@@ -386,6 +391,8 @@ replace vaccination_status=2 if vaccination_status_g5=="Two vaccinations"
 replace vaccination_status=3 if vaccination_status_g5=="Three or more vaccinations"
 label define vac 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three or more vaccinations"
 label values vaccination_status vac
+gen vaccination_3=1 if vaccination_status==3
+replace vaccination_3=0 if vaccination_status<3
 tab sgtf,m
 tab sgtf_new, m
 label define sgtf_new 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
