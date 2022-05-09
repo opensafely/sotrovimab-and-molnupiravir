@@ -1877,6 +1877,6 @@ study = StudyDefinition(
     },
   ),  
 
+)
 
-
-#safety outcomes: allergic reactions (e.g., anaphylaxis and urticaria), and post-treatment platelet count and thrombocytopenia for molnupiravir?
+#safety outcomes: allergic reactions (e.g., anaphylaxis and urticaria), and post-treatment platelet count and thrombocytopenia for molnupiravir? 
