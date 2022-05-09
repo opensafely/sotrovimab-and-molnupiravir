@@ -77,6 +77,7 @@ study = StudyDefinition(
       "date": {"earliest": "2021-12-16"},
       "incidence": 0.4
     },
+  ),
   sotrovimab_covid_complete = patients.with_covid_therapeutics(
     with_these_statuses = ["Treatment Complete"],
     with_these_therapeutics = "Sotrovimab",
@@ -1774,7 +1775,7 @@ study = StudyDefinition(
       "incidence": 0.6},
   ),  
 
-  #all-cause hosp; all-cause death already defined
+#all-cause hosp; all-cause death already defined
   hospitalisation_outcome_date0 = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
@@ -1876,4 +1877,7 @@ study = StudyDefinition(
       "incidence": 0.1
     },
   ),  
+
+
+#safety outcomes: allergic reactions (e.g., anaphylaxis and urticaria), and post-treatment platelet count and thrombocytopenia for molnupiravir? 
 )
