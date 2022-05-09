@@ -1774,7 +1774,7 @@ study = StudyDefinition(
       "incidence": 0.6},
   ),  
 
-#all-cause hosp; all-cause death already defined
+  #all-cause hosp; all-cause death already defined
   hospitalisation_outcome_date0 = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
@@ -1876,7 +1876,4 @@ study = StudyDefinition(
       "incidence": 0.1
     },
   ),  
-
 )
-
-#safety outcomes: allergic reactions (e.g., anaphylaxis and urticaria), and post-treatment platelet count and thrombocytopenia for molnupiravir? 
