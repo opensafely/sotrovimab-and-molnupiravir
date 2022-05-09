@@ -1734,19 +1734,11 @@ study = StudyDefinition(
     returning = "total_bed_days_in_period",
     with_these_primary_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
-    return_expectations = {
-      "category": {"ratios": {"20": 0.5, "40": 0.5}},
-      "incidence": 0.4,
-    },
   ),
   covid_hosp_bed_days_not_primary = patients.admitted_to_hospital(
     returning = "total_bed_days_in_period",
     with_these_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
-    return_expectations = {
-      "category": {"ratios": {"20": 0.5, "40": 0.5}},
-      "incidence": 0.4,
-    },
   ),
   
   ## COVID related death
