@@ -495,4 +495,9 @@ stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease l
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=3, strata(stp)
 
 
+*safety outcome*
+*death not due to covid*
+count if death_date!=death_with_covid_on_the_death_ce if death_with_covid_on_the_death_ce!=.
+gen death_without_covid
+
 log close
