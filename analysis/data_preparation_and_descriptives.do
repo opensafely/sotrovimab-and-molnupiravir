@@ -32,6 +32,8 @@ codebook
 
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
+        sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
+		molnupiravir_covid_approved molnupiravir_covid_complete molnupiravir_covid_not_start molnupiravir_covid_stopped ///
         covid_test_positive_date covid_test_positive_date2 covid_symptoms_snomed last_vaccination_date primary_covid_hospital_discharge ///
 	   any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed ///
 	   haematopoietic_stem_cell_snomed haematopoietic_stem_cell_icd10 haematopoietic_stem_cell_opcs4 ///
@@ -556,6 +558,25 @@ tab drug month_after_vaccinate,row chi
 tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
 tab drug variant_recorded ,row chi
+
+
+*check treatment status*
+count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_approved
+count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_complete
+count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_not_start
+count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_stopped
+count if drug==0&molnupiravir_covid_approved!=.
+count if drug==0&molnupiravir_covid_complete!=.
+count if drug==0&molnupiravir_covid_not_start!=.
+count if drug==0&molnupiravir_covid_stopped!=.
+count if drug==1&sotrovimab_covid_therapeutics==sotrovimab_covid_approved
+count if drug==1&sotrovimab_covid_therapeutics==sotrovimab_covid_complete
+count if drug==1&sotrovimab_covid_therapeutics==sotrovimab_covid_not_start
+count if drug==1&sotrovimab_covid_therapeutics==sotrovimab_covid_stopped
+count if drug==1&sotrovimab_covid_approved!=.
+count if drug==1&sotrovimab_covid_complete!=.
+count if drug==1&sotrovimab_covid_not_start!=.
+count if drug==1&sotrovimab_covid_stopped!=.
 
 
 save ./output/main.dta, replace
