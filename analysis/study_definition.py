@@ -1719,7 +1719,7 @@ study = StudyDefinition(
   ),  
 
   ## Critical care days for COVID-related hospitalisation 
-  covid_hosp_critical_care = patients.admitted_to_hospital(
+  covid_hospitalisation_critical_care = patients.admitted_to_hospital(
     returning = "days_in_critical_care",
     with_these_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
