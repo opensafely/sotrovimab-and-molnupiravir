@@ -319,8 +319,8 @@ count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_wit
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==1&death_with_covid_underlying_date>=covid_hospitalisation_outcome_da&death_with_covid_underlying_date<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_with_covid_underlying_date>=covid_hospitalisation_outcome_da&death_with_covid_underlying_date<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 *count critical care within day1-28*
-tab drug covid_hosp_critical_care,m row
-tab drug covid_hosp_critical_care if failure==1&covid_hospitalisation_outcome_da==end_date,m row
+tab drug covid_hospitalisation_critical_c,m row
+tab drug covid_hospitalisation_critical_c if failure==1&covid_hospitalisation_outcome_da==end_date,m row
 
 
 
