@@ -24,9 +24,6 @@ clear
 
 use ./output/main.dta
 
-replace stp=99 if stp_N<=100
-tab stp ,m
-
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
 keep if _st==1
