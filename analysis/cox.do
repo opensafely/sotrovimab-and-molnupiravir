@@ -467,17 +467,30 @@ stcox i.drug age i.sex if d_postest_treat_g2==0, strata(stp)
 stcox i.drug age i.sex if d_postest_treat_g2==1, strata(stp)
 
 
+
 *sensitivity analysis*
+stset end_date ,  origin(start_date) failure(failure==1)
+*MI*
+
+*additionally adjusting for days between test positive and treatment initiation, and days/months between last vaccination date and treatment initiation; *
+stcox i.drug age i.sex d_postest_treat d_vaccinate_treat, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro d_postest_treat d_vaccinate_treat, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign d_postest_treat d_vaccinate_treat, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease d_postest_treat d_vaccinate_treat, strata(stp)
+stcox i.drug age i.sex d_postest_treat i.month_after_vaccinate, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro d_postest_treat i.month_after_vaccinate, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign d_postest_treat i.month_after_vaccinate, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease d_postest_treat i.month_after_vaccinate, strata(stp)
 *excluding patients with treatment records of both sotrovimab and molnupiravir, or with treatment records of any other therapies*
 stcox i.drug age i.sex if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.)&paxlovid_covid_therapeutics==.&remdesivir_covid_therapeutics==.&casirivimab_covid_therapeutics==., strata(stp)
 *excluding patients who were identified to be pregnant at treatment initiation*
-stcox i.drug age i.sex if pregnancy!=1, strata(stp)
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if pregnancy!=1, strata(stp)
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign if pregnancy!=1, strata(stp)
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if pregnancy!=1, strata(stp)
+*stcox i.drug age i.sex if pregnancy!=1, strata(stp)
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if pregnancy!=1, strata(stp)
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign if pregnancy!=1, strata(stp)
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if pregnancy!=1, strata(stp)
 *excluding patients who did not have a positive SARS-CoV-2 test record before treatment or initiated treatment after 5 days since positive SARS-CoV-2 test*
 stcox i.drug age i.sex if d_postest_treat>=0&d_postest_treat<=5, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if d_postest_treat>=0&d_postest_treat<=5, strata(stp)
@@ -493,11 +506,25 @@ stcox i.drug age i.sex if _t>=3, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro if _t>=3, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign if _t>=3, strata(stp)
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=3, strata(stp)
+*not restricting to primary diagnosis when defining COVID-19 related hospitalisation*
+stset end_date_not_primary ,  origin(start_date) failure(failure_not_primary==1)
+stcox i.drug age i.sex , strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign , strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
+*restricting to emergency hospital admission when defining COVID-19 related hospitalisation*
+stset end_date_emergency ,  origin(start_date) failure(failure_emergency==1)
+stcox i.drug age i.sex , strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro, strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign , strata(stp)
+stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(stp)
 
 
 *safety outcome*
 *death not due to covid*
-count if death_date!=death_with_covid_on_the_death_ce if death_with_covid_on_the_death_ce!=.
-gen death_without_covid
+by drug, sort: count if death_date!=.
+by drug, sort: count if death_with_covid_on_the_death_ce!=.
+by drug, sort: count if death_with_covid_on_the_death_ce==.&death_date!=.
+gen death_without_covid=death_date if death_with_covid_on_the_death_ce==.&death_date!=.
 
 log close
