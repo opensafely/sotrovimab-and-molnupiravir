@@ -113,6 +113,8 @@ by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_discharge_date1
 by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&(covid_hosp_discharge_date0 - covid_hosp_outcome_date0)==1
 by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&(covid_hosp_discharge_date1 - covid_hosp_outcome_date1)==1
+by drug, sort: count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&(covid_hosp_discharge_date0 - covid_hosp_outcome_date0)==2
+by drug, sort: count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&(covid_hosp_discharge_date1 - covid_hosp_outcome_date1)==2
 *check if any patient discharged in AM and admitted in PM*
 count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date1==.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date1!=.
 count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
@@ -127,7 +129,9 @@ replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_date_
 
 gen covid_hospitalisation_outcome_da=covid_hosp_outcome_date2
 replace covid_hospitalisation_outcome_da=covid_hosp_outcome_date1 if covid_hosp_outcome_date1!=.
-replace covid_hospitalisation_outcome_da=covid_hosp_outcome_date0 if covid_hosp_outcome_date0!=.
+replace covid_hospitalisation_outcome_da=covid_hosp_outcome_date0 if covid_hosp_outcome_date0!=.&drug==0
+replace covid_hospitalisation_outcome_da=covid_hosp_outcome_date0 if covid_hosp_outcome_date0!=.&drug==1
+
 gen days_to_covid_admission=covid_hospitalisation_outcome_da-start_date if covid_hospitalisation_outcome_da!=.
 by drug days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da!=.
 
@@ -137,6 +141,7 @@ by drug, sort: count if covid_hosp_outcome_date2==covid_hosp_date_mabs_procedure
 by drug days_to_covid_admission, sort: count if covid_hosp_outcome_date2==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&days_to_covid_admission>=2
 by drug, sort: count if covid_hosp_outcome_date2==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date2!=.&covid_hosp_outcome_date2==covid_hosp_discharge_date2&days_to_covid_admission>=2
 by drug, sort: count if covid_hosp_outcome_date2==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date2!=.&(covid_hosp_discharge_date2 - covid_hosp_outcome_date2)==1&days_to_covid_admission>=2
+by drug, sort: count if covid_hosp_outcome_date2==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date2!=.&(covid_hosp_discharge_date2 - covid_hosp_outcome_date2)==2&days_to_covid_admission>=2
 *ignore and censor day cases on or after day 2 from this analysis*
 *ignore and censor admissions for mab procedure >= day 2 and with same-day or 1-day discharge*
 gen covid_hosp_date_day_cases_mab=covid_hospitalisation_outcome_da if covid_hosp_outcome_date2==covid_hosp_discharge_date2&covid_hosp_outcome_date2!=.&days_to_covid_admission>=2
@@ -488,6 +493,8 @@ gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
 tab week_after_vaccinate,m
 *combine month5-13 due to small N*
 replace month_after_vaccinate=5 if month_after_vaccinate>=5&month_after_vaccinate!=.
+gen month_after_vaccinate_missing=month_after_vaccinate
+replace month_after_vaccinate_missing=99 if month_after_vaccinate_missing==.
 *calendar time*
 gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
