@@ -308,8 +308,8 @@ replace covid_hosp_date_not_primary=covid_hosp_date1_not_primary if covid_hosp_d
 replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==0
 replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==1
 
-gen days_to_covid_adm_not_pri=covid_hosp_date2_not_primary-start_date if covid_hosp_date2_not_primary!=.
-by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date2_not_primary!=.
+gen days_to_covid_adm_not_pri=covid_hosp_date_not_primary-start_date if covid_hosp_date2_not_primary!=.
+by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date_not_primary!=.
 by drug, sort: count if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&days_to_covid_adm_not_pri>=2
 by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&days_to_covid_adm_not_pri>=2
 by drug, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&days_to_covid_adm_not_pri>=2
@@ -454,7 +454,7 @@ encode  stp_str ,gen(stp)
 label list stp
 *combine stps with low N (<50) as "Other"*
 by stp, sort: gen stp_N=_N if stp!=.
-replace stp=99 if stp_N<50
+replace stp=99 if stp_N<100
 tab stp ,m
 
 tab rural_urban,m
