@@ -32,7 +32,7 @@ codebook
 
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
-        sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
+        casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
 		molnupiravir_covid_approved molnupiravir_covid_complete molnupiravir_covid_not_start molnupiravir_covid_stopped ///
         covid_test_positive_date covid_test_positive_date2 covid_symptoms_snomed last_vaccination_date primary_covid_hospital_discharge ///
 	   any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed ///
@@ -50,11 +50,13 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 	   hospitalisation_outcome_date1 hospitalisation_outcome_date2 hosp_discharge_date0 hosp_discharge_date1 hosp_discharge_date2 covid_hosp_date_mabs_all_cause date_treated start_date ///
 	   downs_syndrome_nhsd haematological_disease_nhsd ckd_stage_5_nhsd liver_disease_nhsd hiv_aids_nhsd solid_organ_transplant_nhsd ///
 	   multiple_sclerosis_nhsd motor_neurone_disease_nhsd myasthenia_gravis_nhsd huntingtons_disease_nhsd sickle_cell_disease_nhsd {
-  confirm string variable `var'
+  capture confirm string variable `var'
+  if _rc==0 {
   rename `var' a
   gen `var' = date(a, "YMD")
   drop a
   format %td `var'
+  }
 }
 *the following date variables had no observation*
 *hiv_aids_nhsd_icd10
@@ -67,14 +69,6 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 *transplant_ileum_2_Y_codes_opcs4
 *transplant_ileum_1_opcs4
 *transplant_ileum_2_opcs4
-*check casirivimab_covid_therapeutics*
-capture confirm string variable casirivimab_covid_therapeutics
-if _rc==0 {
-rename casirivimab_covid_therapeutics a
-gen casirivimab_covid_therapeutics = date(a, "YMD")
-drop a
-format %td casirivimab_covid_therapeutics
-}
 
 
 *exclusion criteria*
