@@ -81,15 +81,15 @@ keep if has_died==0
 keep if registered_treated==1
 tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
+*restrict start_date to 2021Dec16 to 2022Feb10*
+*loose this restriction to increase N?*
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
 drop if molnupiravir_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<= molnupiravir_covid_therapeutics | remdesivir_covid_therapeutics<= molnupiravir_covid_therapeutics | casirivimab_covid_therapeutics<= molnupiravir_covid_therapeutics )
 count if sotrovimab_covid_therapeutics!=. & molnupiravir_covid_therapeutics!=.
 drop if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
-*restrict start_date to 2021Dec16 to 2022Feb10*
-*loose this restriction to increase N?*
-keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 *exclude those hospitalised after test positive and before treatment?
 
 
@@ -150,7 +150,7 @@ drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_cov
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(05,10,2022)
+gen study_end_date=mdy(05,11,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -212,7 +212,8 @@ replace hospitalisation_outcome_date1=. if hospitalisation_outcome_date1==covid_
 
 gen hospitalisation_outcome_date=hospitalisation_outcome_date2
 replace hospitalisation_outcome_date=hospitalisation_outcome_date1 if hospitalisation_outcome_date1!=.
-replace hospitalisation_outcome_date=hospitalisation_outcome_date0 if hospitalisation_outcome_date0!=.
+replace hospitalisation_outcome_date=hospitalisation_outcome_date0 if hospitalisation_outcome_date0!=.&drug==0
+replace hospitalisation_outcome_date=hospitalisation_outcome_date0 if hospitalisation_outcome_date0!=.&drug==1
 *ignore and censor day cases on or after day 2 from this analysis*
 *ignore and censor admissions for mab procedure >= day 2 and with same-day or 1-day discharge*
 gen hosp_date_day_cases_mab=hospitalisation_outcome_date if hospitalisation_outcome_date2==hosp_discharge_date2&hospitalisation_outcome_date2!=.&hospitalisation_outcome_date0==.&hospitalisation_outcome_date1==.
@@ -286,7 +287,8 @@ replace covid_hosp_date1_not_primary=. if covid_hosp_date1_not_primary==covid_ho
 
 gen covid_hosp_date_not_primary=covid_hosp_date2_not_primary
 replace covid_hosp_date_not_primary=covid_hosp_date1_not_primary if covid_hosp_date1_not_primary!=.
-replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.
+replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==0
+replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==1
 *ignore and censor day cases on or after day 2 from this analysis*
 *ignore and censor admissions for mab procedure >= day 2 and with same-day or 1-day discharge*
 gen covid_day_cases_mab_not_pri=covid_hosp_date_not_primary if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.
@@ -481,6 +483,8 @@ gen month_after_vaccinate=ceil(d_vaccinate_treat/30)
 tab month_after_vaccinate,m
 gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
 tab week_after_vaccinate,m
+*combine month5-13 due to small N*
+replace month_after_vaccinate=5 if month_after_vaccinate>=5&month_after_vaccinate!=.
 *calendar time*
 gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
