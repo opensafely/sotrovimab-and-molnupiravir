@@ -143,7 +143,7 @@ replace covid_hospitalisation_outcome_da=. if covid_hosp_outcome_date2==covid_ho
 *check hosp_admission_method*
 tab covid_hosp_admission_method,m
 tab drug covid_hosp_admission_method, row chi
-by drug days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da!=covid_hosp_date_emergency&covid_hospitalisation_outcome_da!=.
+*by drug days_to_covid_admission, sort: count if covid_hospitalisation_outcome_da!=covid_hosp_date_emergency&covid_hospitalisation_outcome_da!=.
 *capture and exclude COVID-hospital admission/death on the start date
 count if start_date==covid_hospitalisation_outcome_da| start_date==death_with_covid_on_the_death_ce
 drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_covid_on_the_death_ce|start_date>=death_date|start_date>=dereg_date
