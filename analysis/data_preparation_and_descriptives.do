@@ -547,7 +547,6 @@ tab drug chronic_cardiac_disease ,row chi
 tab drug hypertension ,row chi
 tab drug chronic_respiratory_disease ,row chi
 tab drug vaccination_status ,row chi
-tab drug week_after_vaccinate,row chi
 tab drug month_after_vaccinate,row chi
 tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
