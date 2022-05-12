@@ -36,3 +36,9 @@ actions:
       moderately_sensitive:
         log: logs/MI.log
 
+  generate_study_population_Paxlovid:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_Paxlovid
+    outputs:
+      highly_sensitive:
+        cohort: output/Paxlovid/input_Paxlovid.csv
+        
