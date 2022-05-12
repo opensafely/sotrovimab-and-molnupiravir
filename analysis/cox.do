@@ -615,7 +615,7 @@ stcox i.drug##i.immunosupression age i.sex downs_syndrome solid_cancer haema_dis
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if immunosupression==1 
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid hiv_aids solid_organ rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if immunosupression==0 
 stcox i.drug##i.solid_organ age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids  rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp 
-stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids  rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if solid_organ==1 
+*stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids  rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if solid_organ==1 
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids  rare_neuro b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if solid_organ== 
 stcox i.drug##i.rare_neuro age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ  b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp 
 stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ  b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status i.week_after_campaign b1.bmi_g4_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.stp if rare_neuro==1 
@@ -664,6 +664,7 @@ stcox i.drug age i.sex downs_syndrome solid_cancer haema_disease renal_disease l
 *sensitivity analysis*
 stset end_date ,  origin(start_date) failure(failure==1)
 *MI*
+do "analysis/ado/ice.ado"
 
 *additionally adjusting for days between test positive and treatment initiation, and days/months between last vaccination date and treatment initiation; *
 stcox i.drug age i.sex i.d_postest_treat_missing i.month_after_vaccinate_missing, strata(stp)
