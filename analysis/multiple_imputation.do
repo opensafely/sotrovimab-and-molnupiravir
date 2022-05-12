@@ -28,6 +28,14 @@ keep if _st==1
 
 *MI*
 do "analysis/ado/ice.ado"
+do "analysis/ado/ice_.ado"
+do "analysis/ado/cmdchk.ado"
+do "analysis/ado/ice_reformat.ado"
+do "analysis/ado/micombine.ado"
+do "analysis/ado/mijoin.ado"
+do "analysis/ado/misplit.ado"
+do "analysis/ado/uvis.ado"
+
 set seed 1000
 
 ice m.ethnicity m.bmi_group4  m.imd   drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro i.vaccination_status i.week_after_campaign diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease failure, m(5) saving(imputed,replace)  
