@@ -60,14 +60,3 @@ quietly {
 restore, not
 end
 
-program define chkrowid, sclass
-local I: char _dta[mi_id]
-if "`I'"=="" {
-	exit
-}
-cap confirm var `I'
-if _rc {
-	exit
-}
-sret local I `I'
-end
