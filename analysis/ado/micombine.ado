@@ -476,17 +476,3 @@ program define display_t
 	di as text "{hline 13}{c BT}{hline 64}"
 end
 
-program define chkrowid, sclass
-local I: char _dta[mi_id]
-if "`I'"=="" {
-	di as error "no row-identifier variable found - data may have incorrect format"
-	exit 198
-}
-cap confirm var `I'
-local rc=_rc
-if `rc' {
-	di as error "row-identifier variable `I' not found"
-	exit `rc'
-}
-sret local I `I'
-end
