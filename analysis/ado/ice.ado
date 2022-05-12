@@ -653,3 +653,118 @@ else {
 end
 
 exit
+
+History of ice
+
+1.9.6 13aug2012 Various small but significant changes to ice_.ado by A Loumiotis et al.
+1.9.5 15apr2011 Fixed Stata 9.2 incompatibility bug in line 4.
+1.9.4 20dec2010 Added check (vercheck) of versions of uvis and ice_ (IRW).
+1.9.3 02dec2010 Added -allmissing- option to impute observations with all-missing values.
+                Added undocumented feature that negative cycles value forces iteration even when one cycle would normally suffice.
+                Fixed bug which accidentally implemented the -allmissing- option when o., i. or m. prefixes were specified.
+1.9.2 20sep2010 Fixed long-standing issue which manifested only in datasets with v. large numbers of missing values (bug in ice_\listsort3 routine).
+1.9.1 20aug2010 Fixed problem with -stepwise- (Rainer Siegers) - option -clear- not working as expected with it.
+1.9.0 11jul2010 Major addition to functionality - stepwise selection of prediction equations (-stepwise- option).
+1.8.0 11jun2010 Changes to how -match- works. Included matchpool() option in -ice- and -uvis-.
+                Significant improvements to the -conditional()- option.
+1.7.8 15mar2010 Fixed up bug in -ice_- whereby imputing an interval-censored variable inappropriately
+                failed collinearity check when variable to be imputed started completely missing.
+1.7.7 01dec2009 Allow right-hand-side variables not in mainvarlist to appear in passive() statements.
+1.7.6 28nov2009 Issue error message if _mi or _mj variables exist in the data
+                Fix problem with imputing categorical variables when mean imputation used
+1.7.5 17nov2009 Fixed problems with detecting, reporting and fixing collinearities. This was not working at all.
+                Added a facility for defining blank equations (as _cons).
+                Improved and documented the -debug- option.
+1.7.4 12nov2009 Fixed obscure bug in ice_.ado, routine listsort3, when could try to store in non-existent observations.
+1.7.3 07sep2009 -persist- option altered to skip regression with error and go to next variable
+                (rather than skip to the end of the current cycle)
+1.7.2 27aug2009 -noverbose- option added
+1.7.1 24jun2009 Fixed minor bug related to conditional() - left behind one or more __* temporary variables
+                undocumented nbregopts() option added (for Jocelyn Andrel)
+1.7.0 01jun2009 Added display of uvis activity in "debug" model
+                Made explicit cmd() overwrite implicit cmd() from o. and m. prefixes when same variables specified more than once
+1.6.8 11may2009 Fixed bug when using if/in in ice_ - incorrectly set values outside estimation sample to missing.
+1.6.7 10may2009 Fixed bug in by() in ice_ - did not allow for missing values of by() vars.
+1.6.6 05may2009 Fixed bug in cond() in ice_ - sometimes picked incorrect subset to impute.
+1.6.5 17apr2009 Added -persist- option to ignore errors raised by uvis
+1.6.4 30mar2009 Fixed bug when cond() and intreg are used together
+1.6.3 07feb2009 Added eqdrop() option to remove predictors from equations
+                Added monotone option for imputing assuming monotone missingness pattern
+1.6.2 23jan2009 Removed check for "=" as separator in detangle - passive() sometimes failing
+1.6.1 01dec2008 Checking for missing values of "i." variables implemented
+                undocumented uvisopts() option added (for IRW)
+1.6.0 02oct2008 conditional() option changed to impute on subsets of observations
+                Shortcut o. and m. prefixes for ologit, mlogit; generates substitute() and cmd().
+                Added by() option to ice and uvis.
+                Corrected bug which reported multiple missing values caused by dummy variables.
+1.5.1 11jun2008 Added restrict() option to ice and uvis.
+1.5.0 17may2008 Fixed bug in listsort3 which gave arbitrary ranks to numbers of
+                missing values when there were ties - major effect on reproducibility.
+                Ties now broken in order of presentation of variables in mainvarlist.
+                -sortpreserve- added to sampmis to keep same order of observations
+1.4.6 14may2008 Removed warning about use of xi:
+                Fixed bug in check of whether saving() file exists
+                -clear- option added
+1.4.5 01apr2008 dumping dta to _ice_dump.dta when a fatal error is encountered.
+                fixed bug in ice warning message.
+1.4.4 09nov2007 -vce()- option added
+1.4.3 10oct2007 Update to perfect prediction (implemented in -uvis-)
+                nopp option added to suppress avoidance of perfect prediction bug.
+                nowarning option added to suppress warning messages.
+1.4.2 03aug2007 Change to syntax for saving file (old syntax still works).
+1.4.1 27mar2007 Checking for perfect prediction in logistic regression moved to -uvis-.
+1.4.0 16mar2007 Handling of `using' filename simplified.
+1.3.3 15nov2006 Check for collinearity among covariates when running -uvis- added.
+                Ian White's -auglogit- fix for logistic models with perfect prediction added.
+                orderasis option added.
+1.3.2 01nov2006 mitools functionality removed, not needed with mim.
+                Default impid and obsid changed from _j, _i to _mj, _mi (for mim).
+1.3.1 11sep2006 Bug in interval censoring, affecting left censoring, fixed.
+1.3.0 05jul2006 Interval censoring implemented via interval() option.
+                Conditional imputation extended to include imputation for subpopulation.
+                Dumping data when errror found in number of missing values on output.
+                dropmissing option implemented.
+                svy option removed (would require much care to implement correctly).
+1.2.2 05jun2006 substitute() option improved by allowing implicit passive()
+1.2.1 31may2006 round() option added
+                listsort found to have obscure bug and replaced with listsort3
+                (Julie Siebens reported problem).
+1.2.0 24may2006 Conditional imputation implemented (conditional() option).
+                Survey regression imputation implemented (svy option).
+1.1.4 21feb2006 Compound quotes needed around all temporary filenames
+1.1.3 01feb2006 Saving original data to output file of imputations as _j = 0.
+1.1.2 16jan2006 List of variables in on() option not displayed on output - fixed.
+1.1.1 00nov2005 RELEASED IN SJ 5-4
+1.1.1 23sep2005 Better error trapping for passive() and substitute() options.
+1.1.0 23aug2005 Replace -draw- option with -match-. Default becomes draw.
+                Trace option documented, now has argument for filename.
+                Report number of rows with 0, 1, 2, ... missing values.
+                Arrange variables in increasing order of missingness when imputing.
+                Split ties at random when more than one observation satisfies the
+                prediction matching criterion
+1.0.4 21jul2005 Trap and report error when running uvis
+1.0.3 08jun2005 Tidy up display of equations when have multiple lines (long equations)
+1.0.3 03jun2005 Silence file load/save
+1.0.2 20may2005 Changed files containing imputations to tempfiles (standalone mode)
+                (Angela Wood reported problem).
+1.0.1 04may2005 Added a trace to a file (undocumented in help file).
+1.0.0 18apr2005 First release, based on mice.
+	
+History of mice
+1.0.3 13apr2005 Minor tidying up, including recode of ChkIn and deletion of strdel.
+                Check if prediction equations have a variable on both sides.
+1.0.2 17feb2005 Added code to take care of inherited missingness of passive variables robustly.
+1.0.1 21jan2005 Added display of regression command in showing prediction equations.
+1.0.0 20jan2005 First release, based on mvis2/_mvis2.
+	
+History of mvis
+1.1.0 18jan2005 categoric() option removed.
+                New options dryrun, passive(), substitute(), eq() added.
+                Improvements to output showing actual prediction equations.
+1.0.5 19nov2004 Delete dummy variables for categoric() variables with no missing data from output file
+                Found problem with bsample in Stata 7 with "if" clause and boot option.
+                Revert to Stata 8 for mvis, _mvis and uvis.
+1.0.4 18nov2004 Weights not working (syntax error), fixed.
+1.0.3 16nov2004 Categoric() option added to deal with unordered categoric
+                covariates, updated default handling of such variables
+1.0.2 16oct2004 Saving, using etc of file safest with compound quotes, fixed.
