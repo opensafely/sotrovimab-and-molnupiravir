@@ -28,3 +28,11 @@ actions:
         log: logs/cox.log
         figure1: output/phtest.svg  
         figure2: output/phtest_psw.svg
+
+  multiple_imputation:
+    run: stata-mp:latest analysis/multiple_imputation.do
+    needs: [data_preparation]
+    outputs:
+      moderately_sensitive:
+        log: logs/MI.log
+
