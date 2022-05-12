@@ -28,8 +28,8 @@ keep if _st==1
 
 *MI*
 sysdir
-sysdir set PLUS "analysis\ado"
-sysdir set PERSONAL "analysis\ado"
+sysdir set PLUS "analysis/ado"
+sysdir set PERSONAL "analysis/ado"
 
 set seed 1000
 
