@@ -27,6 +27,7 @@ stset end_date ,  origin(start_date) failure(failure==1)
 keep if _st==1
 
 *MI*
+*install ice package by changing ado filepath*
 sysdir
 sysdir set PLUS "analysis/ado"
 sysdir set PERSONAL "analysis/ado"
