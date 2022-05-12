@@ -27,14 +27,9 @@ stset end_date ,  origin(start_date) failure(failure==1)
 keep if _st==1
 
 *MI*
-do "analysis/ado/ice.ado"
-do "analysis/ado/ice_.ado"
-do "analysis/ado/cmdchk.ado"
-do "analysis/ado/ice_reformat.ado"
-do "analysis/ado/micombine.ado"
-do "analysis/ado/mijoin.ado"
-do "analysis/ado/misplit.ado"
-do "analysis/ado/uvis.ado"
+sysdir
+sysdir set PLUS "analysis\ado"
+sysdir set PERSONAL "analysis\ado"
 
 set seed 1000
 
