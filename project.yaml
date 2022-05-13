@@ -47,6 +47,6 @@ actions:
     needs: [generate_study_population_Paxlovid]
     outputs:
       moderately_sensitive:
-        log: logs/Paxlovid/data_preparation_Paxlovid.log
+        log: logs/data_preparation_Paxlovid.log
       highly_sensitive:
         data: output/Paxlovid/main_Paxlovid.dta
