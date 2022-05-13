@@ -97,8 +97,8 @@ drop if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics
 describe
 gen drug=1 if sotrovimab_covid_therapeutics==start_date
 replace drug=0 if paxlovid_covid_therapeutics ==start_date
-label define drug 1 "sotrovimab" 0 "Paxlovid"
-label values drug drug
+label define drug_Paxlovid 1 "sotrovimab" 0 "Paxlovid"
+label values drug drug_Paxlovid
 tab drug,m
 
 
@@ -158,7 +158,7 @@ drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_cov
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(05,11,2022)
+gen study_end_date=mdy(05,13,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -396,16 +396,16 @@ gen d_postest_treat=start_date - covid_test_positive_date
 tab d_postest_treat,m
 replace d_postest_treat=. if d_postest_treat<0|d_postest_treat>7
 gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=5
-label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days" 
-label values d_postest_treat_g2 d_postest_treat_g2
+label define d_postest_treat_g2_Pax 0 "<3 days" 1 "3-5 days" 
+label values d_postest_treat_g2 d_postest_treat_g2_Pax
 gen d_postest_treat_missing=d_postest_treat_g2
 replace d_postest_treat_missing=9 if d_postest_treat_g2==.
-label define d_postest_treat_missing 0 "<3 days" 1 "3-5 days" 9 "missing" 
-label values d_postest_treat_missing d_postest_treat_missing
+label define d_postest_treat_missing_Pax 0 "<3 days" 1 "3-5 days" 9 "missing" 
+label values d_postest_treat_missing d_postest_treat_missing_Pax
 *demo*
 gen age_group3=(age>=40)+(age>=60)
-label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
-label values age_group3 age_group3
+label define age_group3_Paxlovid 0 "18-39" 1 "40-59" 2 ">=60" 
+label values age_group3 age_group3_Paxlovid
 tab age_group3,m
 egen age_5y_band=cut(age), at(18,25,30,35,40,45,50,55,60,65,70,75,80,85,110) label
 tab age_5y_band,m
@@ -418,8 +418,8 @@ tab sex,m
 rename sex sex_str
 gen sex=0 if sex_str=="M"
 replace sex=1 if sex_str=="F"
-label define sex 0 "Male" 1 "Female"
-label values sex sex
+label define sex_Paxlovid 0 "Male" 1 "Female"
+label values sex sex_Paxlovid
 
 tab ethnicity,m
 rename ethnicity ethnicity_with_missing_str
@@ -433,8 +433,8 @@ replace White=0 if ethnicity!=6&ethnicity!=.
 
 tab imd,m
 replace imd=. if imd==0
-label define imd 1 "most deprived" 5 "least deprived"
-label values imd imd
+label define imd_Paxlovid 1 "most deprived" 5 "least deprived"
+label values imd imd_Paxlovid
 gen imd_with_missing=imd
 replace imd_with_missing=9 if imd==.
 
@@ -452,7 +452,7 @@ tab stp ,m
 rename stp stp_str
 encode  stp_str ,gen(stp)
 label list stp
-*combine stps with low N (<50) as "Other"*
+*combine stps with low N (<100) as "Other"*
 by stp, sort: gen stp_N=_N if stp!=.
 replace stp=99 if stp_N<100
 tab stp ,m
@@ -473,13 +473,13 @@ gen bmi=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*10&(ag
 gen bmi_5y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*5&(age+((bmi_date_measured-start_date)/365)>=18)
 gen bmi_2y=bmi_all if bmi_date_measured!=.&bmi_date_measured>=start_date-365*2&(age+((bmi_date_measured-start_date)/365)>=18)
 gen bmi_group4=(bmi>=18.5)+(bmi>=25.0)+(bmi>=30.0) if bmi!=.
-label define bmi 0 "underweight" 1 "normal" 2 "overweight" 3 "obese"
-label values bmi_group4 bmi
+label define bmi_Paxlovid 0 "underweight" 1 "normal" 2 "overweight" 3 "obese"
+label values bmi_group4 bmi_Paxlovid
 gen bmi_g4_with_missing=bmi_group4
 replace bmi_g4_with_missing=9 if bmi_group4==.
 gen bmi_g3=bmi_group4
 replace bmi_g3=1 if bmi_g3==0
-label values bmi_g3 bmi
+label values bmi_g3 bmi_Paxlovid
 gen bmi_25=(bmi>=25) if bmi!=.
 gen bmi_30=(bmi>=30) if bmi!=.
 
@@ -494,14 +494,14 @@ gen vaccination_status=0 if vaccination_status_g5=="Un-vaccinated"|vaccination_s
 replace vaccination_status=1 if vaccination_status_g5=="One vaccination"
 replace vaccination_status=2 if vaccination_status_g5=="Two vaccinations"
 replace vaccination_status=3 if vaccination_status_g5=="Three or more vaccinations"
-label define vac 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three or more vaccinations"
-label values vaccination_status vac
+label define vac_Paxlovid 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three or more vaccinations"
+label values vaccination_status vac_Paxlovid
 gen vaccination_3=1 if vaccination_status==3
 replace vaccination_3=0 if vaccination_status<3
 tab sgtf,m
 tab sgtf_new, m
-label define sgtf_new 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
-label values sgtf_new sgtf_new
+label define sgtf_new_Paxlovid 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
+label values sgtf_new sgtf_new_Paxlovid
 tab variant_recorded ,m
 tab sgtf variant_recorded ,m
 *Time between last vaccination and treatment*
@@ -511,7 +511,7 @@ gen month_after_vaccinate=ceil(d_vaccinate_treat/30)
 tab month_after_vaccinate,m
 gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
 tab week_after_vaccinate,m
-*combine month5-13 due to small N*
+*combine month5 and over due to small N*
 replace month_after_vaccinate=5 if month_after_vaccinate>=5&month_after_vaccinate!=.
 gen month_after_vaccinate_missing=month_after_vaccinate
 replace month_after_vaccinate_missing=99 if month_after_vaccinate_missing==.
@@ -521,7 +521,7 @@ tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
 *combine 8 and 9 due to small N*
-replace week_after_campaign=8 if week_after_campaign==9
+*replace week_after_campaign=8 if week_after_campaign==9
 
 
 *descriptives by drug groups*
