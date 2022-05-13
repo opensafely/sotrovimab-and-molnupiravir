@@ -22,7 +22,7 @@
 
 * Open a log file
 cap log close
-log using ./logs/Paxlovid/data_preparation_Paxlovid, replace t
+log using ./logs/Paxlovid/data_preparation_Paxlovid,  t
 clear
 
 * import dataset
