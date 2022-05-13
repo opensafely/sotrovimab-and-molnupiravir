@@ -10,7 +10,7 @@
 *
 *	Data created:	output/Paxlovid/main_Paxlovid.dta  (main analysis dataset)
 *
-*	Other output:	logs/Paxlovid/data_preparation_Paxlovid.log
+*	Other output:	logs/data_preparation_Paxlovid.log
 *
 ********************************************************************************
 *
@@ -22,7 +22,7 @@
 
 * Open a log file
 cap log close
-log using ./logs/Paxlovid/data_preparation_Paxlovid,  t
+log using ./logs/data_preparation_Paxlovid, replace t
 clear
 
 * import dataset
