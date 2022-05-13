@@ -524,6 +524,11 @@ tab week_after_campaign,m
 *replace week_after_campaign=8 if week_after_campaign==9
 
 
+*exclude those with contraindications for Pax*
+drop if renal_disease==1
+drop if liver_disease==1
+drop if solid_organ==1
+
 *descriptives by drug groups*
 by drug,sort: sum age,de
 ttest age , by( drug )
