@@ -22,7 +22,7 @@ cap log close
 log using ./logs/cox, replace t
 clear
 
-use ./output/main.dta
+use ./output/input_archive_sotro_molnu_20211216_20220210.dta
 
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
