@@ -26,9 +26,6 @@ use ./output/main.dta
 
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
-
-save .output/Paxlovid/main_archive.dta,replace
-
 keep if _st==1
 tab _t,m
 tab _t drug,m col
