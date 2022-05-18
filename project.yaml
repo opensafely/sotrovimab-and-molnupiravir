@@ -18,7 +18,8 @@ actions:
       moderately_sensitive:
         log: logs/data_preparation.log
       highly_sensitive:
-        data: output/main.dta
+        data1: output/archive/input_archive_sotro_molnu_20211216_20220210.dta
+        data2: output/archive/main_archive_sotro_molnu_20211216_20220210.dta
 
   cox_regression:
     run: stata-mp:latest analysis/cox.do
