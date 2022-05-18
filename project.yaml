@@ -29,7 +29,7 @@ actions:
         figure1: output/phtest.svg  
         figure2: output/phtest_psw.svg
       highly_sensitive:
-        data: output/archive/main_archive.dta
+        data: output/old/main_archive.dta
 
   multiple_imputation:
     run: stata-mp:latest analysis/multiple_imputation.do
