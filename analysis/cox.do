@@ -24,7 +24,7 @@ clear
 
 use ./output/main.dta
 
-save .output/archive/main_archive_sotro_molnu_20211216_20220210.dta,replace
+save .output/archive/main_archive.dta,replace
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
 keep if _st==1
