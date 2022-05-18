@@ -24,9 +24,11 @@ clear
 
 use ./output/main.dta
 
-save .output/archive/main_archive.dta,replace
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
+
+save .output/old/main_archive.dta,replace
+
 keep if _st==1
 tab _t,m
 tab _t drug,m col
