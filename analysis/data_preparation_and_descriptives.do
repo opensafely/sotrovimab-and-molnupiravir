@@ -30,8 +30,6 @@ import delimited ./output/input.csv, delimiter(comma) varnames(1) case(preserve)
 describe
 codebook
 
-save ./output/archive/input_archive_sotro_molnu_20211216_20220210.dta
-
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
         casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
@@ -608,8 +606,7 @@ count if drug==1&sotrovimab_covid_not_start!=.
 count if drug==1&sotrovimab_covid_stopped!=.
 
 
-*save ./output/main.dta, replace
-save ./output/archive/main_archive_sotro_molnu_20211216_20220210.dta
+save ./output/main.dta, replace
 
 log close
 
