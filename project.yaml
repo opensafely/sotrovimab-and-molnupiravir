@@ -29,7 +29,7 @@ actions:
         figure1: output/phtest.svg  
         figure2: output/phtest_psw.svg
       highly_sensitive:
-        data: output/archive/main_archive_sotro_molnu_20211216_20220210.dta
+        data: output/archive/main_archive.dta
 
   multiple_imputation:
     run: stata-mp:latest analysis/multiple_imputation.do
