@@ -27,7 +27,7 @@ use ./output/main.dta
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
 
-save .output/old/main_archive.dta,replace
+save .output/Paxlovid/main_archive.dta,replace
 
 keep if _st==1
 tab _t,m
