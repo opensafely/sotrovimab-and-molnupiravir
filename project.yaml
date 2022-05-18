@@ -28,8 +28,6 @@ actions:
         log: logs/cox.log
         figure1: output/phtest.svg  
         figure2: output/phtest_psw.svg
-      highly_sensitive:
-        data: output/Paxlovid/main_archive.dta
 
   multiple_imputation:
     run: stata-mp:latest analysis/multiple_imputation.do
