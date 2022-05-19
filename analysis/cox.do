@@ -34,7 +34,12 @@ tab _t drug if failure==1,m col
 tab _t drug if failure==1&end_date==covid_hospitalisation_outcome_da&end_date!=death_with_covid_on_the_death_ce,m col
 tab _t drug if failure==1&end_date==death_with_covid_on_the_death_ce,m col
 tab failure drug,m col
-
+*check censor reasons*
+tab _t drug if failure==0&_t<28&end_date==death_date,m col
+tab _t drug if failure==0&_t<28&end_date==dereg_date,m col
+tab _t drug if failure==0&_t<28&end_date==covid_hosp_date_day_cases_mab,m col
+tab _t drug if failure==0&_t<28&end_date==min(molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)&drug==1,m col
+tab _t drug if failure==0&_t<28&end_date==min(sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)&drug==0,m col
 
 
 *un-stratified Cox, with covariate adjustment, complete case*
