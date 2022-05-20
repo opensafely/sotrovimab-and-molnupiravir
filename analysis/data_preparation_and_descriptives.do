@@ -364,52 +364,6 @@ format %td event_date_not_primary end_date_not_primary
 stset end_date_not_primary ,  origin(start_date) failure(failure_not_primary==1)
 stcox drug
 
-*not ignoring detected day cases (except those with mab procedures)*
-*correct hosp date*
-by drug, sort: count if covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
-by drug, sort: count if covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
-by drug, sort: count if covid_hosp_date0_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.
-by drug, sort: count if covid_hosp_date1_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.
-by drug, sort: count if covid_hosp_date0_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
-by drug, sort: count if covid_hosp_date1_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
-replace covid_hosp_date0_not_primary=. if covid_hosp_date0_not_primary==covid_discharge_date0_not_pri&covid_hosp_date0_not_primary!=.
-replace covid_hosp_date1_not_primary=. if covid_hosp_date1_not_primary==covid_discharge_date1_not_pri&covid_hosp_date1_not_primary!=.
-replace covid_hosp_date0_not_primary=. if covid_hosp_date0_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&drug==1
-replace covid_hosp_date1_not_primary=. if covid_hosp_date1_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&drug==1
-
-gen covid_hosp_date_not_primary=covid_hosp_date2_not_primary
-replace covid_hosp_date_not_primary=covid_hosp_date1_not_primary if covid_hosp_date1_not_primary!=.
-replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==0
-replace covid_hosp_date_not_primary=covid_hosp_date0_not_primary if covid_hosp_date0_not_primary!=.&drug==1
-
-gen days_to_covid_adm_not_pri=covid_hosp_date_not_primary-start_date if covid_hosp_date2_not_primary!=.
-by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date_not_primary!=.
-by drug, sort: count if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&days_to_covid_adm_not_pri>=2
-by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&days_to_covid_adm_not_pri>=2
-by drug, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&days_to_covid_adm_not_pri>=2
-by drug days_to_covid_adm_not_pri, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&days_to_covid_adm_not_pri>=2
-by drug, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date2_not_primary!=.&covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&days_to_covid_adm_not_pri>=2
-by drug, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date2_not_primary!=.&(covid_discharge_date2_not_pri - covid_hosp_date2_not_primary)==1&days_to_covid_adm_not_pri>=2
-by drug, sort: count if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date2_not_primary!=.&(covid_discharge_date2_not_pri - covid_hosp_date2_not_primary)==2&days_to_covid_adm_not_pri>=2
-*ignore and censor day cases on or after day 2 from this analysis*
-*ignore and censor admissions for mab procedure >= day 2 and with same-day or 1-day discharge*
-gen covid_day_cases_mab_not_pri=covid_hosp_date_not_primary if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.
-replace covid_day_cases_mab_not_pri=covid_hosp_date_not_primary if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&drug==1&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.&(covid_discharge_date2_not_pri-covid_hosp_date2_not_primary)<=1
-replace covid_hosp_date_not_primary=. if covid_hosp_date2_not_primary==covid_discharge_date2_not_pri&covid_hosp_date2_not_primary!=.&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.
-replace covid_hosp_date_not_primary=. if covid_hosp_date2_not_primary==covid_hosp_date_mabs_not_pri&covid_hosp_date_mabs_not_pri!=.&drug==1&covid_hosp_date0_not_primary==.&covid_hosp_date1_not_primary==.&(covid_discharge_date2_not_pri-covid_hosp_date2_not_primary)<=1
-
-gen event_date_not_primary=min( covid_hosp_date_not_primary, death_with_covid_on_the_death_ce,covid_hospitalisation_outcome_da )
-gen failure_not_primary=(event_date_not_primary!=.&event_date_not_primary<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
-replace failure_not_primary=(event_date_not_primary!=.&event_date_not_primary<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
-tab failure_not_primary,m
-gen end_date_not_primary=event_date_not_primary if failure_not_primary==1
-replace end_date_not_primary=min(death_date, dereg_date, study_end_date, start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,covid_day_cases_mab_not_pri) if failure_not_primary==0&drug==1
-replace end_date_not_primary=min(death_date, dereg_date, study_end_date, start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,covid_day_cases_mab_not_pri) if failure_not_primary==0&drug==0
-format %td event_date_not_primary end_date_not_primary  
-
-stset end_date_not_primary ,  origin(start_date) failure(failure_not_primary==1)
-stcox drug
-
 *count covid death during day1-28 and before censor*
 count if failure==1&drug==1&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 count if failure==1&drug==0&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
