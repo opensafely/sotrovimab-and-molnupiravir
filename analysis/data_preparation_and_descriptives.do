@@ -157,6 +157,21 @@ tab drug covid_hosp_admission_method, row chi
 count if start_date==covid_hospitalisation_outcome_da| start_date==death_with_covid_on_the_death_ce
 drop if start_date>=covid_hospitalisation_outcome_da| start_date>=death_with_covid_on_the_death_ce|start_date>=death_date|start_date>=dereg_date
 
+*count recorded day cases or regulars*
+by drug, sort: count if covid_hosp_outcome_date0==.&covid_hosp_outcome_day_date0==start_date
+by drug, sort: count if covid_hosp_outcome_date1==.&covid_hosp_outcome_day_date1==start_date+1
+by drug, sort: count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2
+by drug, sort: count if covid_hosp_outcome_date0==.&covid_hosp_outcome_day_date0==start_date&(covid_hosp_discharge_day_date0-covid_hosp_outcome_day_date0)==0
+by drug, sort: count if covid_hosp_outcome_date1==.&covid_hosp_outcome_day_date1==start_date+1&(covid_hosp_discharge_day_date1-covid_hosp_outcome_day_date1)==0
+by drug, sort: count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&(covid_hosp_discharge_day_date2-covid_hosp_outcome_day_date2)==0
+by drug, sort: count if covid_hosp_outcome_date0==.&covid_hosp_outcome_day_date0==start_date&(covid_hosp_discharge_day_date0-covid_hosp_outcome_day_date0)==1
+by drug, sort: count if covid_hosp_outcome_date1==.&covid_hosp_outcome_day_date1==start_date+1&(covid_hosp_discharge_day_date1-covid_hosp_outcome_day_date1)==1
+by drug, sort: count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&(covid_hosp_discharge_day_date2-covid_hosp_outcome_day_date2)==1
+by drug, sort: count if covid_hosp_outcome_date0==.&covid_hosp_outcome_day_date0==start_date&covid_hosp_outcome_day_date0==covid_hosp_date_mabs_day
+by drug, sort: count if covid_hosp_outcome_date1==.&covid_hosp_outcome_day_date1==start_date+1&covid_hosp_outcome_day_date1==covid_hosp_date_mabs_day
+by drug, sort: count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcome_day_date2==covid_hosp_date_mabs_day
+
+
 
 *define outcome and follow-up time*
 gen study_end_date=mdy(05,19,2022)
