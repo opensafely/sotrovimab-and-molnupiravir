@@ -45,7 +45,7 @@ study = StudyDefinition(
   ),
   #require covid_test_positive_date<=date_treated (sensitivity analysis)
   #loose "AND (covid_test_positive AND NOT covid_positive_previous_30_days)"
-  #AND NOT pregnancy (sensitivity analysis)
+  #AND NOT pregnancy (exploratory analysis)
   #AND NOT (casirivimab_covid_therapeutics OR paxlovid_covid_therapeutics OR remdesivir_covid_therapeutics) (sensitivity analysis)
 
   # TREATMENT - NEUTRALISING MONOCLONAL ANTIBODIES OR ANTIVIRALS ----
@@ -1593,7 +1593,7 @@ study = StudyDefinition(
       "incidence": 0.4,
     },
   ),  
-  # sensitivity analysis: emergency admissions only to ignore incidental COVID or patients receiving sotro in hospitals (planned admission)
+  # exploratory analysis: emergency admissions only to ignore incidental COVID or patients receiving sotro in hospitals (planned admission)
   # separate day 0,1,2 to identify day case
   covid_hosp_date_emergency0 = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1737,7 +1737,7 @@ study = StudyDefinition(
       "incidence": 0.1
     },
   ),  
-  # with_these_diagnoses (sensitivity analysis)
+  # with_these_diagnoses (exploratory analysis)
   covid_hosp_date0_not_primary = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_diagnoses = covid_icd10_codes,
