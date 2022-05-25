@@ -26,7 +26,7 @@ log using ./logs/data_preparation, replace t
 clear
 
 * import dataset
-import delimited ./output/archive/input.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
 codebook
 
@@ -283,7 +283,7 @@ format %td event_date_allcause end_date_allcause
 stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
 stcox drug
 
-*sensitivity analysis for primary outcome: only emergency admissions, ignore non-emergency admissions*
+*exploratory analysis for primary outcome: only emergency admissions, ignore non-emergency admissions*
 *correct hosp date*
 count if covid_hosp_date_emergency0!=start_date&covid_hosp_date_emergency0!=.
 count if covid_hosp_date_emergency1!=(start_date+1)&covid_hosp_date_emergency1!=.
@@ -320,7 +320,7 @@ format %td event_date_emergency end_date_emergency
 stset end_date_emergency ,  origin(start_date) failure(failure_emergency==1)
 stcox drug
 
-*sensitivity analysis for primary outcome: not require covid as primary diagnosis*
+*exploratory analysis for primary outcome: not require covid as primary diagnosis*
 *correct hosp date*
 count if covid_hosp_date0_not_primary!=start_date&covid_hosp_date0_not_primary!=.
 count if covid_hosp_date1_not_primary!=(start_date+1)&covid_hosp_date1_not_primary!=.
@@ -638,7 +638,7 @@ count if drug==1&sotrovimab_covid_not_start!=.
 count if drug==1&sotrovimab_covid_stopped!=.
 
 
-save ./output/archive/main.dta, replace
+save ./output/main.dta, replace
 
 log close
 
