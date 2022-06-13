@@ -4,6 +4,7 @@ This is the code and configuration for our ongoing research: "Effectiveness and 
 
 You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/lshbz1/sotrovimab-and-molnupiravir)
 
+* Our pre-print paper can be found [here](https://doi.org/10.1101/2022.05.22.22275417)
 * Our study protocol can be found [here](https://github.com/opensafely/sotrovimab-and-molnupiravir/blob/main/docs/OpenSAFELY%20Protocol_sotrovimab%20and%20molnupiravir_Git.pdf)
 * Raw model outputs, including charts, crosstabs, etc, are in `released_outputs/`
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
