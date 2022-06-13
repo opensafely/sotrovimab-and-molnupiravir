@@ -617,8 +617,8 @@ tab drug vaccination_status ,row chi
 tab drug month_after_vaccinate,row chi
 tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
-tab drug variant_recorded ,row chi
-
+*tab drug variant_recorded ,row chi
+by drug, sort: tab variant_recorded
 
 *check treatment status*
 count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_approved
