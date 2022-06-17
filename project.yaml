@@ -22,7 +22,6 @@ actions:
 
   cox_regression:
     run: stata-mp:latest analysis/cox.do
-    needs: [data_preparation]
     outputs:
       moderately_sensitive:
         log: logs/cox.log
