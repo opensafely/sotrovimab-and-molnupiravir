@@ -36,6 +36,12 @@ actions:
       moderately_sensitive:
         log: logs/MI.log
 
+  generate_study_population_archive:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition
+    outputs:
+      highly_sensitive:
+        cohort: output/archive/input.csv
+
   data_preparation_archive:
     run: stata-mp:latest analysis/data_preparation_and_descriptives_archive.do
     needs: [generate_study_population]
