@@ -26,7 +26,7 @@ log using ./logs/data_preparation, replace t
 clear
 
 * import dataset
-import delimited ./output/input.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/archive/input.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
 codebook
 
