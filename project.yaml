@@ -44,12 +44,22 @@ actions:
 
   data_preparation_archive:
     run: stata-mp:latest analysis/data_preparation_and_descriptives_archive.do
-    needs: [generate_study_population]
+    needs: [generate_study_population_archive]
     outputs:
       moderately_sensitive:
         log: logs/data_preparation_archive.log
       highly_sensitive:
         data: output/archive/main.dta
+
+  cox_regression_archive:
+    run: stata-mp:latest analysis/cox_archive.do
+    needs: [data_preparation_archive]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_archive.log
+        figure1: output/archive/phtest.svg  
+        figure2: output/archive/phtest_psw.svg
+
 
   generate_study_population_Paxlovid:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_Paxlovid
