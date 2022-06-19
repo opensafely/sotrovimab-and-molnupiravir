@@ -36,6 +36,14 @@ actions:
       moderately_sensitive:
         log: logs/MI.log
 
+  data_preparation_archive:
+    run: stata-mp:latest analysis/data_preparation_and_descriptives_archive.do
+    outputs:
+      moderately_sensitive:
+        log: logs/data_preparation_archive.log
+      highly_sensitive:
+        data: output/archive/main.dta
+
   generate_study_population_Paxlovid:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_Paxlovid
     outputs:
