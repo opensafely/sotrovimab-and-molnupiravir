@@ -37,7 +37,7 @@ actions:
         log: logs/MI.log
 
   generate_study_population_archive:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_archive
     outputs:
       highly_sensitive:
         cohort: output/archive/input.csv
