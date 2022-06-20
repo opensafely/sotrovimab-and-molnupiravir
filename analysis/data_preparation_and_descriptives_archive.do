@@ -26,7 +26,7 @@ log using ./logs/data_preparation_archive, replace t
 clear
 
 * import dataset
-import delimited ./output/archive/input.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/archive/input_archive.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
 codebook
 
@@ -639,7 +639,7 @@ count if drug==1&sotrovimab_covid_not_start!=.
 count if drug==1&sotrovimab_covid_stopped!=.
 
 
-save ./output/archive/main.dta, replace
+save ./output/archive/main_archive.dta, replace
 
 log close
 
