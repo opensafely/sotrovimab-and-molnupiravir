@@ -40,7 +40,7 @@ actions:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_archive
     outputs:
       highly_sensitive:
-        cohort: output/archive/input.csv
+        cohort: output/archive/input_archive.csv
 
   data_preparation_archive:
     run: stata-mp:latest analysis/data_preparation_and_descriptives_archive.do
@@ -49,7 +49,7 @@ actions:
       moderately_sensitive:
         log: logs/data_preparation_archive.log
       highly_sensitive:
-        data: output/archive/main.dta
+        data: output/archive/main_archive.dta
 
   cox_regression_archive:
     run: stata-mp:latest analysis/cox_archive.do
