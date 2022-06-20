@@ -22,7 +22,7 @@ cap log close
 log using ./logs/cox_archive, replace t
 clear
 
-use ./output/archive/main.dta
+use ./output/archive/main_archive.dta
 
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
