@@ -84,7 +84,7 @@ tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 *restrict start_date to 2021Dec16 to 2022Feb10*
 *loose this restriction to increase N?*
-keep if start_date>=mdy(02,15,2022)&start_date<=mdy(04,10,2022)
+keep if start_date>=mdy(02,15,2022)&start_date<=mdy(05,10,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
@@ -190,7 +190,7 @@ count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcom
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(06,10,2022)
+gen study_end_date=mdy(07,10,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
