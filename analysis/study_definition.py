@@ -1737,6 +1737,7 @@ study = StudyDefinition(
       "incidence": 0.1
     },
   ),  
+
   # with_these_diagnoses (exploratory analysis)
   covid_hosp_date0_not_primary = patients.admitted_to_hospital(
     returning = "date_admitted",
@@ -1830,9 +1831,38 @@ study = StudyDefinition(
       "incidence": 0.46
     },
   ),  
+  #return primary diagnosis code
+  covid_hosp_code1_not_primary = patients.admitted_to_hospital(
+    returning = "primary_diagnosis",
+    with_these_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    between = ["start_date + 1 day", "start_date + 1 day"],
+    find_first_match_in_period = True,
+  ),
+  covid_hosp_code2_not_primary = patients.admitted_to_hospital(
+    returning = "primary_diagnosis",
+    with_these_diagnoses = covid_icd10_codes,
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date + 2 days",
+    find_first_match_in_period = True,
+  ),
 
   ## Critical care days for COVID-related hospitalisation 
   covid_hospitalisation_critical_care = patients.admitted_to_hospital(
+    returning = "days_in_critical_care",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    find_first_match_in_period = True,
+    return_expectations = {
+      "category": {"ratios": {"20": 0.5, "40": 0.5}},
+      "incidence": 0.4,
+    },
+  ),
+  covid_hosp_critical_care_not_pri = patients.admitted_to_hospital(
     returning = "days_in_critical_care",
     with_these_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
@@ -1842,26 +1872,7 @@ study = StudyDefinition(
       "incidence": 0.4,
     },
   ),
-  ## total bed days during day1-28 for COVID-related hospitalisation 
-  #covid_hosp_bed_days = patients.admitted_to_hospital(
-  #  returning = "total_bed_days_in_period",
-  #  with_these_primary_diagnoses = covid_icd10_codes,
-  #  between = ["start_date + 1 day", "start_date + 28 days"],
-  #  return_expectations = {
-  #    "category": {"ratios": {"20": 0.5, "40": 0.5}},
-  #    "incidence": 0.4,
-  #  },
-  #),
-  #covid_hosp_bed_days_not_primary = patients.admitted_to_hospital(
-  #  returning = "total_bed_days_in_period",
-  #  with_these_diagnoses = covid_icd10_codes,
-  #  between = ["start_date + 1 day", "start_date + 28 days"],
-  #  return_expectations = {
-  #    "category": {"ratios": {"20": 0.5, "40": 0.5}},
-  #    "incidence": 0.4,
-  #  },
-  #),
-  
+
   ## COVID related death
   death_with_covid_on_the_death_certificate_date = patients.with_these_codes_on_death_certificate(
     covid_icd10_codes,
@@ -1885,6 +1896,16 @@ study = StudyDefinition(
       "rate": "uniform",
       "incidence": 0.6},
   ),  
+  #return ICD-10 code of underlying_cause_of_death
+  death_with_covid_on_certificate_code = patients.with_these_codes_on_death_certificate(
+    covid_icd10_codes,
+    returning = "underlying_cause_of_death",
+    on_or_after = "start_date",
+  ),
+  death_code = patients.died_from_any_cause(
+    returning = "underlying_cause_of_death",
+    on_or_after = "start_date",
+  ),
 
 #all-cause hosp; all-cause death already defined
   hospitalisation_outcome_date0 = patients.admitted_to_hospital(
@@ -1972,6 +1993,24 @@ study = StudyDefinition(
       "incidence": 0.6
     },
   ),
+  #return primary diagnosis code
+  hospitalisation_primary_code1 = patients.admitted_to_hospital(
+    returning = "primary_diagnosis",
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    between = ["start_date + 1 day", "start_date + 1 day"],
+    find_first_match_in_period = True,
+  ),
+  hospitalisation_primary_code2 = patients.admitted_to_hospital(
+    returning = "primary_diagnosis",
+    with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date + 2 days",
+    find_first_match_in_period = True,
+  ),
+
   # add mab record with all-cause hosp
   covid_hosp_date_mabs_all_cause = patients.admitted_to_hospital(
     returning = "date_admitted",
