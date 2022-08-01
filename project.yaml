@@ -75,3 +75,10 @@ actions:
         log: logs/data_preparation_Paxlovid.log
       highly_sensitive:
         data: output/Paxlovid/main_Paxlovid.dta
+
+  generate_study_population_BA2:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_BA2
+    outputs:
+      highly_sensitive:
+        cohort: output/BA2/input_BA2.csv
+
