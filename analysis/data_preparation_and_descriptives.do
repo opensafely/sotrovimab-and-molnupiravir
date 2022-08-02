@@ -84,7 +84,7 @@ tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 *restrict start_date to 2021Dec16 to 2022Feb10*
 *loose this restriction to increase N?*
-keep if start_date>=mdy(02,15,2022)&start_date<=mdy(05,10,2022)
+keep if start_date>=mdy(12,16,2022)&start_date<=mdy(02,10,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
@@ -190,7 +190,7 @@ count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcom
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(07,10,2022)
+gen study_end_date=mdy(08,01,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -383,6 +383,15 @@ count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_wit
 *count critical care within day1-28*
 tab drug covid_hospitalisation_critical_c,m row
 tab drug covid_hospitalisation_critical_c if failure==1&covid_hospitalisation_outcome_da==end_date,m row
+tab drug covid_hosp_critical_care_not_pri,m row
+*count primary diagnosis*
+tab drug covid_hosp_code1_not_primary if failure==0&covid_hosp_date_not_primary!=.,m row
+tab drug covid_hosp_code2_not_primary if failure==0&covid_hosp_date_not_primary!=.,m row
+tab drug hospitalisation_primary_code1 if failure==0&hospitalisation_outcome_date!=.,m row
+tab drug hospitalisation_primary_code2 if failure==0&hospitalisation_outcome_date!=.,m row
+*count underlying cause of death*
+tab drug death_with_covid_on_certificate_ if death_with_covid_underlying_date==.&death_with_covid_on_the_death_ce!=.,m row
+tab drug death_code if death_with_covid_on_the_death_ce==.,m row
 
 
 
@@ -554,7 +563,7 @@ tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
 *combine 8 and 9 due to small N*
-*replace week_after_campaign=8 if week_after_campaign==9
+replace week_after_campaign=8 if week_after_campaign==9
 
 
 *descriptives by drug groups*
