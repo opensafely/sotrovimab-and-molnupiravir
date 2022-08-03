@@ -393,7 +393,8 @@ tab hospitalisation_primary_code2 if drug==1&failure==0&hospitalisation_outcome_
 tab hospitalisation_primary_code2 if drug==0&failure==0&hospitalisation_outcome_date!=.,m
 *count underlying cause of death*
 tab drug death_with_covid_on_certificate_ if death_with_covid_underlying_date==.&death_with_covid_on_the_death_ce!=.,m row
-tab drug death_code if death_with_covid_on_the_death_ce==.,m row
+tab death_code if drug==1&death_with_covid_on_the_death_ce==.,m
+tab death_code if drug==0&death_with_covid_on_the_death_ce==.,m
 
 
 
