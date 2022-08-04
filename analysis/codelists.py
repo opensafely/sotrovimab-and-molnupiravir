@@ -34,6 +34,12 @@ hypertension_codes = codelist_from_csv(
     system="snomed",
     column="id"
 )
+# Critical care procedure
+critical_care_opcs4_codes = codelist_from_csv(
+  "codelists/user-viyaasan-critical-care.csv", 
+  system = "opcs4", 
+  column = "code"
+)
 
 ## ELIGIBILITY CRITERIA VARIABLES ----
 
