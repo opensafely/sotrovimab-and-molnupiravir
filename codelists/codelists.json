@@ -6,6 +6,12 @@
       "downloaded_at": "2022-03-31 23:27:27.930450Z",
       "sha": "bc21046f8f59de701e27a07f47e6a7e4397d23c2"
     },
+    "user-viyaasan-critical-care.csv": {
+      "id": "user/viyaasan/critical-care/0411a58a",
+      "url": "https://codelists.opensafely.org/codelist/user/viyaasan/critical-care/0411a58a/",
+      "downloaded_at": "2022-08-04 09:45:14.493663Z",
+      "sha": "fed5f547fc32f22e44ab3bc371762d07f1c83e6e"
+    },
     "opensafely-covid-identification.csv": {
       "id": "opensafely/covid-identification/2020-06-03",
       "url": "https://codelists.opensafely.org/codelist/opensafely/covid-identification/2020-06-03/",
@@ -285,8 +291,8 @@
     "primis-covid19-vacc-uptake-eth2001.csv": {
       "id": "primis-covid19-vacc-uptake/eth2001/v1",
       "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/eth2001/v1/",
-      "downloaded_at": "2022-03-31 23:27:40.527033Z",
-      "sha": "36e4eacba898e6ec72da8ff66e8c673bfd9aa8e4"
+      "downloaded_at": "2022-08-04 09:45:32.286453Z",
+      "sha": "31b61e2b1a0a63549c68bdc202b8b0d96a74037d"
     },
     "nhsd-primary-care-domain-refsets-autism_cod.csv": {
       "id": "nhsd-primary-care-domain-refsets/autism_cod/20210127",
