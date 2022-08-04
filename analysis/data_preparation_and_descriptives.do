@@ -385,14 +385,15 @@ tab drug covid_hospitalisation_critical_c,m row
 tab drug covid_hospitalisation_critical_c if failure==1&covid_hospitalisation_outcome_da==end_date,m row
 tab drug covid_hosp_critical_care_not_pri,m row
 *count primary diagnosis*
-tab drug covid_hosp_code1_not_primary if failure==0&covid_hosp_date_not_primary!=.,m row
-tab covid_hosp_code2_not_primary if drug==1&failure==0&covid_hosp_date_not_primary!=.,m
-tab covid_hosp_code2_not_primary if drug==0&failure==0&covid_hosp_date_not_primary!=.,m
-tab drug hospitalisation_primary_code1 if failure==0&hospitalisation_outcome_date!=.,m row
-tab hospitalisation_primary_code2 if drug==1&failure==0&hospitalisation_outcome_date!=.,m
-tab hospitalisation_primary_code2 if drug==0&failure==0&hospitalisation_outcome_date!=.,m
+tab drug covid_hosp_code1_not_primary if failure==0&covid_hosp_date_not_primary==end_date_not_primary,m row
+tab covid_hosp_code2_not_primary if drug==1&failure==0&covid_hosp_date_not_primary==end_date_not_primary,m
+tab covid_hosp_code2_not_primary if drug==0&failure==0&covid_hosp_date_not_primary==end_date_not_primary,m
+tab drug hospitalisation_primary_code1 if failure==0&hospitalisation_outcome_date==end_date_allcause,m row
+tab hospitalisation_primary_code2 if drug==1&failure==0&hospitalisation_outcome_date==end_date_allcause,m
+tab hospitalisation_primary_code2 if drug==0&failure==0&hospitalisation_outcome_date==end_date_allcause,m
 *count underlying cause of death*
 tab drug death_with_covid_on_certificate_ if death_with_covid_underlying_date==.&death_with_covid_on_the_death_ce!=.,m row
+tab drug death_with_covid_on_certificate_ if death_with_covid_underlying_date==.&death_with_covid_on_the_death_ce==end_date,m row
 tab death_code if drug==1&death_with_covid_on_the_death_ce==.,m
 tab death_code if drug==0&death_with_covid_on_the_death_ce==.,m
 
