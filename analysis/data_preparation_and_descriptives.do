@@ -384,7 +384,7 @@ count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_wit
 tab drug covid_hospitalisation_critical_c,m row
 tab drug covid_hospitalisation_critical_c if failure==1&covid_hospitalisation_outcome_da==end_date,m row
 tab drug covid_hosp_critical_care_not_pri,m row
-*count primary diagnosis*
+*count primary diagnosis within day1-28*
 tab drug covid_hosp_code1_not_primary if failure==0&covid_hosp_date_not_primary==end_date_not_primary,m row
 tab covid_hosp_code2_not_primary if drug==1&failure==0&covid_hosp_date_not_primary==end_date_not_primary,m
 tab covid_hosp_code2_not_primary if drug==0&failure==0&covid_hosp_date_not_primary==end_date_not_primary,m
