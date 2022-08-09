@@ -1946,7 +1946,44 @@ study = StudyDefinition(
       "incidence": 0.01,
     },
   ),
-
+  covid_hosp_venti_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    with_these_primary_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  covid_hosp_venti_not_pri_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    with_these_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  hosp_venti_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
   ## COVID related death
   death_with_covid_on_the_death_certificate_date = patients.with_these_codes_on_death_certificate(
     covid_icd10_codes,
