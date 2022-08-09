@@ -40,6 +40,11 @@ critical_care_opcs4_codes = codelist_from_csv(
   system = "opcs4", 
   column = "code"
 )
+ventilation_opcs4_codes = codelist_from_csv(
+  "codelists/user-viyaasan-mechanical-ventilation.csv", 
+  system = "opcs4", 
+  column = "code"
+)
 
 ## ELIGIBILITY CRITERIA VARIABLES ----
 
