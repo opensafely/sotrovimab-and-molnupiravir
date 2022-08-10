@@ -50,7 +50,8 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 	   hospitalisation_outcome_date1 hospitalisation_outcome_date2 hosp_discharge_date0 hosp_discharge_date1 hosp_discharge_date2 covid_hosp_date_mabs_all_cause date_treated start_date ///
 	   downs_syndrome_nhsd haematological_disease_nhsd ckd_stage_5_nhsd liver_disease_nhsd hiv_aids_nhsd solid_organ_transplant_nhsd ///
 	   multiple_sclerosis_nhsd motor_neurone_disease_nhsd myasthenia_gravis_nhsd huntingtons_disease_nhsd sickle_cell_disease_nhsd covid_hosp_date_mabs_day ///
-	   covid_hosp_outcome_day_date0 covid_hosp_outcome_day_date1 covid_hosp_outcome_day_date2 covid_hosp_discharge_day_date0 covid_hosp_discharge_day_date1 covid_hosp_discharge_day_date2 {
+	   covid_hosp_outcome_day_date0 covid_hosp_outcome_day_date1 covid_hosp_outcome_day_date2 covid_hosp_discharge_day_date0 covid_hosp_discharge_day_date1 covid_hosp_discharge_day_date2 ///
+	   covid_hosp_venti_opcs covid_hosp_venti_not_pri_opcs hosp_venti_opcs covid_hosp_crit_care_opcs covid_hosp_crit_care_not_pri_opc hosp_crit_care_opcs {
   capture confirm string variable `var'
   if _rc==0 {
   rename `var' a
@@ -381,9 +382,21 @@ count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_wit
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==1&death_with_covid_underlying_date>=covid_hospitalisation_outcome_da&death_with_covid_underlying_date<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_with_covid_underlying_date>=covid_hospitalisation_outcome_da&death_with_covid_underlying_date<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 *count critical care within day1-28*
-tab drug covid_hospitalisation_critical_c,m row
-tab drug covid_hospitalisation_critical_c if failure==1&covid_hospitalisation_outcome_da==end_date,m row
-tab drug covid_hosp_critical_care_not_pri,m row
+tab drug covid_hosp_critical_care,m row
+tab drug covid_hosp_critical_care if failure==1&covid_hospitalisation_outcome_da==end_date,m row
+tab drug covid_hosp_crit_care_not_pri,m row
+tab drug covid_hosp_critical_care2,m row
+tab drug covid_hosp_critical_care2 if failure==1&covid_hospitalisation_outcome_da==end_date,m row
+tab drug covid_hosp_crit_care_not_pri2,m row
+by drug, sort: count if covid_hosp_crit_care_opcs!=.
+by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&covid_hosp_crit_care_opcs!=.
+by drug, sort: count if covid_hosp_crit_care_not_pri_opc!=.
+by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&(covid_hosp_crit_care_opcs!=.|(covid_hosp_critical_care>0&covid_hosp_critical_care!=.)
+by drug, sort: count if covid_hosp_crit_care_not_pri_opc!=.|(covid_hosp_crit_care_not_pri>0&covid_hosp_crit_care_not_pri!=.)
+*count mech ventilation within day1-28*
+by drug, sort: count if covid_hosp_venti_opcs!=.
+by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&covid_hosp_venti_opcs!=.
+by drug, sort: count if covid_hosp_venti_not_pri_opcs!=.
 *count primary diagnosis within day1-28*
 tab drug covid_hosp_code1_not_primary if failure==0&covid_hosp_date_not_primary==end_date_not_primary,m row
 tab covid_hosp_code2_not_primary if drug==1&failure==0&covid_hosp_date_not_primary==end_date_not_primary,m
