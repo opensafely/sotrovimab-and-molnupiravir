@@ -1852,7 +1852,7 @@ study = StudyDefinition(
   ),
 
   ## Critical care days for COVID-related hospitalisation 
-  covid_hospitalisation_critical_care = patients.admitted_to_hospital(
+  covid_hosp_critical_care = patients.admitted_to_hospital(
     returning = "days_in_critical_care",
     with_these_primary_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
@@ -1862,7 +1862,7 @@ study = StudyDefinition(
       "incidence": 0.4,
     },
   ),
-  covid_hosp_critical_care_not_pri = patients.admitted_to_hospital(
+  covid_hosp_crit_care_not_pri = patients.admitted_to_hospital(
     returning = "days_in_critical_care",
     with_these_diagnoses = covid_icd10_codes,
     between = ["start_date + 1 day", "start_date + 28 days"],
@@ -1872,7 +1872,118 @@ study = StudyDefinition(
       "incidence": 0.4,
     },
   ),
-
+  hosp_critical_care = patients.admitted_to_hospital(
+    returning = "days_in_critical_care",
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    find_first_match_in_period = True,
+    return_expectations = {
+      "category": {"ratios": {"20": 0.5, "40": 0.5}},
+      "incidence": 0.4,
+    },
+  ),
+  covid_hosp_critical_care2 = patients.admitted_to_hospital(
+    returning = "total_critical_care_days_in_period",
+    with_these_primary_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    return_expectations = {
+      "category": {"ratios": {"20": 0.5, "40": 0.5}},
+      "incidence": 0.4,
+    },
+  ),
+  covid_hosp_crit_care_not_pri2 = patients.admitted_to_hospital(
+    returning = "total_critical_care_days_in_period",
+    with_these_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    return_expectations = {
+      "category": {"ratios": {"20": 0.5, "40": 0.5}},
+      "incidence": 0.4,
+    },
+  ),
+  hosp_critical_care2 = patients.admitted_to_hospital(
+    returning = "total_critical_care_days_in_period",
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    return_expectations = {
+      "category": {"ratios": {"20": 0.5, "40": 0.5}},
+      "incidence": 0.4,
+    },
+  ),
+  ## Critical care procedures 
+  covid_hosp_crit_care_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = critical_care_opcs4_codes,
+    with_these_primary_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  covid_hosp_crit_care_not_pri_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = critical_care_opcs4_codes,
+    with_these_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  hosp_crit_care_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = critical_care_opcs4_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  covid_hosp_venti_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    with_these_primary_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  covid_hosp_venti_not_pri_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    with_these_diagnoses = covid_icd10_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
+  hosp_venti_opcs = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_procedures = ventilation_opcs4_codes,
+    between = ["start_date + 1 day", "start_date + 28 days"],
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+    return_expectations = {
+      "date": {"earliest": "2020-02-01"},
+      "rate": "exponential_increase",
+      "incidence": 0.01,
+    },
+  ),
   ## COVID related death
   death_with_covid_on_the_death_certificate_date = patients.with_these_codes_on_death_certificate(
     covid_icd10_codes,
