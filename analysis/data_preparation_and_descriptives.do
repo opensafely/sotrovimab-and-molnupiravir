@@ -391,7 +391,7 @@ tab drug covid_hosp_crit_care_not_pri2,m row
 by drug, sort: count if covid_hosp_crit_care_opcs!=.
 by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&covid_hosp_crit_care_opcs!=.
 by drug, sort: count if covid_hosp_crit_care_not_pri_opc!=.
-by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&(covid_hosp_crit_care_opcs!=.|(covid_hosp_critical_care>0&covid_hosp_critical_care!=.)
+by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date&(covid_hosp_crit_care_opcs!=.|(covid_hosp_critical_care>0&covid_hosp_critical_care!=.))
 by drug, sort: count if covid_hosp_crit_care_not_pri_opc!=.|(covid_hosp_crit_care_not_pri>0&covid_hosp_crit_care_not_pri!=.)
 *count mech ventilation within day1-28*
 by drug, sort: count if covid_hosp_venti_opcs!=.
