@@ -516,6 +516,12 @@ replace stp=99 if stp_N<100
 tab stp ,m
 
 tab rural_urban,m
+replace rural_urban=. if rural_urban<1
+replace rural_urban=3 if rural_urban==4
+replace rural_urban=5 if rural_urban==6
+replace rural_urban=7 if rural_urban==8
+tab rural_urban,m
+
 *comor*
 tab autism_nhsd,m
 tab care_home_primis,m
@@ -609,6 +615,8 @@ tab drug sex,row chi
 tab drug ethnicity,row chi
 tab drug imd,row chi
 ranksum imd,by(drug)
+tab drug rural_urban,row chi
+ranksum rural_urban,by(drug)
 tab drug region_nhs,row chi
 tab drug region_covid_therapeutics,row chi
 *need to address the error of "too many values"*
