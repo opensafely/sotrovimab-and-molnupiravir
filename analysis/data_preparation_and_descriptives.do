@@ -369,6 +369,9 @@ format %td event_date_not_primary end_date_not_primary
 stset end_date_not_primary ,  origin(start_date) failure(failure_not_primary==1)
 stcox drug
 
+*count censored due to second therapy*
+count if failure==0&drug==1&molnupiravir_covid_therapeutics==end_date
+count if failure==0&drug==0&sotrovimab_covid_therapeutics==end_date
 *count covid death during day1-28 and before censor*
 count if failure==1&drug==1&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 count if failure==1&drug==0&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
@@ -376,6 +379,11 @@ count if failure==1&drug==1&death_with_covid_underlying_date<=min(study_end_date
 count if failure==1&drug==0&death_with_covid_underlying_date<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 *count covid hosp during day1-28 and before censor*
 by drug, sort: count if failure==1&covid_hospitalisation_outcome_da==end_date
+*average hospital stay*
+gen covid_hosp_days=covid_hosp_discharge_date2-covid_hospitalisation_outcome_da if covid_hosp_discharge_date2!=.&covid_hosp_discharge_date2>covid_hospitalisation_outcome_da
+replace covid_hosp_days=covid_hosp_discharge_date1-covid_hospitalisation_outcome_da if covid_hosp_discharge_date1!=.&covid_hosp_discharge_date1>covid_hospitalisation_outcome_da
+replace covid_hosp_days=covid_hosp_discharge_date0-covid_hospitalisation_outcome_da if covid_hosp_discharge_date0!=.&covid_hosp_discharge_date0>covid_hospitalisation_outcome_da
+by drug, sort: sum covid_hosp_days if failure==1&covid_hospitalisation_outcome_da==end_date, de
 *count covid death after covid hosp during day1-28 and before censor*
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==1&death_with_covid_on_the_death_ce>=covid_hospitalisation_outcome_da&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
 count if failure==1&covid_hospitalisation_outcome_da==end_date&drug==0&death_with_covid_on_the_death_ce>=covid_hospitalisation_outcome_da&death_with_covid_on_the_death_ce<=min(study_end_date,start_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)
