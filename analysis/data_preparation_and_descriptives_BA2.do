@@ -84,7 +84,7 @@ keep if registered_treated==1
 tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 *restrict start_date to 2022FEB16 to 2022MAY10*
-keep if start_date>=mdy(02,16,2022)&start_date<=mdy(05,01,2022)
+keep if start_date>=mdy(02,16,2022)&start_date<=mdy(04,16,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
