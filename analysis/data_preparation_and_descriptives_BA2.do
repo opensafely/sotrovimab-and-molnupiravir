@@ -83,8 +83,9 @@ keep if has_died==0
 keep if registered_treated==1
 tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
-*restrict start_date to 2022FEB16 to 2022MAY10*
-keep if start_date>=mdy(02,16,2022)&start_date<=mdy(04,16,2022)
+count if start_date>=mdy(12,16,2021)&start_date<=mdy(05,01,2022)
+*restrict start_date to 2022FEB16 to 2022MAY01*
+keep if start_date>=mdy(02,16,2022)&start_date<=mdy(05,01,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
@@ -583,8 +584,8 @@ gen month_after_vaccinate=ceil(d_vaccinate_treat/30)
 tab month_after_vaccinate,m
 gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
 tab week_after_vaccinate,m
-*combine month5-13 due to small N*
-*replace month_after_vaccinate=5 if month_after_vaccinate>=5&month_after_vaccinate!=.
+*combine month6-14 due to small N*
+replace month_after_vaccinate=6 if month_after_vaccinate>6&month_after_vaccinate!=.
 gen month_after_vaccinate_missing=month_after_vaccinate
 replace month_after_vaccinate_missing=99 if month_after_vaccinate_missing==.
 *calendar time*
@@ -592,8 +593,8 @@ gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
-*combine 8 and 9 due to small N*
-*replace week_after_campaign=8 if week_after_campaign==9
+*combine 9 and 10 due to small N*
+*replace week_after_campaign=9 if week_after_campaign==10
 
 
 *descriptives by drug groups*
