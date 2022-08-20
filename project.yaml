@@ -36,29 +36,29 @@ actions:
       moderately_sensitive:
         log: logs/MI.log
 
-  generate_study_population_archive:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_archive
+  generate_study_population_update_codelist:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_update_codelist
     outputs:
       highly_sensitive:
-        cohort: output/archive/input_archive.csv
+        cohort: output/update_codelist/input_update_codelist.csv
 
-  data_preparation_archive:
-    run: stata-mp:latest analysis/data_preparation_and_descriptives_archive.do
-    needs: [generate_study_population_archive]
+  data_preparation_update_codelist:
+    run: stata-mp:latest analysis/data_preparation_and_descriptives_update_codelist.do
+    needs: [generate_study_population_update_codelist]
     outputs:
       moderately_sensitive:
-        log: logs/data_preparation_archive.log
+        log: logs/data_preparation_update_codelist.log
       highly_sensitive:
-        data: output/archive/main_archive.dta
+        data: output/update_codelist/main_update_codelist.dta
 
-  cox_regression_archive:
-    run: stata-mp:latest analysis/cox_archive.do
-    needs: [data_preparation_archive]
+  cox_regression_update_codelist:
+    run: stata-mp:latest analysis/cox_update_codelist.do
+    needs: [data_preparation_update_codelist]
     outputs:
       moderately_sensitive:
-        log: logs/cox_archive.log
-        figure1: output/archive/phtest.svg  
-        figure2: output/archive/phtest_psw.svg
+        log: logs/cox_update_codelist.log
+        figure1: output/update_codelist/phtest.svg  
+        figure2: output/update_codelist/phtest_psw.svg
 
 
   generate_study_population_Paxlovid:
