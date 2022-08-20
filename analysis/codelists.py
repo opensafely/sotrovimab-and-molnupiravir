@@ -118,6 +118,11 @@ non_haematological_cancer_opensafely_snomed_codes = codelist_from_csv(
   system = "snomed",
   column = "id",
 )
+non_haematological_cancer_opensafely_snomed_codes_new = codelist_from_csv(
+  "codelists/opensafely-cancer-excluding-lung-and-haematological-snomed-new.csv",
+  system = "snomed",
+  column = "id",
+)
 
 lung_cancer_opensafely_snomed_codes = codelist_from_csv(
   "codelists/opensafely-lung-cancer-snomed.csv", 
@@ -221,6 +226,11 @@ immunosupression_nhsd_codes = codelist_from_csv(
   system = "snomed",
   column = "code",
 )
+immunosupression_nhsd_codes_new = codelist_from_csv(
+  "codelists/user-bangzheng-nhsd-immunosupression-pcdcluster-snomed-ct-new.csv",
+  system = "snomed",
+  column = "code",
+)
 
 ## HIV/AIDs
 hiv_aids_nhsd_snomed_codes = codelist_from_csv(
@@ -238,6 +248,11 @@ hiv_aids_nhsd_icd10_codes = codelist_from_csv(
 ## Solid organ transplant
 solid_organ_transplant_nhsd_snomed_codes = codelist_from_csv(
   "codelists/nhsd-transplant-spl-atriskv4-snomed-ct.csv",
+  system = "snomed",
+  column = "code",
+)
+solid_organ_transplant_nhsd_snomed_codes_new = codelist_from_csv(
+  "codelists/user-bangzheng-nhsd-transplant-spl-atriskv4-snomed-ct-new.csv",
   system = "snomed",
   column = "code",
 )
