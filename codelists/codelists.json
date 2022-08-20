@@ -168,6 +168,12 @@
       "downloaded_at": "2022-03-31 23:27:35.229794Z",
       "sha": "3cc58660e33777bd2cd4e9d43b4ff3843ee9ead2"
     },
+    "user-bangzheng-nhsd-immunosupression-pcdcluster-snomed-ct-new.csv": {
+      "id": "user/bangzheng/nhsd-immunosupression-pcdcluster-snomed-ct-new/7c9a7542",
+      "url": "https://codelists.opensafely.org/codelist/user/bangzheng/nhsd-immunosupression-pcdcluster-snomed-ct-new/7c9a7542/",
+      "downloaded_at": "2022-08-20 14:16:28.174743Z",
+      "sha": "09287f14fed4848e8fb7e706e859ebc1f316be74"
+    },
     "nhsd-hiv-aids-snomed.csv": {
       "id": "nhsd/hiv-aids-snomed/68ca529e",
       "url": "https://codelists.opensafely.org/codelist/nhsd/hiv-aids-snomed/68ca529e/",
@@ -185,6 +191,12 @@
       "url": "https://codelists.opensafely.org/codelist/nhsd/transplant-spl-atriskv4-snomed-ct/57747a02/",
       "downloaded_at": "2022-03-31 23:27:35.922618Z",
       "sha": "512bf4922c32d3826e17eeb0870e465825ec2e21"
+    },
+    "user-bangzheng-nhsd-transplant-spl-atriskv4-snomed-ct-new.csv": {
+      "id": "user/bangzheng/nhsd-transplant-spl-atriskv4-snomed-ct-new/15a9e878",
+      "url": "https://codelists.opensafely.org/codelist/user/bangzheng/nhsd-transplant-spl-atriskv4-snomed-ct-new/15a9e878/",
+      "downloaded_at": "2022-08-20 14:16:29.429960Z",
+      "sha": "56a9f8c2b600286b5403ad532097a82fcbdccd7d"
     },
     "nhsd-transplant-spl-hes-opcs4.csv": {
       "id": "nhsd/transplant-spl-hes-opcs4/1b47de52",
