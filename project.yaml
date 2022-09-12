@@ -99,3 +99,10 @@ actions:
         log: logs/cox_BA2.log
         figure1: output/BA2/phtest.svg  
         figure2: output/BA2/phtest_psw.svg
+
+
+  generate_study_population_ukrr:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ukrr
+    outputs:
+      highly_sensitive:
+        cohort: output/ukrr/input_ukrr.csv
