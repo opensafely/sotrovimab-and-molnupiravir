@@ -38,8 +38,6 @@ study = StudyDefinition(
   population = patients.satisfying(
     """
     age >= 18 AND age < 110
-    AND NOT has_died
-    AND registered_treated 
     """,
   ),
   #require covid_test_positive_date<=date_treated (sensitivity analysis)
