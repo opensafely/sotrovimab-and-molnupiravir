@@ -234,6 +234,9 @@ study = StudyDefinition(
   date_treated = patients.minimum_of(
     "sotrovimab_covid_therapeutics",
     "molnupiravir_covid_therapeutics",
+    "casirivimab_covid_therapeutics",
+    "paxlovid_covid_therapeutics",
+    "remdesivir_covid_therapeutics",
   ),
   
   registered_treated = patients.registered_as_of("date_treated"), 
@@ -462,7 +465,21 @@ study = StudyDefinition(
       "incidence": 0.05
     },
   ),
-  
+  # positive test history
+  covid_test_positive_previous_date = patients.with_test_result_in_sgss(
+    pathogen = "SARS-CoV-2",
+    test_result = "positive",
+    find_first_match_in_period = True,
+    restrict_to_earliest_specimen_date = False,
+    returning = "date",
+    date_format = "YYYY-MM-DD",
+    on_or_before = "covid_test_positive_date - 30 days",
+    return_expectations = {
+      "date": {"earliest": "2021-12-20", "latest": "index_date"},
+      "incidence": 0.1
+    },
+  ),
+
   ### Onset of symptoms of COVID-19
   symptomatic_covid_test = patients.with_test_result_in_sgss(
     pathogen = "SARS-CoV-2",
@@ -496,6 +513,9 @@ study = StudyDefinition(
   start_date = patients.minimum_of(
     "sotrovimab_covid_therapeutics",
     "molnupiravir_covid_therapeutics",
+    "casirivimab_covid_therapeutics",
+    "paxlovid_covid_therapeutics",
+    "remdesivir_covid_therapeutics",
   ),
   
   ## Exclusion criteria variables
@@ -658,7 +678,7 @@ study = StudyDefinition(
   ## Blueteq ‘high risk’ cohort
   high_risk_cohort_covid_therapeutics = patients.with_covid_therapeutics(
     #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = ["Sotrovimab", "Molnupiravir"],
+    with_these_therapeutics = ["Sotrovimab", "Molnupiravir","Casirivimab and imdevimab", "Paxlovid", "Remdesivir"],
     with_these_indications = "non_hospitalised",
     on_or_after = "index_date",
     find_first_match_in_period = True,
@@ -1248,7 +1268,7 @@ study = StudyDefinition(
   
   region_covid_therapeutics = patients.with_covid_therapeutics(
     #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = ["Sotrovimab", "Molnupiravir"],
+    with_these_therapeutics = ["Sotrovimab", "Molnupiravir","Casirivimab and imdevimab", "Paxlovid", "Remdesivir"],
     with_these_indications = "non_hospitalised",
     on_or_after = "start_date",
     find_first_match_in_period = True,
