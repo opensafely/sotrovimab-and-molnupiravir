@@ -51,7 +51,8 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 	   downs_syndrome_nhsd haematological_disease_nhsd ckd_stage_5_nhsd liver_disease_nhsd hiv_aids_nhsd solid_organ_transplant_nhsd solid_organ_transplant_nhsd_new ///
 	   multiple_sclerosis_nhsd motor_neurone_disease_nhsd myasthenia_gravis_nhsd huntingtons_disease_nhsd sickle_cell_disease_nhsd covid_hosp_date_mabs_day ///
 	   covid_hosp_outcome_day_date0 covid_hosp_outcome_day_date1 covid_hosp_outcome_day_date2 covid_hosp_discharge_day_date0 covid_hosp_discharge_day_date1 covid_hosp_discharge_day_date2 ///
-	   covid_hosp_venti_opcs covid_hosp_venti_not_pri_opcs hosp_venti_opcs covid_hosp_crit_care_opcs covid_hosp_crit_care_not_pri_opc hosp_crit_care_opcs ukrr_2020_startdate ukrr_2021_startdate ukrr_inc2020_date {
+	   covid_hosp_venti_opcs covid_hosp_venti_not_pri_opcs hosp_venti_opcs covid_hosp_crit_care_opcs covid_hosp_crit_care_not_pri_opc hosp_crit_care_opcs ///
+	   ukrr_2020_startdate ukrr_2021_startdate ukrr_inc2020_date {
   capture confirm string variable `var'
   if _rc==0 {
   rename `var' a
