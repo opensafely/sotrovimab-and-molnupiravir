@@ -453,6 +453,9 @@ tab death_code if drug==0&death_with_covid_on_the_death_ce==.,m
 
 
 *covariates* 
+*ukrr variables*
+tab ukrr_2021_mod,m
+
 *10 high risk groups: downs_syndrome, solid_cancer, haematological_disease, renal_disease, liver_disease, imid, 
 *immunosupression, hiv_aids, solid_organ_transplant, rare_neurological_conditions, high_risk_group_combined	
 tab high_risk_cohort_covid_therapeut,m
@@ -657,6 +660,7 @@ by drug,sort: sum d_vaccinate_treat,de
 ttest d_vaccinate_treat , by( drug )
 ranksum d_vaccinate_treat,by(drug)
 
+tab drug ukrr_2021_mod,row chi
 tab drug sex,row chi
 tab drug ethnicity,row chi
 tab drug imd,row chi
