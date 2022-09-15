@@ -35,11 +35,7 @@ study = StudyDefinition(
   index_date = campaign_start,
   
   # POPULATION ----
-  population = patients.satisfying(
-    """
-    age >= 18 AND age < 110
-    """,
-  ),
+  population=patients.all(),
   #require covid_test_positive_date<=date_treated (sensitivity analysis)
   #loose "AND (covid_test_positive AND NOT covid_positive_previous_30_days)"
   #AND NOT pregnancy (exploratory analysis)
@@ -657,7 +653,8 @@ study = StudyDefinition(
   ),
   
   registered_eligible = patients.registered_as_of("covid_test_positive_date"),
-  
+  registered_campaign = patients.registered_as_of("index_date"),
+ 
   ## 1/2/3 months since treatment initiation
   ## AND study end date (today)
   ## end enrollment earlier to account for delay in outcome data update
