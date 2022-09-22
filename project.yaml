@@ -13,7 +13,7 @@ actions:
 
   data_preparation:
     run: stata-mp:latest analysis/data_preparation_and_descriptives.do
-    needs: [generate_study_population_ukrr]
+    needs: [generate_study_population]
     outputs:
       moderately_sensitive:
         log: logs/data_preparation.log
@@ -84,7 +84,7 @@ actions:
 
   data_preparation_BA2:
     run: stata-mp:latest analysis/data_preparation_and_descriptives_BA2.do
-    needs: [generate_study_population_ukrr]
+    needs: [generate_study_population_BA2]
     outputs:
       moderately_sensitive:
         log: logs/data_preparation_BA2.log
