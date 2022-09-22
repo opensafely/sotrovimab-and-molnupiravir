@@ -108,7 +108,7 @@ actions:
       moderately_sensitive:
         log: logs/data_preparation_BA2.log
       highly_sensitive:
-        data: output/BA2/main_BA2.dta
+        data: output/main_BA2.dta
 
   cox_regression_BA2:
     run: stata-mp:latest analysis/cox_BA2.do
@@ -116,5 +116,5 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/cox_BA2.log
-        figure1: output/BA2/phtest.svg  
-        figure2: output/BA2/phtest_psw.svg
+        figure1: output/phtest.svg  
+        figure2: output/phtest_psw.svg
