@@ -684,7 +684,7 @@ count if drug==1&sotrovimab_covid_not_start!=.
 count if drug==1&sotrovimab_covid_stopped!=.
 
 
-save ./output/main_BA2.dta, replace
+save ./output/BA2/main_BA2.dta, replace
 
 log close
 
