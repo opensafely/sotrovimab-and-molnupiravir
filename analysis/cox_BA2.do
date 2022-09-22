@@ -22,7 +22,7 @@ cap log close
 log using ./logs/cox_BA2, replace t
 clear
 
-use ./output/main_BA2.dta
+use ./output/BA2/main_BA2.dta
 
 *follow-up time and events*
 stset end_date ,  origin(start_date) failure(failure==1)
@@ -75,7 +75,7 @@ stcox i.drug age_spline* i.sex i.region_nhs downs_syndrome solid_cancer haema_di
 *PH test*
 estat phtest,de
 estat phtest, plot(1.drug)
-graph export ./output/phtest.svg, as(svg) replace
+graph export ./output/BA2/phtest.svg, as(svg) replace
 
 *un-stratified Cox, missing values as a separate category*
 stcox i.drug age i.sex i.stp downs_syndrome solid_cancer haema_disease renal_disease liver_disease imid immunosupression hiv_aids solid_organ rare_neuro
@@ -269,7 +269,7 @@ stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
 stcox i.drug
 estat phtest,de
 estat phtest, plot(1.drug)
-graph export ./output/phtest_psw.svg, as(svg) replace
+graph export ./output/BA2/phtest_psw.svg, as(svg) replace
 
 
 
