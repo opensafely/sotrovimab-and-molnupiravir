@@ -26,7 +26,7 @@ log using ./logs/data_preparation_BA2, replace t
 clear
 
 * import dataset
-import delimited ./output/ukrr/input_ukrr.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/BA2/input_BA2.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
 codebook
 
