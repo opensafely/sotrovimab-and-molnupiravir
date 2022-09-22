@@ -11,14 +11,6 @@ actions:
       highly_sensitive:
         cohort: output/input.csv
 
-  data_preparation:
-    run: stata-mp:latest analysis/data_preparation_and_descriptives.do
-    needs: [generate_study_population_ukrr]
-    outputs:
-      moderately_sensitive:
-        log: logs/data_preparation.log
-      highly_sensitive:
-        data: output/main.dta
 
   cox_regression:
     run: stata-mp:latest analysis/cox.do
@@ -115,3 +107,12 @@ actions:
         log: logs/data_preparation_ukrr.log
       highly_sensitive:
         data: output/ukrr/main_ukrr.dta
+
+  data_preparation:
+    run: stata-mp:latest analysis/data_preparation_and_descriptives.do
+    needs: [generate_study_population_ukrr]
+    outputs:
+      moderately_sensitive:
+        log: logs/data_preparation.log
+      highly_sensitive:
+        data: output/main.dta
