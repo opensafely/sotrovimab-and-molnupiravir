@@ -12,14 +12,6 @@ actions:
         cohort: output/input.csv
 
 
-  cox_regression:
-    run: stata-mp:latest analysis/cox.do
-    needs: [data_preparation]
-    outputs:
-      moderately_sensitive:
-        log: logs/cox.log
-        figure1: output/phtest.svg  
-        figure2: output/phtest_psw.svg
 
   multiple_imputation:
     run: stata-mp:latest analysis/multiple_imputation.do
@@ -74,23 +66,6 @@ actions:
       highly_sensitive:
         cohort: output/BA2/input_BA2.csv
 
-  data_preparation_BA2:
-    run: stata-mp:latest analysis/data_preparation_and_descriptives_BA2.do
-    needs: [generate_study_population_ukrr]
-    outputs:
-      moderately_sensitive:
-        log: logs/data_preparation_BA2.log
-      highly_sensitive:
-        data: output/BA2/main_BA2.dta
-
-  cox_regression_BA2:
-    run: stata-mp:latest analysis/cox_BA2.do
-    needs: [data_preparation_BA2]
-    outputs:
-      moderately_sensitive:
-        log: logs/cox_BA2.log
-        figure1: output/BA2/phtest.svg  
-        figure2: output/BA2/phtest_psw.svg
 
 
   generate_study_population_ukrr:
@@ -116,3 +91,30 @@ actions:
         log: logs/data_preparation.log
       highly_sensitive:
         data: output/main.dta
+
+  cox_regression:
+    run: stata-mp:latest analysis/cox.do
+    needs: [data_preparation]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox.log
+        figure1: output/phtest.svg  
+        figure2: output/phtest_psw.svg
+
+  data_preparation_BA2:
+    run: stata-mp:latest analysis/data_preparation_and_descriptives_BA2.do
+    needs: [generate_study_population_ukrr]
+    outputs:
+      moderately_sensitive:
+        log: logs/data_preparation_BA2.log
+      highly_sensitive:
+        data: output/BA2/main_BA2.dta
+
+  cox_regression_BA2:
+    run: stata-mp:latest analysis/cox_BA2.do
+    needs: [data_preparation_BA2]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_BA2.log
+        figure1: output/BA2/phtest.svg  
+        figure2: output/BA2/phtest_psw.svg
