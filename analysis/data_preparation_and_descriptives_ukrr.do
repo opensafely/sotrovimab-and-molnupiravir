@@ -458,13 +458,19 @@ tab ukrr_2021_mod,m
 gen rrt_mod_Tx=(ukrr_2021_mod=="Tx")
 tab rrt_mod_Tx,m
 *ukrr_2021_startdate all missing, so use ukrr_2020_startdate*
+tab ukrr_2020,m
+tab ukrr_inc2020,m
 gen days_since_rrt=start_date-ukrr_2020_startdate
 sum days_since_rrt,de
+tab ukrr_inc2020 if days_since_rrt==.,m
 gen months_since_rrt=ceil(days_since_rrt/30)
 tab months_since_rrt,m
 gen years_since_rrt=ceil(days_since_rrt/365.25)
-replace years_since_rrt=1 if years_since_rrt==.
 tab years_since_rrt,m
+replace years_since_rrt=8 if years_since_rrt>=9&years_since_rrt!=.
+tab years_since_rrt,m
+gen years_since_rrt_missing=years_since_rrt
+replace years_since_rrt_missing=99 if years_since_rrt==.
 
 *10 high risk groups: downs_syndrome, solid_cancer, haematological_disease, renal_disease, liver_disease, imid, 
 *immunosupression, hiv_aids, solid_organ_transplant, rare_neurological_conditions, high_risk_group_combined	
@@ -682,7 +688,6 @@ ranksum d_vaccinate_treat,by(drug)
 
 tab drug ukrr_2021_mod,row chi
 tab drug rrt_mod_Tx,row chi
-tab drug months_since_rrt,row chi
 tab drug years_since_rrt,row chi
 tab drug sex,row chi
 tab drug ethnicity,row chi
