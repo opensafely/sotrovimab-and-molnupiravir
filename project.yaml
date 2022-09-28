@@ -115,3 +115,12 @@ actions:
         log: logs/data_preparation_ukrr.log
       highly_sensitive:
         data: output/ukrr/main_ukrr.dta
+
+  cox_regression_ukrr:
+    run: stata-mp:latest analysis/cox_ukrr.do
+    needs: [data_preparation_ukrr]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_ukrr.log
+        figure1: output/ukrr/phtest.svg  
+        figure2: output/ukrr/phtest_psw.svg
