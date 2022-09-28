@@ -457,11 +457,13 @@ tab death_code if drug==0&death_with_covid_on_the_death_ce==.,m
 tab ukrr_2021_mod,m
 gen rrt_mod_Tx=(ukrr_2021_mod=="Tx")
 tab rrt_mod_Tx,m
-gen days_since_rrt=start_date-ukrr_2021_startdate
+*ukrr_2021_startdate all missing, so use ukrr_2020_startdate*
+gen days_since_rrt=start_date-ukrr_2020_startdate
 sum days_since_rrt,de
 gen months_since_rrt=ceil(days_since_rrt/30)
 tab months_since_rrt,m
 gen years_since_rrt=ceil(days_since_rrt/365.25)
+replace years_since_rrt=1 if years_since_rrt==.
 tab years_since_rrt,m
 
 *10 high risk groups: downs_syndrome, solid_cancer, haematological_disease, renal_disease, liver_disease, imid, 
