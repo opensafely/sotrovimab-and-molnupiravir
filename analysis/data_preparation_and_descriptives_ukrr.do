@@ -455,6 +455,14 @@ tab death_code if drug==0&death_with_covid_on_the_death_ce==.,m
 *covariates* 
 *ukrr variables*
 tab ukrr_2021_mod,m
+gen rrt_mod_Tx=(ukrr_2021_mod=="Tx")
+tab rrt_mod_Tx,m
+gen days_since_rrt=start_date-ukrr_2021_startdate
+sum days_since_rrt,de
+gen months_since_rrt=ceil(days_since_rrt/30)
+tab months_since_rrt,m
+gen years_since_rrt=ceil(days_since_rrt/365.25)
+tab years_since_rrt,m
 
 *10 high risk groups: downs_syndrome, solid_cancer, haematological_disease, renal_disease, liver_disease, imid, 
 *immunosupression, hiv_aids, solid_organ_transplant, rare_neurological_conditions, high_risk_group_combined	
@@ -535,6 +543,8 @@ replace ethnicity=. if ethnicity_with_missing_str=="Missing"
 label values ethnicity ethnicity_with_missing
 gen White=1 if ethnicity==6
 replace White=0 if ethnicity!=6&ethnicity!=.
+gen White_with_missing=White
+replace White_with_missing=9 if White==.
 
 tab imd,m
 replace imd=. if imd==0
@@ -593,6 +603,8 @@ replace bmi_g4_with_missing=9 if bmi_group4==.
 gen bmi_g3=bmi_group4
 replace bmi_g3=1 if bmi_g3==0
 label values bmi_g3 bmi
+gen bmi_g3_with_missing=bmi_g3
+replace bmi_g3_with_missing=9 if bmi_g3==.
 gen bmi_25=(bmi>=25) if bmi!=.
 gen bmi_30=(bmi>=30) if bmi!=.
 
@@ -625,7 +637,7 @@ gen month_after_vaccinate=ceil(d_vaccinate_treat/30)
 tab month_after_vaccinate,m
 gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
 tab week_after_vaccinate,m
-*combine month5-13 due to small N*
+*combine month5-15 due to small N*
 replace month_after_vaccinate=5 if month_after_vaccinate>=5&month_after_vaccinate!=.
 gen month_after_vaccinate_missing=month_after_vaccinate
 replace month_after_vaccinate_missing=99 if month_after_vaccinate_missing==.
@@ -635,10 +647,16 @@ tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
 *combine 8 and 9 due to small N*
-replace week_after_campaign=8 if week_after_campaign==9
-
+*replace week_after_campaign=8 if week_after_campaign==9
+gen day_after_campaign=start_date-mdy(12,15,2021)
+sum day_after_campaign,de
 
 *descriptives by drug groups*
+by drug,sort: sum days_since_rrt,de
+ttest days_since_rrt , by( drug )
+ranksum days_since_rrt,by(drug)
+by drug,sort: sum months_since_rrt,de
+by drug,sort: sum years_since_rrt,de
 by drug,sort: sum age,de
 ttest age , by( drug )
 by drug,sort: sum bmi,de
@@ -661,8 +679,12 @@ ttest d_vaccinate_treat , by( drug )
 ranksum d_vaccinate_treat,by(drug)
 
 tab drug ukrr_2021_mod,row chi
+tab drug rrt_mod_Tx,row chi
+tab drug months_since_rrt,row chi
+tab drug years_since_rrt,row chi
 tab drug sex,row chi
 tab drug ethnicity,row chi
+tab drug White,row chi
 tab drug imd,row chi
 ranksum imd,by(drug)
 tab drug rural_urban,row chi
@@ -696,6 +718,7 @@ tab drug housebound_opensafely ,row chi
 tab drug learning_disability_primis ,row chi
 tab drug serious_mental_illness_nhsd ,row chi
 tab drug bmi_group4 ,row chi
+tab drug bmi_g3 ,row chi
 tab drug diabetes ,row chi
 tab drug chronic_cardiac_disease ,row chi
 tab drug hypertension ,row chi
