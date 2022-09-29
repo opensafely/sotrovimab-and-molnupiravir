@@ -654,10 +654,11 @@ gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
 tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
-*combine 8 and 9 due to small N*
-*replace week_after_campaign=8 if week_after_campaign==9
+*combine 6 and 7 due to small N*
+replace month_after_campaign=6 if month_after_campaign==7
 gen day_after_campaign=start_date-mdy(12,15,2021)
 sum day_after_campaign,de
+mkspline calendar_day_spline = day_after_campaign, cubic nknots(4)
 
 *descriptives by drug groups*
 by drug,sort: sum days_since_rrt,de
