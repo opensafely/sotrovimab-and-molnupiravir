@@ -504,177 +504,18 @@ stcox i.drug##i.d_postest_treat_g2 age i.sex , strata(region_nhs)
 stcox i.drug age i.sex if d_postest_treat_g2==0, strata(region_nhs)
 stcox i.drug age i.sex if d_postest_treat_g2==1, strata(region_nhs)
 
-*use un-stratified minimal-adjusted model*
-stcox i.drug##i.sex age  i.region_nhs
-stcox i.drug age  i.region_nhs if sex==0 
-stcox i.drug age  i.region_nhs if sex==1 
+stcox i.drug##i.rrt_mod_Tx age i.sex , strata(region_nhs)
+stcox i.drug age i.sex   if rrt_mod_Tx==0, strata(region_nhs)
+stcox i.drug age i.sex  if rrt_mod_Tx==1, strata(region_nhs)
 
-stcox i.drug##i.age_group3 i.sex   i.region_nhs
-stcox i.drug i.sex  i.region_nhs if age_group3==0 
-stcox i.drug i.sex  i.region_nhs if age_group3==1 
-stcox i.drug i.sex  i.region_nhs if age_group3==2 
+stcox i.drug##i.years_since_rrt_5 age i.sex , strata(region_nhs)
+stcox i.drug age i.sex if years_since_rrt_5==0, strata(region_nhs)
+stcox i.drug age i.sex if years_since_rrt_5==1, strata(region_nhs)
 
-stcox i.drug##i.age_50 i.sex  i.region_nhs
-stcox i.drug i.sex  i.region_nhs if age_50==0 
-stcox i.drug i.sex  i.region_nhs if age_50==1 
-
-stcox i.drug##i.age_55 i.sex  i.region_nhs
-stcox i.drug i.sex  i.region_nhs if age_55==0 
-stcox i.drug i.sex  i.region_nhs if age_55==1 
-
-stcox i.drug##i.age_60 i.sex  i.region_nhs
-stcox i.drug i.sex  i.region_nhs if age_60==0 
-stcox i.drug i.sex  i.region_nhs if age_60==1 
-
-stcox i.drug##i.White age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if White==1 
-stcox i.drug age i.sex i.region_nhs if White==0 
-
-stcox i.drug##i.solid_cancer_new age i.sex i.region_nhs
-*stcox i.drug age i.sex  i.region_nhs if solid_cancer_new==1
-*stcox i.drug age i.sex  i.region_nhs if solid_cancer_new==0
-stcox i.drug##i.haema_disease age i.sex i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if haema_disease==1 
-stcox i.drug age i.sex  i.region_nhs if haema_disease==0 
-stcox i.drug##i.liver_disease  age i.sex i.region_nhs
-stcox i.drug  age i.sex i.region_nhs if liver_disease==1
-stcox i.drug  age i.sex i.region_nhs if liver_disease==0
-stcox i.drug##i.imid age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs  if imid==1 
-stcox i.drug age i.sex i.region_nhs  if imid==0 
-stcox i.drug##i.immunosupression_new age i.sex i.region_nhs
-stcox i.drug age i.sex i.region_nhs if immunosupression_new==1 
-stcox i.drug age i.sex i.region_nhs if immunosupression_new==0 
-stcox i.drug##i.solid_organ_new age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if solid_organ_new==1 
-stcox i.drug age i.sex i.region_nhs if solid_organ_new==0 
-stcox i.drug##i.rare_neuro age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if rare_neuro==1 
-stcox i.drug age i.sex i.region_nhs if rare_neuro==0
-
-stcox i.drug##i.bmi_g3 age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if bmi_g3==1 
-stcox i.drug age i.sex  i.region_nhs if bmi_g3==2 
-stcox i.drug age i.sex  i.region_nhs if bmi_g3==3 
-
-stcox i.drug##i.bmi_25 age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if bmi_25==0 
-stcox i.drug age i.sex i.region_nhs if bmi_25==1 
-
-stcox i.drug##i.bmi_30 age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if bmi_30==0 
-stcox i.drug age i.sex i.region_nhs if bmi_30==1 
-
-stcox i.drug##i.diabetes age i.sex  i.region_nhs
-stcox i.drug age i.sex i.region_nhs if diabetes ==0 
-stcox i.drug age i.sex i.region_nhs if diabetes ==1 
-
-stcox i.drug##i.chronic_cardiac_disease age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if chronic_cardiac_disease==0 
-stcox i.drug age i.sex  i.region_nhs if chronic_cardiac_disease==1 
-
-stcox i.drug##i.hypertension age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if hypertension==0 
-stcox i.drug age i.sex  i.region_nhs if hypertension==1 
-
-stcox i.drug##i.chronic_respiratory_disease age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if chronic_respiratory_disease==0 
-stcox i.drug age i.sex  i.region_nhs if chronic_respiratory_disease==1 
-
-stcox i.drug##i.vaccination_3 age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if vaccination_3==1 
-stcox i.drug age i.sex  i.region_nhs if vaccination_3==0 
-*stcox i.drug age i.sex if vaccination_3==0, strata(region_nhs)
-
-stcox i.drug##i.d_postest_treat_g2 age i.sex  i.region_nhs
-stcox i.drug age i.sex  i.region_nhs if d_postest_treat_g2==0 
-stcox i.drug age i.sex  i.region_nhs if d_postest_treat_g2==1 
-
-*use un-stratified fully-adjusted model*
-stcox i.drug##i.sex age downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if sex==0 
-stcox i.drug age downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if sex==1 
-
-stcox i.drug##i.age_group3 i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-*stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_group3==0 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_group3==1 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_group3==2 
-
-stcox i.drug##i.age_50 i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-*stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_50==0 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_50==1 
-
-stcox i.drug##i.age_55 i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_55==0 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_55==1 
-
-stcox i.drug##i.age_60 i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_60==0 
-stcox i.drug i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if age_60==1 
-
-stcox i.drug##i.White age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if White==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if White==0 
-
-stcox i.drug##i.solid_cancer_new age i.sex downs_syndrome  haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs 
-*stcox i.drug age i.sex downs_syndrome  haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs  if solid_cancer_new==1 
-*stcox i.drug age i.sex downs_syndrome  haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs  if solid_cancer_new==0 
-stcox i.drug##i.haema_disease age i.sex downs_syndrome solid_cancer_new  i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new  i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if haema_disease==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new  i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if haema_disease==0 
-stcox i.drug##i.liver_disease i.years_since_rrt_missing i.rrt_mod_Tx age i.sex downs_syndrome solid_cancer_new haema_disease   imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs 
-*stcox i.drug  i.years_since_rrt_missing i.rrt_mod_Tx age i.sex downs_syndrome solid_cancer_new haema_disease   imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if liver_disease==1
-stcox i.drug  i.years_since_rrt_missing i.rrt_mod_Tx age i.sex downs_syndrome solid_cancer_new haema_disease   imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if liver_disease==0
-stcox i.drug##i.imid age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease  immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease  immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if imid==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease  immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if imid==0 
-stcox i.drug##i.immunosupression_new age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if immunosupression_new==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if immunosupression_new==0 
-stcox i.drug##i.solid_organ_new age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids  rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids  rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if solid_organ_new==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids  rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if solid_organ_new==0
-stcox i.drug##i.rare_neuro age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if rare_neuro==1 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if rare_neuro==0 
-
-stcox i.drug##i.bmi_g3 age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if bmi_g3==1 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if bmi_g3==2 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if bmi_g3==3 
-
-stcox i.drug##i.bmi_25 age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs  if bmi_25==0 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs  if bmi_25==1 
-
-stcox i.drug##i.bmi_30 age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*  diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if bmi_30==0 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if bmi_30==1 
-
-stcox i.drug##i.diabetes age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing  chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if diabetes ==0 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if diabetes ==1 
-
-stcox i.drug##i.chronic_cardiac_disease age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes  hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes  hypertension chronic_respiratory_disease i.region_nhs  if chronic_cardiac_disease==0 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes  hypertension chronic_respiratory_disease i.region_nhs  if chronic_cardiac_disease==1 
-
-stcox i.drug##i.hypertension age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease  chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease  chronic_respiratory_disease  i.region_nhs if hypertension==0
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease  chronic_respiratory_disease  i.region_nhs if hypertension==1 
-
-stcox i.drug##i.chronic_respiratory_disease age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension  i.region_nhs 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension  i.region_nhs if chronic_respiratory_disease==0 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension  i.region_nhs if chronic_respiratory_disease==1 
-
-stcox i.drug##i.vaccination_3 age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing  calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing  calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if vaccination_3==1 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing  calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if vaccination_3==0 
-*stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing  calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if vaccination_3==0 
-
-stcox i.drug##i.d_postest_treat_g2 age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.region_nhs 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if d_postest_treat_g2==0 
-stcox i.drug age i.sex downs_syndrome solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx liver_disease imid immunosupression_new hiv_aids solid_organ_new rare_neuro b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.region_nhs if d_postest_treat_g2==1 
+stcox i.drug##i.calendar_date_g3 age i.sex , strata(region_nhs)
+stcox i.drug age i.sex  if calendar_date_g3==0, strata(region_nhs)
+stcox i.drug age i.sex  if calendar_date_g3==1, strata(region_nhs)
+stcox i.drug age i.sex  if calendar_date_g3==2, strata(region_nhs)
 
 
 
