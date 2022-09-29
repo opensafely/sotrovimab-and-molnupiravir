@@ -664,7 +664,9 @@ mkspline calendar_day_spline = day_after_campaign, cubic nknots(4)
 by drug,sort: sum days_since_rrt,de
 ttest days_since_rrt , by( drug )
 ranksum days_since_rrt,by(drug)
+sum months_since_rrt,de
 by drug,sort: sum months_since_rrt,de
+sum years_since_rrt,de
 by drug,sort: sum years_since_rrt,de
 by drug,sort: sum age,de
 ttest age , by( drug )
@@ -690,6 +692,7 @@ ranksum d_vaccinate_treat,by(drug)
 tab drug ukrr_2021_mod,row chi
 tab drug rrt_mod_Tx,row chi
 tab drug years_since_rrt,row chi
+tab drug years_since_rrt_missing,row chi
 tab drug sex,row chi
 tab drug ethnicity,row chi
 tab drug White,row chi
