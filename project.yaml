@@ -124,3 +124,4 @@ actions:
         log: logs/cox_ukrr.log
         figure1: output/ukrr/phtest.svg  
         figure2: output/ukrr/phtest_psw.svg
+        figure3: output/ukrr/psgraph.svg
