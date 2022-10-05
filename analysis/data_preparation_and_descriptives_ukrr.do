@@ -116,7 +116,7 @@ tab covid_test_positive covid_positive_previous_30_days,m
 *restrict start_date to 2021Dec16 to 2022Feb10*
 *loose this restriction to increase N?*
 keep if start_date>=mdy(12,16,2021)&start_date<=mdy(06,15,2022)
-drop if stp==""
+drop if region_nhs==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
 drop if molnupiravir_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<= molnupiravir_covid_therapeutics | remdesivir_covid_therapeutics<= molnupiravir_covid_therapeutics | casirivimab_covid_therapeutics<= molnupiravir_covid_therapeutics )
