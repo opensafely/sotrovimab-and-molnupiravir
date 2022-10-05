@@ -322,6 +322,7 @@ stcox i.drug age_spline* i.sex  solid_cancer_new haema_disease i.years_since_rrt
 *PSW Cox*
 stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
 psmatch2 drug age i.sex i.region_nhs if _st==1, logit
+drop psweight
 gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
 sum psweight,de
 by drug, sort: sum _pscore ,de
@@ -390,6 +391,7 @@ stcox i.drug age_spline* i.sex  solid_cancer_new haema_disease i.years_since_rrt
 stcox i.drug age_spline* i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
 *PSW Cox*
 psmatch2 drug age i.sex i.region_nhs, logit
+drop psweight
 gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
 sum psweight,de
 by drug, sort: sum _pscore ,de
@@ -629,38 +631,98 @@ stcox i.drug age i.sex i.d_postest_treat_missing i.month_after_vaccinate_missing
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  i.d_postest_treat_missing i.month_after_vaccinate_missing, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* i.d_postest_treat_missing i.month_after_vaccinate_missing, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.d_postest_treat_missing i.month_after_vaccinate_missing, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.d_postest_treat_missing i.month_after_vaccinate_missing, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.d_postest_treat_missing i.month_after_vaccinate_missing) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *excluding patients with treatment records of both sotrovimab and molnupiravir, or with treatment records of any other therapies*
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug age i.sex if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.|sotrovimab_covid_therapeutics>start_date_29|molnupiravir_covid_therapeutics>start_date_29)&paxlovid_covid_therapeutics>start_date_29&remdesivir_covid_therapeutics>start_date_29&casirivimab_covid_therapeutics>start_date_29, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.|sotrovimab_covid_therapeutics>start_date_29|molnupiravir_covid_therapeutics>start_date_29)&paxlovid_covid_therapeutics>start_date_29&remdesivir_covid_therapeutics>start_date_29&casirivimab_covid_therapeutics>start_date_29, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.|sotrovimab_covid_therapeutics>start_date_29|molnupiravir_covid_therapeutics>start_date_29)&paxlovid_covid_therapeutics>start_date_29&remdesivir_covid_therapeutics>start_date_29&casirivimab_covid_therapeutics>start_date_29, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.|sotrovimab_covid_therapeutics>start_date_29|molnupiravir_covid_therapeutics>start_date_29)&paxlovid_covid_therapeutics>start_date_29&remdesivir_covid_therapeutics>start_date_29&casirivimab_covid_therapeutics>start_date_29, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if (sotrovimab_covid_therapeutics==.|molnupiravir_covid_therapeutics==.|sotrovimab_covid_therapeutics>start_date_29|molnupiravir_covid_therapeutics>start_date_29)&paxlovid_covid_therapeutics>start_date_29&remdesivir_covid_therapeutics>start_date_29&casirivimab_covid_therapeutics>start_date_29, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *excluding patients who were identified to be pregnant at treatment initiation*
 *stcox i.drug age i.sex if pregnancy!=1, strata(region_nhs)
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if pregnancy!=1, strata(region_nhs)
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if pregnancy!=1, strata(region_nhs)
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if pregnancy!=1, strata(region_nhs)
 *additionally adjusting for rural-urban classification, other comorbidities (dementia, autism, learning disabilities, severe mental illness), and care home residency and housebound status *
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.rural_urban_with_missing autism_nhsd care_home_primis dementia_nhsd housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.rural_urban_with_missing autism_nhsd care_home_primis dementia_nhsd housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.rural_urban_with_missing autism_nhsd care_home_primis dementia_nhsd housebound_opensafely learning_disability_primis serious_mental_illness_nhsd) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *excluding patients who did not have a positive SARS-CoV-2 test record before treatment or initiated treatment after 5 days since positive SARS-CoV-2 test*
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug age i.sex if d_postest_treat>=0&d_postest_treat<=5, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if d_postest_treat>=0&d_postest_treat<=5, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if d_postest_treat>=0&d_postest_treat<=5, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if d_postest_treat>=0&d_postest_treat<=5, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if d_postest_treat>=0&d_postest_treat<=5, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *create a 1-day lag in the follow-up start date *
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug age i.sex if _t>=2, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if _t>=2, strata(region_nhs) 
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if _t>=2, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=2, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=2, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *create a 2-day lag in the follow-up start date *
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug age i.sex if _t>=3, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if _t>=3, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if _t>=3, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=3, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _t>=3, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
+stcox i.drug
 *a more strict definition of COVID-19 related death which requires COVID-19 to be the underlying cause of death*
-stcox i.drug age i.sex if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
-stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs) 
-stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
-stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
+*stset end_date ,  origin(start_date) failure(failure==1)
+*stcox i.drug age i.sex if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
+*stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs) 
+*stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
+*stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if death_with_covid_underlying_date!=.|death_with_covid_on_the_death_ce!=end_date, strata(region_nhs)
 
 *cause-specific analysis*
 gen failure_covid=(failure_allcause==1&(covid_hospitalisation_outcome_da==end_date_allcause|death_with_covid_on_the_death_ce==end_date_allcause))
@@ -675,6 +737,16 @@ stcox i.drug age i.sex b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b2.region_nhs
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _st==1, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure_covid) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date_allcause [pwei=psweight],  origin(start_date) failure(failure_covid==1)
+stcox i.drug
+
 stset end_date_allcause ,  origin(start_date) failure(failure_other==1)
 stcox i.drug age i.sex, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new , strata(region_nhs)
@@ -684,17 +756,45 @@ stcox i.drug age i.sex b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b2.region_nhs
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b2.region_nhs
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _st==1, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure_other) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date_allcause [pwei=psweight],  origin(start_date) failure(failure_other==1)
+stcox i.drug
 *Tx only*
 stset end_date_allcause if rrt_mod_Tx==1,  origin(start_date) failure(failure_covid==1)
 stcox i.drug age i.sex, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new , strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _st==1, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure_covid) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date_allcause [pwei=psweight],  origin(start_date) failure(failure_covid==1)
+stcox i.drug
+
 stset end_date_allcause if rrt_mod_Tx==1,  origin(start_date) failure(failure_other==1)
 stcox i.drug age i.sex, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new , strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline*, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if _st==1, logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure_other) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease) if _pscore!=.
+tebalance summarize
+stset end_date_allcause [pwei=psweight],  origin(start_date) failure(failure_other==1)
+stcox i.drug
 
 *stset end_date_allcause ,  origin(start_date) failure(failure_covid==1)
 *stcrreg i.drug age i.sex b2.region_nhs, compete(failure_other==1)
