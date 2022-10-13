@@ -125,3 +125,10 @@ actions:
         figure1: output/ukrr/phtest.svg  
         figure2: output/ukrr/phtest_psw.svg
         figure3: output/ukrr/psgraph.svg
+
+  multiple_imputation_ukrr:
+    run: stata-mp:latest analysis/multiple_imputation_ukrr.do
+    needs: [data_preparation_ukrr]
+    outputs:
+      moderately_sensitive:
+        log: logs/MI_ukrr.log
