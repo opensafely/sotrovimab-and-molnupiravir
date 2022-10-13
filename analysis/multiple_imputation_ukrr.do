@@ -46,8 +46,8 @@ mi estimate, hr: stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_
 mi estimate, saving(miest):   logit  drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White b5.imd i.vaccination_3 calendar_day_spline* b1.bmi_g3 diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease
 mi predict xb_mi using miest
 mi xeq: generate _pscore = invlogit(xb_mi)
-sort patid
-by patid: egen _pscore1=min(_pscore)
+sort patient_id
+by patient_id: egen _pscore1=min(_pscore)
 gen psweight=cond( drug ==1,1/_pscore1,1/(1-_pscore1)) if _pscore1!=.
 sum psweight,de
 by drug, sort: sum _pscore1 ,de
