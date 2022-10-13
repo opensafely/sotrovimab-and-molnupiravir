@@ -433,11 +433,11 @@ stcox i.drug
 
 
 *subgroup analysis*
+stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug##i.rrt_mod_Tx age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if rrt_mod_Tx==0, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if rrt_mod_Tx==1, strata(region_nhs)
 
-stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug##i.sex age  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
 stcox i.drug age  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if sex==0, strata(region_nhs)
 stcox i.drug age  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if sex==1, strata(region_nhs)
@@ -660,10 +660,26 @@ stcox i.drug
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  if pregnancy!=1, strata(region_nhs)
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* if pregnancy!=1, strata(region_nhs)
 *stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if pregnancy!=1, strata(region_nhs)
-*additionally adjusting for rural-urban classification, other comorbidities (dementia, autism, learning disabilities, severe mental illness), and care home residency and housebound status *
+*using Cox models with calendar date as the underlying time scale*
+gen campaign_start_date=mdy(12,16,2021)
+stset end_date ,  origin(campaign_start_date) enter(start_date) failure(failure==1)
+stcox i.drug age i.sex , strata(region_nhs)
+stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  , strata(region_nhs)
+stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 , strata(region_nhs)
+stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease , strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease , logit
+drop psweight
+gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
+sum psweight,de
+by drug, sort: sum _pscore ,de
+teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease ) if _pscore!=.
+tebalance summarize
+stset end_date [pwei=psweight],  origin(campaign_start_date) enter(start_date) failure(failure==1)
+stcox i.drug
+*additionally adjusting for rural-urban classification, other comorbidities (learning disabilities, severe mental illness), and care home residency and housebound status *
 stset end_date ,  origin(start_date) failure(failure==1)
-stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.rural_urban_with_missing autism_nhsd care_home_primis dementia_nhsd housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, strata(region_nhs)
-psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.rural_urban_with_missing autism_nhsd care_home_primis dementia_nhsd housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, logit
+stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.rural_urban_with_missing  care_home_primis  housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, strata(region_nhs)
+psmatch2 drug age i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease  i.rural_urban_with_missing  care_home_primis  housebound_opensafely learning_disability_primis serious_mental_illness_nhsd, logit
 drop psweight
 gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
 sum psweight,de
