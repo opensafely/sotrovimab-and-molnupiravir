@@ -85,7 +85,7 @@ tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 *restrict start_date to 2021Dec16 to 2022Feb10*
 *loose this restriction to increase N?*
-keep if start_date>=mdy(02,16,2022)&start_date<=mdy(05,01,2022)
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
 drop if sotrovimab_covid_therapeutics!=. & ( paxlovid_covid_therapeutics<=sotrovimab_covid_therapeutics| remdesivir_covid_therapeutics<=sotrovimab_covid_therapeutics| casirivimab_covid_therapeutics<=sotrovimab_covid_therapeutics)
@@ -677,43 +677,6 @@ stset end_date ,  origin(start_date) failure(failure==1)
 stcox drug
 tab failure drug if high_risk_group_new==1,m col
 tab failure drug if high_risk_group_new==0,m col
-
-by drug,sort: sum age if high_risk_group_new==0,de
-by drug,sort: sum bmi if high_risk_group_new==0,de
-by drug,sort: sum d_postest_treat if high_risk_group_new==0,de
-by drug,sort: sum week_after_campaign if high_risk_group_new==0,de
-by drug,sort: sum week_after_vaccinate if high_risk_group_new==0,de
-by drug,sort: sum d_vaccinate_treat if high_risk_group_new==0,de
-
-tab drug sex if high_risk_group_new==0,row chi
-tab drug White if high_risk_group_new==0,row chi
-tab drug imd if high_risk_group_new==0,row chi
-tab drug region_nhs if high_risk_group_new==0,row chi
-tab drug age_group3  if high_risk_group_new==0,row chi
-tab drug d_postest_treat_g2  if high_risk_group_new==0,row chi
-tab drug d_postest_treat  if high_risk_group_new==0,row
-tab drug downs_therapeutics  if high_risk_group_new==0,row
-tab drug solid_cancer_therapeutics  if high_risk_group_new==0,row
-tab drug haema_disease_therapeutics  if high_risk_group_new==0,row
-tab drug renal_therapeutics  if high_risk_group_new==0,row
-tab drug liver_therapeutics  if high_risk_group_new==0,row
-tab drug imid_therapeutics  if high_risk_group_new==0,row
-tab drug immunosup_therapeutics  if high_risk_group_new==0,row
-tab drug hiv_aids_therapeutics  if high_risk_group_new==0,row
-tab drug solid_organ_therapeutics  if high_risk_group_new==0,row
-tab drug rare_neuro_therapeutics  if high_risk_group_new==0,row
-tab drug autism_nhsd  if high_risk_group_new==0,row chi
-tab drug care_home_primis  if high_risk_group_new==0,row chi
-tab drug dementia_nhsd  if high_risk_group_new==0,row chi
-tab drug housebound_opensafely  if high_risk_group_new==0,row chi
-tab drug learning_disability_primis  if high_risk_group_new==0,row chi
-tab drug serious_mental_illness_nhsd  if high_risk_group_new==0,row chi
-tab drug bmi_group4  if high_risk_group_new==0,row chi
-tab drug diabetes  if high_risk_group_new==0,row chi
-tab drug chronic_cardiac_disease  if high_risk_group_new==0,row chi
-tab drug hypertension  if high_risk_group_new==0,row chi
-tab drug chronic_respiratory_disease  if high_risk_group_new==0,row chi
-tab drug vaccination_status  if high_risk_group_new==0,row chi
 
 *check treatment status*
 count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_approved
