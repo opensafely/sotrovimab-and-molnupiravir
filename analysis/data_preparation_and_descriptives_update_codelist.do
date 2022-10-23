@@ -445,20 +445,19 @@ replace oral_steroid_drugs_nhsd=. if oral_steroid_drug_nhsd_3m_count < 2 & oral_
 gen imid_nhsd=min(oral_steroid_drugs_nhsd, immunosuppresant_drugs_nhsd)
 gen rare_neuro_nhsd = min(multiple_sclerosis_nhsd, motor_neurone_disease_nhsd, myasthenia_gravis_nhsd, huntingtons_disease_nhsd)
 
-*high risk group only based on codelists*
-gen downs_syndrome=(downs_syndrome_nhsd<=start_date)
-gen solid_cancer=(cancer_opensafely_snomed<=start_date)
-gen solid_cancer_new=(cancer_opensafely_snomed_new<=start_date)
-gen haema_disease=( haematological_disease_nhsd <=start_date)
-gen renal_disease=( ckd_stage_5_nhsd <=start_date)
-gen liver_disease=( liver_disease_nhsd <=start_date)
-gen imid=( imid_nhsd <=start_date)
-gen immunosupression=( immunosupression_nhsd <=start_date)
-gen immunosupression_new=( immunosupression_nhsd_new <=start_date)
-gen hiv_aids=( hiv_aids_nhsd <=start_date)
-gen solid_organ=( solid_organ_transplant_nhsd<=start_date)
-gen solid_organ_new=( solid_organ_transplant_nhsd_new<=start_date)
-gen rare_neuro=( rare_neuro_nhsd <=start_date)
+gen downs_syndrome=(downs_syndrome_nhsd<=start_date|downs_therapeutics==1)
+gen solid_cancer=(cancer_opensafely_snomed<=start_date|solid_cancer_therapeutics==1)
+gen solid_cancer_new=(cancer_opensafely_snomed_new<=start_date|solid_cancer_therapeutics==1)
+gen haema_disease=( haematological_disease_nhsd <=start_date|haema_disease_therapeutics==1)
+gen renal_disease=( ckd_stage_5_nhsd <=start_date|renal_therapeutics==1)
+gen liver_disease=( liver_disease_nhsd <=start_date|liver_therapeutics==1)
+gen imid=( imid_nhsd <=start_date|imid_therapeutics==1)
+gen immunosupression=( immunosupression_nhsd <=start_date|immunosup_therapeutics==1)
+gen immunosupression_new=( immunosupression_nhsd_new <=start_date|immunosup_therapeutics==1)
+gen hiv_aids=( hiv_aids_nhsd <=start_date|hiv_aids_therapeutics==1)
+gen solid_organ=( solid_organ_transplant_nhsd<=start_date|solid_organ_therapeutics==1)
+gen solid_organ_new=( solid_organ_transplant_nhsd_new<=start_date|solid_organ_therapeutics==1)
+gen rare_neuro=( rare_neuro_nhsd <=start_date|rare_neuro_therapeutics==1)
 gen high_risk_group=(( downs_syndrome + solid_cancer + haema_disease + renal_disease + liver_disease + imid + immunosupression + hiv_aids + solid_organ + rare_neuro )>0)
 tab high_risk_group,m
 gen high_risk_group_new=(( downs_syndrome + solid_cancer_new + haema_disease + renal_disease + liver_disease + imid + immunosupression_new + hiv_aids + solid_organ_new + rare_neuro )>0)
@@ -673,10 +672,6 @@ tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
 *tab drug variant_recorded ,row chi
 by drug, sort: tab variant_recorded
-stset end_date ,  origin(start_date) failure(failure==1)
-stcox drug
-tab failure drug if high_risk_group_new==1,m col
-tab failure drug if high_risk_group_new==0,m col
 
 *check treatment status*
 count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_approved
