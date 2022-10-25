@@ -132,3 +132,10 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/MI_ukrr.log
+
+  generate_study_population_ukrr_update:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ukrr_update
+    outputs:
+      highly_sensitive:
+        cohort: output/ukrr/input_ukrr_update.csv
+        
