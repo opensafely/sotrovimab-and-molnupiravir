@@ -222,7 +222,7 @@ count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcom
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(08,10,2022)
+gen study_end_date=mdy(09,14,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
