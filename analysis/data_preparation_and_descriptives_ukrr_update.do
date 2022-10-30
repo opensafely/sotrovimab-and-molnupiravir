@@ -27,8 +27,8 @@ clear
 
 * import dataset
 import delimited ./output/ukrr/input_ukrr_update.csv, delimiter(comma) varnames(1) case(preserve) 
-describe
-codebook
+*describe
+*codebook
 
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
@@ -222,7 +222,7 @@ count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcom
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(27,10,2022)
+gen study_end_date=mdy(10,27,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
