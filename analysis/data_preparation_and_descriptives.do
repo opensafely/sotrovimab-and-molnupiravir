@@ -84,7 +84,6 @@ keep if registered_treated==1
 tab covid_test_positive covid_positive_previous_30_days,m
 *keep if covid_test_positive==1 & covid_positive_previous_30_days==0
 *restrict start_date to 2021Dec16 to 2022Feb10*
-*loose this restriction to increase N?*
 keep if start_date>=mdy(12,16,2021)&start_date<=mdy(02,10,2022)
 drop if stp==""
 *exclude those with other drugs before sotro or molnu, and those receiving sotro and molnu on the same day*
@@ -124,12 +123,6 @@ count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_dat
 count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date0==covid_hosp_discharge_date0&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_discharge_date1&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
-*check if any patient discharged in AM and admitted in PM*
-count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date1==.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date1!=.
-count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2!=.&covid_hosp_discharge_date2==.
-count if covid_hosp_outcome_date2!=.&covid_hosp_outcome_date2>covid_hosp_discharge_date2
 *ignore day cases and mab procedures in day 0/1*
 replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
 replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
