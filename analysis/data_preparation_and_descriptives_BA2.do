@@ -1,16 +1,16 @@
 ********************************************************************************
 *
-*	Do-file:		data preparation and descriptives.do
+*	Do-file:		data preparation and descriptives_BA2.do
 *
 *	Project:		sotrovimab-and-molnupiravir
 *
 *	Programmed by:	Bang Zheng
 *
-*	Data used:		output/input.csv
+*	Data used:		output/BA2/input_BA2.csv
 *
-*	Data created:	output/main.dta  (main analysis dataset)
+*	Data created:	output/BA2/main_BA2.dta  (main analysis dataset)
 *
-*	Other output:	logs/data_preparation.log
+*	Other output:	logs/data_preparation_BA2.log
 *
 ********************************************************************************
 *
@@ -60,17 +60,6 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
   format %td `var'
   }
 }
-*the following date variables had no observation*
-*hiv_aids_nhsd_icd10
-*transplant_all_y_codes_opcs4
-*transplant_thymus_opcs4
-*transplant_conjunctiva_y_code_op
-*transplant_conjunctiva_opcs4
-*transplant_stomach_opcs4
-*transplant_ileum_1_Y_codes_opcs4
-*transplant_ileum_2_Y_codes_opcs4
-*transplant_ileum_1_opcs4
-*transplant_ileum_2_opcs4
 
 
 *exclusion criteria*
@@ -124,12 +113,6 @@ count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_dat
 count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_date_mabs_procedure!=.&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date0==covid_hosp_discharge_date0&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_discharge_date1&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
-*check if any patient discharged in AM and admitted in PM*
-count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date1==.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date1!=.
-count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2!=.&covid_hosp_discharge_date2==.
-count if covid_hosp_outcome_date2!=.&covid_hosp_outcome_date2>covid_hosp_discharge_date2
 *ignore day cases and mab procedures in day 0/1*
 replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
 replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
