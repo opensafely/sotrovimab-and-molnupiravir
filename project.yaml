@@ -61,21 +61,6 @@ actions:
         figure2: output/update_codelist/phtest_psw.svg
 
 
-  generate_study_population_Paxlovid:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_Paxlovid
-    outputs:
-      highly_sensitive:
-        cohort: output/Paxlovid/input_Paxlovid.csv
-
-  data_preparation_Paxlovid:
-    run: stata-mp:latest analysis/data_preparation_and_descriptives_Paxlovid.do
-    needs: [generate_study_population_Paxlovid]
-    outputs:
-      moderately_sensitive:
-        log: logs/data_preparation_Paxlovid.log
-      highly_sensitive:
-        data: output/Paxlovid/main_Paxlovid.dta
-
   generate_study_population_BA2:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_BA2
     outputs:
