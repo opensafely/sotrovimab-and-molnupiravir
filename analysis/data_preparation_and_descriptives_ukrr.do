@@ -27,7 +27,7 @@ clear
 
 * import dataset
 import delimited ./output/ukrr/input_ukrr.csv, delimiter(comma) varnames(1) case(preserve) 
-describe
+*describe
 
 *describe ukrr cohorts*
 tab ukrr_2020,m
