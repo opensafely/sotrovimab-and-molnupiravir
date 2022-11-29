@@ -29,6 +29,20 @@ clear
 import delimited ./output/ukrr/input_ukrr.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
 
+*describe ukrr cohorts*
+tab ukrr_2020,m
+tab ukrr_2021,m
+tab ukrr_ckd2020,m
+tab ukrr_inc2020,m
+tab ukrr_2021 ukrr_2020, row 
+tab ukrr_2021 ukrr_ckd2020, row 
+tab ukrr_2021 ukrr_inc2020, row 
+tab ukrr_2020 ukrr_ckd2020,row
+tab ukrr_inc2020 ukrr_ckd2020,row
+tab ukrr_2020 ukrr_inc2020,row
+*keep ukrr 2021 prevalent cohort*
+keep if ukrr_2021==1
+
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
         casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
@@ -75,19 +89,6 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 *check hosp/death event date range*
 codebook covid_hosp_outcome_date2 hospitalisation_outcome_date2 death_date
 
-*describe ukrr cohorts*
-tab ukrr_2020,m
-tab ukrr_2021,m
-tab ukrr_ckd2020,m
-tab ukrr_inc2020,m
-tab ukrr_2021 ukrr_2020, row 
-tab ukrr_2021 ukrr_ckd2020, row 
-tab ukrr_2021 ukrr_inc2020, row 
-tab ukrr_2020 ukrr_ckd2020,row
-tab ukrr_inc2020 ukrr_ckd2020,row
-tab ukrr_2020 ukrr_inc2020,row
-*keep ukrr 2021 prevalent cohort*
-keep if ukrr_2021==1
 
 *describe COVID therapy*
 tab covid_test_positive,m
@@ -224,7 +225,7 @@ count if covid_hosp_outcome_date2>covid_hosp_outcome_day_date2&covid_hosp_outcom
 
 
 *define outcome and follow-up time*
-gen study_end_date=mdy(09,14,2022)
+gen study_end_date=mdy(09,30,2022)
 gen start_date_29=start_date+28
 by drug, sort: count if covid_hospitalisation_outcome_da!=.
 by drug, sort: count if death_with_covid_on_the_death_ce!=.
@@ -638,7 +639,7 @@ gen vaccination_status=vaccination_status_g5
 replace vaccination_status=3 if vaccination_status_g5==4
 label define vac 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three or more vaccinations"
 label values vaccination_status vac
-gen pre_infection=(covid_test_positive_previous_dat<=(covid_test_positive_date - 30 days)&covid_test_positive_previous_dat>mdy(1,1,2020)&covid_test_positive_previous_dat!=.)
+gen pre_infection=(covid_test_positive_previous_dat<=(covid_test_positive_date - 30)&covid_test_positive_previous_dat>mdy(1,1,2020)&covid_test_positive_previous_dat!=.)
 tab pre_infection,m
 
 tab sgtf,m
