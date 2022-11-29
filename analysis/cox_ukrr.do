@@ -640,6 +640,9 @@ teffects ipw (failure) (drug age i.sex i.region_nhs  solid_cancer_new haema_dise
 tebalance summarize
 stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
 stcox i.drug
+*additionally adjusting for fourth dose vaccination and pre-infection *
+stset end_date ,  origin(start_date) failure(failure==1)
+stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing b4.vaccination_status_g5 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease i.pre_infection i.month_after_vaccinate_missing, strata(region_nhs)
 *use age splines*
 psmatch2 drug age_spline* i.sex i.region_nhs  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, logit
 drop psweight
