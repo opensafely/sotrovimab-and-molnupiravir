@@ -28,14 +28,13 @@ clear
 * import dataset
 import delimited ./output/ukrr/input_ukrr.csv, delimiter(comma) varnames(1) case(preserve) 
 describe
-codebook
 
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
         casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
 		molnupiravir_covid_approved molnupiravir_covid_complete molnupiravir_covid_not_start molnupiravir_covid_stopped ///
         covid_test_positive_date covid_test_positive_date2 covid_symptoms_snomed last_vaccination_date primary_covid_hospital_discharge ///
-	   any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed cancer_opensafely_snomed_new ///
+	   primary_covid_hospital_admission any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed cancer_opensafely_snomed_new ///
 	   haematopoietic_stem_cell_snomed haematopoietic_stem_cell_icd10 haematopoietic_stem_cell_opcs4 ///
 	   haematological_malignancies_snom haematological_malignancies_icd1 sickle_cell_disease_nhsd_snomed sickle_cell_disease_nhsd_icd10 ///
 	   ckd_stage_5_nhsd_snomed ckd_stage_5_nhsd_icd10 liver_disease_nhsd_snomed liver_disease_nhsd_icd10 immunosuppresant_drugs_nhsd ///
@@ -72,6 +71,9 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 *transplant_ileum_2_Y_codes_opcs4
 *transplant_ileum_1_opcs4
 *transplant_ileum_2_opcs4
+
+*check hosp/death event date range*
+codebook covid_hosp_outcome_date2 hospitalisation_outcome_date2 death_date
 
 *describe ukrr cohorts*
 tab ukrr_2020,m
@@ -155,11 +157,11 @@ count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_dat
 count if covid_hosp_outcome_date0==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date0==covid_hosp_discharge_date0&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 count if covid_hosp_outcome_date1==covid_hosp_date_mabs_procedure&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date1==covid_hosp_discharge_date1&sotrovimab_covid_therapeutics==.&casirivimab_covid_therapeutics==.
 *check if any patient discharged in AM and admitted in PM*
-count if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.&covid_hosp_outcome_date1==.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date1!=.
-count if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.&covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2==.&covid_hosp_discharge_date2!=.
-count if covid_hosp_outcome_date2!=.&covid_hosp_discharge_date2==.
-count if covid_hosp_outcome_date2!=.&covid_hosp_outcome_date2>covid_hosp_discharge_date2
+count if primary_covid_hospital_admission!=.&primary_covid_hospital_discharge==.
+count if primary_covid_hospital_admission==.&primary_covid_hospital_discharge!=.
+count if primary_covid_hospital_admission!=.&primary_covid_hospital_discharge!=.&primary_covid_hospital_admission==primary_covid_hospital_discharge
+count if primary_covid_hospital_admission!=.&primary_covid_hospital_discharge!=.&primary_covid_hospital_admission<primary_covid_hospital_discharge
+count if primary_covid_hospital_admission!=.&primary_covid_hospital_discharge!=.&primary_covid_hospital_admission>primary_covid_hospital_discharge
 *ignore day cases and mab procedures in day 0/1*
 replace covid_hosp_outcome_date0=. if covid_hosp_outcome_date0==covid_hosp_discharge_date0&covid_hosp_outcome_date0!=.
 replace covid_hosp_outcome_date1=. if covid_hosp_outcome_date1==covid_hosp_discharge_date1&covid_hosp_outcome_date1!=.
@@ -622,15 +624,23 @@ tab hypertension,m
 tab chronic_respiratory_disease,m
 *vac and variant*
 tab vaccination_status,m
-rename vaccination_status vaccination_status_g5
-gen vaccination_status=0 if vaccination_status_g5=="Un-vaccinated"|vaccination_status_g5=="Un-vaccinated (declined)"
-replace vaccination_status=1 if vaccination_status_g5=="One vaccination"
-replace vaccination_status=2 if vaccination_status_g5=="Two vaccinations"
-replace vaccination_status=3 if vaccination_status_g5=="Three or more vaccinations"
+rename vaccination_status vaccination_status_str
+gen vaccination_status_g5=0 if vaccination_status_str=="Un-vaccinated"|vaccination_status_str=="Un-vaccinated (declined)"
+replace vaccination_status_g5=1 if vaccination_status_str=="One vaccination"
+replace vaccination_status_g5=2 if vaccination_status_str=="Two vaccinations"
+replace vaccination_status_g5=3 if vaccination_status_str=="Three vaccinations"
+replace vaccination_status_g5=4 if vaccination_status_str=="Four or more vaccinations"
+label define vac_g5 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three vaccinations" 4 "Four or more vaccinations"
+label values vaccination_status_g5 vac_g5
+gen vaccination_3=1 if vaccination_status_g5==3|vaccination_status_g5==4
+replace vaccination_3=0 if vaccination_status_g5<3
+gen vaccination_status=vaccination_status_g5 
+replace vaccination_status=3 if vaccination_status_g5==4
 label define vac 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "Three or more vaccinations"
 label values vaccination_status vac
-gen vaccination_3=1 if vaccination_status==3
-replace vaccination_3=0 if vaccination_status<3
+gen pre_infection=(covid_test_positive_previous_dat<=(covid_test_positive_date - 30 days)&covid_test_positive_previous_dat>mdy(1,1,2020)&covid_test_positive_previous_dat!=.)
+tab pre_infection,m
+
 tab sgtf,m
 tab sgtf_new, m
 label define sgtf_new 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
@@ -735,11 +745,13 @@ tab drug chronic_cardiac_disease ,row chi
 tab drug hypertension ,row chi
 tab drug chronic_respiratory_disease ,row chi
 tab drug vaccination_status ,row chi
+tab drug vaccination_status_g5 ,row chi
 tab drug month_after_vaccinate,row chi
 tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
 *tab drug variant_recorded ,row chi
 by drug, sort: tab variant_recorded
+tab drug pre_infection,row chi
 
 *check treatment status*
 count if drug==0&molnupiravir_covid_therapeutics==molnupiravir_covid_approved
