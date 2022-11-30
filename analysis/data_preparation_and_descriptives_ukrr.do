@@ -666,7 +666,7 @@ tab month_after_campaign,m
 gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
 tab week_after_campaign,m
 *combine 6 and 7 due to small N*
-replace month_after_campaign=6 if month_after_campaign==7
+*replace month_after_campaign=6 if month_after_campaign==7
 gen day_after_campaign=start_date-mdy(12,15,2021)
 sum day_after_campaign,de
 mkspline calendar_day_spline = day_after_campaign, cubic nknots(4)
@@ -748,6 +748,7 @@ tab drug chronic_respiratory_disease ,row chi
 tab drug vaccination_status ,row chi
 tab drug vaccination_status_g5 ,row chi
 tab drug month_after_vaccinate,row chi
+tab drug month_after_campaign,row chi
 tab drug sgtf ,row chi
 tab drug sgtf_new ,row chi
 *tab drug variant_recorded ,row chi
