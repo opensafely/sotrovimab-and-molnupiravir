@@ -526,7 +526,7 @@ stcox i.drug##i.years_since_rrt_5 age i.sex  solid_cancer_new haema_disease   i.
 stcox i.drug age i.sex  solid_cancer_new haema_disease   i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if years_since_rrt_5==0, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease  i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3 calendar_day_spline* b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if years_since_rrt_5==1, strata(region_nhs)
 
-gen calendar_date_g3=(start_date>=mdy(2,16,2022))+(start_date>=mdy(5,1,2022))
+gen calendar_date_g3=(start_date>=mdy(2,16,2022))+(start_date>=mdy(6,1,2022))
 tab drug calendar_date_g3,row chi
 stcox i.drug##i.calendar_date_g3 age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3   b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease, strata(region_nhs)
 stcox i.drug age i.sex  solid_cancer_new haema_disease i.years_since_rrt_missing i.rrt_mod_Tx  imid immunosupression_new  solid_organ_new  b1.White_with_missing b5.imd_with_missing i.vaccination_3   b1.bmi_g3_with_missing diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease if calendar_date_g3==0, strata(region_nhs)
