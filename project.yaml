@@ -149,3 +149,10 @@ actions:
         figure1: output/ukrr/phtest_update.svg  
         figure2: output/ukrr/phtest_psw_update.svg
         figure3: output/ukrr/psgraph_update.svg
+
+  anaphylaxis:
+    run: stata-mp:latest analysis/anaphylaxis.do
+    needs: [generate_study_population_ukrr_update]
+    outputs:
+      moderately_sensitive:
+        log: logs/anaphylaxis.log
