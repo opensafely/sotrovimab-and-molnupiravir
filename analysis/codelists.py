@@ -6,6 +6,18 @@ from cohortextractor import (codelist, codelist_from_csv, combine_codelists)
 
 
 # --- CODELISTS ---
+#anaphylaxis
+anaphylaxis_snomed_codes=codelist_from_csv(
+    "codelists/user-katiebechman-anaphylaxis-snomed.csv",
+    system="snomed",
+    column="code"
+)
+anaphylaxis_icd10_codes=codelist_from_csv(
+    "codelists/user-katiebechman-anaphylaxis.csv",
+    system="icd10",
+    column="code"
+)
+
 #SUS-HES mabs
 mabs_procedure_codes = codelist(
   ["X891", "X892"], system="opcs4"
