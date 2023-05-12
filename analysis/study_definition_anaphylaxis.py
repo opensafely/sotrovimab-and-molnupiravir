@@ -759,13 +759,6 @@ study = StudyDefinition(
 
 
   ## GP records
-  GP_allcause = patients.with_these_clinical_events(
-    anaphylaxis_snomed_codes,
-    on_or_after = "start_date",
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    find_first_match_in_period = True,
-  ),
   GP_anaph = patients.with_these_clinical_events(
     anaphylaxis_snomed_codes,
     on_or_after = "start_date",
