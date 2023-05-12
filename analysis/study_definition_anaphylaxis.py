@@ -509,6 +509,20 @@ study = StudyDefinition(
 
 
 # hosp
+  hospitalisation_allcause = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "start_date",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.6
+    },
+  ),
   hospitalisation_anaph = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_diagnoses = anaphylaxis_icd10_codes,
@@ -656,6 +670,17 @@ study = StudyDefinition(
 
 
   ## A&E
+  AE_allcause = patients.attended_emergency_care(
+          returning="date_arrived",
+          on_or_after = "start_date",
+          date_format="YYYY-MM-DD",
+          find_first_match_in_period = True,
+          return_expectations={
+            "date": {"earliest": "2022-02-18"},
+            "rate": "uniform",
+            "incidence": 0.05,
+          },
+  ),  
   AE_anaph = patients.attended_emergency_care(
           returning="date_arrived",
           on_or_after = "start_date",
@@ -734,6 +759,13 @@ study = StudyDefinition(
 
 
   ## GP records
+  GP_allcause = patients.with_these_clinical_events(
+    anaphylaxis_snomed_codes,
+    on_or_after = "start_date",
+    returning = "date",
+    date_format = "YYYY-MM-DD",
+    find_first_match_in_period = True,
+  ),
   GP_anaph = patients.with_these_clinical_events(
     anaphylaxis_snomed_codes,
     on_or_after = "start_date",
