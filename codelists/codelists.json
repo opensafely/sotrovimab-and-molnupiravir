@@ -401,6 +401,18 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/hypertension-snomed/2020-04-28/",
       "downloaded_at": "2022-03-31 23:27:44.892376Z",
       "sha": "5d5471bb6a8a01e362b191b3eb8e80c2febeb1da"
+    },
+    "user-katiebechman-anaphylaxis.csv": {
+      "id": "user/katiebechman/anaphylaxis/3ea7fc86",
+      "url": "https://codelists.opensafely.org/codelist/user/katiebechman/anaphylaxis/3ea7fc86/",
+      "downloaded_at": "2023-05-10 18:24:08.819245Z",
+      "sha": "6dc8f35faa9356b30b7d84701d124627d4c37062"
+    },
+    "user-katiebechman-anaphylaxis-snomed.csv": {
+      "id": "user/katiebechman/anaphylaxis-snomed/25988951",
+      "url": "https://codelists.opensafely.org/codelist/user/katiebechman/anaphylaxis-snomed/25988951/",
+      "downloaded_at": "2023-05-10 18:24:09.173574Z",
+      "sha": "a7d0ddbdb758bd43ca3c54a5e4adba9eae5412a1"
     }
   }
 }
