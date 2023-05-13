@@ -26,34 +26,20 @@ log using ./logs/anaphylaxis, replace t
 clear
 
 * import dataset
-import delimited ./output/ukrr/input_ukrr_update.csv, delimiter(comma) varnames(1) case(preserve) 
+import delimited ./output/input_anaphylaxis.csv, delimiter(comma) varnames(1) case(preserve) 
 
 *codebook
 keep if sotrovimab_covid_therapeutics!=""|molnupiravir_covid_therapeutics!=""|paxlovid_covid_therapeutics!=""
+codebook
 
 *  Convert strings to dates  *
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
         casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
-		molnupiravir_covid_approved molnupiravir_covid_complete molnupiravir_covid_not_start molnupiravir_covid_stopped ///
-        covid_test_positive_date covid_test_positive_date2 covid_symptoms_snomed last_vaccination_date primary_covid_hospital_discharge ///
-	   any_covid_hospital_discharge_dat preg_36wks_date death_date dereg_date downs_syndrome_nhsd_snomed downs_syndrome_nhsd_icd10 cancer_opensafely_snomed cancer_opensafely_snomed_new ///
-	   haematopoietic_stem_cell_snomed haematopoietic_stem_cell_icd10 haematopoietic_stem_cell_opcs4 ///
-	   haematological_malignancies_snom haematological_malignancies_icd1 sickle_cell_disease_nhsd_snomed sickle_cell_disease_nhsd_icd10 ///
-	   ckd_stage_5_nhsd_snomed ckd_stage_5_nhsd_icd10 liver_disease_nhsd_snomed liver_disease_nhsd_icd10 immunosuppresant_drugs_nhsd ///
-	   oral_steroid_drugs_nhsd immunosupression_nhsd immunosupression_nhsd_new hiv_aids_nhsd_snomed  solid_organ_transplant_nhsd_snom solid_organ_nhsd_snomed_new ///
-	   solid_organ_transplant_nhsd_opcs multiple_sclerosis_nhsd_snomed multiple_sclerosis_nhsd_icd10 ///
-	   motor_neurone_disease_nhsd_snome motor_neurone_disease_nhsd_icd10 myasthenia_gravis_nhsd_snomed myasthenia_gravis_nhsd_icd10 ///
-	   huntingtons_disease_nhsd_snomed huntingtons_disease_nhsd_icd10 bmi_date_measured covid_positive_test_30_days_post covid_test_positive_previous_dat ///
-	   covid_hosp_outcome_date0 covid_hosp_outcome_date1 covid_hosp_outcome_date2 covid_hosp_discharge_date0 covid_hosp_discharge_date1 covid_hosp_discharge_date2 ///
-	   covid_hosp_date_emergency0 covid_hosp_date_emergency1 covid_hosp_date_emergency2 covid_emerg_discharge_date0 covid_emerg_discharge_date1 covid_emerg_discharge_date2 ///
-	   covid_hosp_date_mabs_procedure covid_hosp_date_mabs_not_pri covid_hosp_date0_not_primary covid_hosp_date1_not_primary covid_hosp_date2_not_primary ///
-	   covid_discharge_date0_not_pri covid_discharge_date1_not_pri covid_discharge_date2_not_pri death_with_covid_on_the_death_ce death_with_covid_underlying_date hospitalisation_outcome_date0 ///
-	   hospitalisation_outcome_date1 hospitalisation_outcome_date2 hosp_discharge_date0 hosp_discharge_date1 hosp_discharge_date2 covid_hosp_date_mabs_all_cause date_treated start_date ///
-	   downs_syndrome_nhsd haematological_disease_nhsd ckd_stage_5_nhsd liver_disease_nhsd hiv_aids_nhsd solid_organ_transplant_nhsd solid_organ_transplant_nhsd_new ///
-	   multiple_sclerosis_nhsd motor_neurone_disease_nhsd myasthenia_gravis_nhsd huntingtons_disease_nhsd sickle_cell_disease_nhsd covid_hosp_date_mabs_day ///
-	   covid_hosp_outcome_day_date0 covid_hosp_outcome_day_date1 covid_hosp_outcome_day_date2 covid_hosp_discharge_day_date0 covid_hosp_discharge_day_date1 covid_hosp_discharge_day_date2 ///
-	   covid_hosp_venti_opcs covid_hosp_venti_not_pri_opcs hosp_venti_opcs covid_hosp_crit_care_opcs covid_hosp_crit_care_not_pri_opc hosp_crit_care_opcs ///
-	   ukrr_2020_startdate ukrr_2021_startdate ukrr_inc2020_date {
+        last_vaccination_date death_date dereg_date date_treated start_date death_with_anaphylaxis_date death_with_anaph_underly_date death_with_anaphylaxis_date2 ///
+		death_with_anaph_underly_date2 death_with_anaphylaxis_date3 death_with_anaphylaxis_date_pre death_with_anaph_underly_date_pre hospitalisation_anaph ///
+		hosp_discharge_anaph hospitalisation_anaph_underly hospitalisation_anaph2 hospitalisation_anaph_underly2 hospitalisation_anaph3 hospitalisation_anaph_pre ///
+		hosp_anaph_underly_pre AE_anaph AE_anaph2 AE_anaph3 AE_anaph4 AE_anaph_pre AE_anaph2_pre GP_anaph GP_anaph2 GP_anaph_pre GP_anaph2_pre hospitalisation_allcause ///
+		AE_allcause {
   capture confirm string variable `var'
   if _rc==0 {
   rename `var' a
@@ -76,23 +62,29 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 
 *describe
 *check hosp/death event date range*
-codebook  covid_hosp_outcome_date2 death_date
-sum covid_hosp_outcome_date2  
+codebook  hospitalisation_allcause AE_allcause death_date last_vaccination_date 
+sum hospitalisation_allcause,format
 
 
 *describe COVID therapy*
 gen treated=(date_treated!=.)
-gen sotro=(sotrovimab_covid_therapeutics== start_date)
-gen mol=(molnupiravir_covid_therapeutics== start_date)
-gen cas=(casirivimab_covid_therapeutics== start_date)
-gen pax=(paxlovid_covid_therapeutics== start_date)
-gen rem=(remdesivir_covid_therapeutics== start_date)
-tab sotro ,m
-tab mol ,m 
-tab cas ,m
-tab pax ,m
-tab rem ,m
+gen sotrovimab=(sotrovimab_covid_therapeutics== start_date)
+gen molnupiravir=(molnupiravir_covid_therapeutics== start_date)
+gen casirivimab=(casirivimab_covid_therapeutics== start_date)
+gen paxlovid=(paxlovid_covid_therapeutics== start_date)
+gen remdesivir=(remdesivir_covid_therapeutics== start_date)
+tab sotrovimab ,m
+tab molnupiravir ,m 
+tab casirivimab ,m
+tab paxlovid ,m
+tab remdesivir ,m
 keep if treated==1
+count if sotrovimab==1&molnupiravir==1
+count if paxlovid==1&molnupiravir==1
+count if sotrovimab==1&paxlovid==1
+count if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
+count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics
+count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics
 
 *exclusion criteria*
 sum age,de
@@ -103,20 +95,71 @@ tab has_died,m
 *keep if has_died==0
 tab registered_treated,m
 *keep if registered_treated==1
-keep if start_date>=mdy(12,16,2021)&start_date<=mdy(04,08,2023)
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(05,13,2023)
 
-*count primary diagnosis *
-tab hospitalisation_primary_code1 if sotro==1,m
-tab hospitalisation_primary_code2 if sotro==1,m
-tab death_code if sotro==1,m
+*anaphylaxis events*
+foreach drug of varlist sotrovimab molnupiravir paxlovid {
+*death *
+sum death_with_anaphylaxis_date if `drug'==1,f
+gen death_`drug'=(death_with_anaphylaxis_date!=.) if `drug'==1
+tab death_`drug'
+gen day_death_`drug'=death_with_anaphylaxis_date-`drug'_covid_therapeutics  if `drug'==1
+sum day_death_`drug', de
+sum death_with_anaph_underly_date if `drug'==1,f
+tab death_with_anaphylaxis_code  if `drug'==1
+tab death_code if `drug'==1,m
 
-tab hospitalisation_primary_code1 if mol==1,m
-tab hospitalisation_primary_code2 if mol==1,m
-tab death_code if mol==1,m
+sum death_with_anaphylaxis_date2 if `drug'==1,f
+sum death_with_anaph_underly_date2 if `drug'==1,f
+tab death_with_anaphylaxis_code2  if `drug'==1,m
+sum death_with_anaphylaxis_date3 if `drug'==1,f
 
-tab hospitalisation_primary_code1 if pax==1,m
-tab hospitalisation_primary_code2 if pax==1,m
-tab death_code if pax==1,m
+sum death_with_anaphylaxis_date_pre if `drug'==1,f
+sum death_with_anaph_underly_date_pre if `drug'==1,f
+*hosp*
+sum hospitalisation_anaph if `drug'==1,f
+gen hosp_`drug'=(hospitalisation_anaph!=.) if `drug'==1
+tab hosp_`drug'
+gen day_hosp_`drug'=hospitalisation_anaph-`drug'_covid_therapeutics  if `drug'==1
+sum day_hosp_`drug', de
+gen day_discharge_`drug'=hosp_discharge_anaph-hospitalisation_anaph  if `drug'==1
+sum day_discharge_`drug',de
+sum hospitalisation_anaph_underly if `drug'==1,f
+tab hospitalisation_primary_code  if `drug'==1,m
+
+sum hospitalisation_anaph2 if `drug'==1,f
+sum hospitalisation_anaph_underly2 if `drug'==1,f
+tab hospitalisation_primary_code2  if `drug'==1,m
+sum hospitalisation_anaph3 if `drug'==1,f
+
+sum hospitalisation_anaph_pre if `drug'==1,f
+sum hosp_anaph_underly_pre if `drug'==1,f
+*A&E*
+sum AE_anaph if `drug'==1,f
+gen AE_`drug'=(AE_anaph!=.) if `drug'==1
+tab AE_`drug'
+gen day_AE_`drug'=AE_anaph-`drug'_covid_therapeutics  if `drug'==1
+sum day_AE_`drug', de
+
+sum AE_anaph2 if `drug'==1,f
+sum AE_anaph3 if `drug'==1,f
+sum AE_anaph4 if `drug'==1,f
+
+sum AE_anaph_pre if `drug'==1,f
+sum AE_anaph2_pre if `drug'==1,f
+*GP*
+sum GP_anaph if `drug'==1,f
+gen GP_`drug'=(GP_anaph!=.) if `drug'==1
+tab GP_`drug'
+gen day_GP_`drug'=GP_anaph-`drug'_covid_therapeutics  if `drug'==1
+sum day_GP_`drug', de
+tab GP_anaph_code  if `drug'==1,m
+
+sum GP_anaph2 if `drug'==1,f
+sum GP_anaph_pre if `drug'==1,f
+sum GP_anaph2_pre if `drug'==1,f
+
+}
 
 log close
 
