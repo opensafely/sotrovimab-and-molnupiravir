@@ -36,7 +36,7 @@ codebook
 foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeutics paxlovid_covid_therapeutics remdesivir_covid_therapeutics	///
         casirivimab_covid_therapeutics sotrovimab_covid_approved sotrovimab_covid_complete sotrovimab_covid_not_start sotrovimab_covid_stopped ///
         last_vaccination_date death_date dereg_date date_treated start_date death_with_anaphylaxis_date death_with_anaph_underly_date death_with_anaphylaxis_date2 ///
-		death_with_anaph_underly_date2 death_with_anaphylaxis_date3 death_with_anaphylaxis_date_pre death_with_anaph_underly_date_pre hospitalisation_anaph ///
+		death_with_anaph_underly_date2 death_with_anaphylaxis_date3 death_with_anaphylaxis_date_pre death_with_anaph_underly_date_pr hospitalisation_anaph ///
 		hosp_discharge_anaph hospitalisation_anaph_underly hospitalisation_anaph2 hospitalisation_anaph_underly2 hospitalisation_anaph3 hospitalisation_anaph_pre ///
 		hosp_anaph_underly_pre AE_anaph AE_anaph2 AE_anaph3 AE_anaph4 AE_anaph_pre AE_anaph2_pre GP_anaph GP_anaph2 GP_anaph_pre GP_anaph2_pre hospitalisation_allcause ///
 		AE_allcause {
@@ -115,7 +115,7 @@ tab death_with_anaphylaxis_code2  if `drug'==1,m
 sum death_with_anaphylaxis_date3 if `drug'==1,f
 
 sum death_with_anaphylaxis_date_pre if `drug'==1,f
-sum death_with_anaph_underly_date_pre if `drug'==1,f
+sum death_with_anaph_underly_date_pr if `drug'==1,f
 *hosp*
 sum hospitalisation_anaph if `drug'==1,f
 gen hosp_`drug'=(hospitalisation_anaph!=.) if `drug'==1
