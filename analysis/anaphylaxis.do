@@ -63,6 +63,7 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 *describe
 *check hosp/death event date range*
 codebook  hospitalisation_allcause AE_allcause death_date last_vaccination_date 
+codebook  hospitalisation_allcause AE_allcause death_date last_vaccination_date if registered_treated==0
 sum hospitalisation_allcause,format
 
 
@@ -82,9 +83,9 @@ keep if treated==1
 count if sotrovimab==1&molnupiravir==1
 count if paxlovid==1&molnupiravir==1
 count if sotrovimab==1&paxlovid==1
-count if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics
-count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics
-count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics
+count if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics & molnupiravir_covid_therapeutics!=.
+count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics & &paxlovid_covid_therapeutics!=.
+count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics & molnupiravir_covid_therapeutics!=.
 
 *exclusion criteria*
 sum age,de
@@ -95,7 +96,7 @@ tab has_died,m
 *keep if has_died==0
 tab registered_treated,m
 *keep if registered_treated==1
-keep if start_date>=mdy(12,16,2021)&start_date<=mdy(05,13,2023)
+keep if start_date>=mdy(12,16,2021)&start_date<=mdy(01,28,2023)
 
 *anaphylaxis events*
 foreach drug of varlist sotrovimab molnupiravir paxlovid {
@@ -105,7 +106,10 @@ gen death_`drug'=(death_with_anaphylaxis_date!=.) if `drug'==1
 tab death_`drug'
 gen day_death_`drug'=death_with_anaphylaxis_date-`drug'_covid_therapeutics  if `drug'==1
 sum day_death_`drug', de
+gen death_`drug'_28d=(death_with_anaphylaxis_date!=.&day_death_`drug'<=28) if `drug'==1
+tab death_`drug'_28d
 sum death_with_anaph_underly_date if `drug'==1,f
+sum death_with_anaph_underly_date if `drug'==1&day_death_`drug'<=28,f
 tab death_with_anaphylaxis_code  if `drug'==1
 tab death_code if `drug'==1,m
 
@@ -122,15 +126,20 @@ gen hosp_`drug'=(hospitalisation_anaph!=.) if `drug'==1
 tab hosp_`drug'
 gen day_hosp_`drug'=hospitalisation_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_hosp_`drug', de
+gen hosp_`drug'_28d=(hospitalisation_anaph!=.&day_hosp_`drug'<=28) if `drug'==1
+tab hosp_`drug'_28d
 gen day_discharge_`drug'=hosp_discharge_anaph-hospitalisation_anaph  if `drug'==1
 sum day_discharge_`drug',de
 sum hospitalisation_anaph_underly if `drug'==1,f
+sum hospitalisation_anaph_underly if `drug'==1&day_hosp_`drug'<=28,f
 tab hospitalisation_primary_code  if `drug'==1,m
 
 sum hospitalisation_anaph2 if `drug'==1,f
+sum hospitalisation_anaph2 if `drug'==1&day_hosp_`drug'<=28,f
 sum hospitalisation_anaph_underly2 if `drug'==1,f
 tab hospitalisation_primary_code2  if `drug'==1,m
 sum hospitalisation_anaph3 if `drug'==1,f
+sum hospitalisation_anaph3 if `drug'==1&day_hosp_`drug'<=28,f
 
 sum hospitalisation_anaph_pre if `drug'==1,f
 sum hosp_anaph_underly_pre if `drug'==1,f
@@ -140,10 +149,17 @@ gen AE_`drug'=(AE_anaph!=.) if `drug'==1
 tab AE_`drug'
 gen day_AE_`drug'=AE_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_AE_`drug', de
+gen AE_`drug'_28d=(AE_anaph!=.&day_AE_`drug'<=28) if `drug'==1
+tab AE_`drug'_28d
 
 sum AE_anaph2 if `drug'==1,f
 sum AE_anaph3 if `drug'==1,f
 sum AE_anaph4 if `drug'==1,f
+gen AE_`drug'_28d2=(AE_anaph2!=.&day_AE_`drug'<=28) if `drug'==1
+tab AE_`drug'_28d2
+sum AE_anaph2 if `drug'==1&day_AE_`drug'<=28,f
+sum AE_anaph3 if `drug'==1&day_AE_`drug'<=28,f
+sum AE_anaph4 if `drug'==1&day_AE_`drug'<=28,f
 
 sum AE_anaph_pre if `drug'==1,f
 sum AE_anaph2_pre if `drug'==1,f
@@ -153,13 +169,32 @@ gen GP_`drug'=(GP_anaph!=.) if `drug'==1
 tab GP_`drug'
 gen day_GP_`drug'=GP_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_GP_`drug', de
+gen GP_`drug'_28d=(GP_anaph!=.&day_GP_`drug'<=28) if `drug'==1
+tab GP_`drug'_28d
+tostring GP_anaph_code,replace
 tab GP_anaph_code  if `drug'==1,m
 
 sum GP_anaph2 if `drug'==1,f
+sum GP_anaph2 if `drug'==1&day_GP_`drug'<=28,f
 sum GP_anaph_pre if `drug'==1,f
 sum GP_anaph2_pre if `drug'==1,f
 
+*combine 4 data sources*
+tab hosp_`drug'_28d AE_`drug'_28d,row
+tab hosp_`drug'_28d AE_`drug'_28d2,row
+tab hosp_`drug'_28d GP_`drug'_28d,row
+tab AE_`drug'_28d GP_`drug'_28d,row
+tab AE_`drug'_28d2 GP_`drug'_28d,row
+gen anaph_all=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d+GP_`drug'_28d)>0 if `drug'==1
+tab anaph_all
+gen anaph_all2=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d2+GP_`drug'_28d)>0 if `drug'==1
+tab anaph_all2
+
 }
+
+*by age*
+
+
 
 log close
 
