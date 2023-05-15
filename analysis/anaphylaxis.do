@@ -185,10 +185,10 @@ tab hosp_`drug'_28d AE_`drug'_28d2,row
 tab hosp_`drug'_28d GP_`drug'_28d,row
 tab AE_`drug'_28d GP_`drug'_28d,row
 tab AE_`drug'_28d2 GP_`drug'_28d,row
-gen anaph_all=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d+GP_`drug'_28d)>0 if `drug'==1
-tab anaph_all
-gen anaph_all2=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d2+GP_`drug'_28d)>0 if `drug'==1
-tab anaph_all2
+gen anaph_all_`drug'=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d+GP_`drug'_28d)>0 if `drug'==1
+tab anaph_all_`drug'
+gen anaph_all2_`drug'=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d2+GP_`drug'_28d)>0 if `drug'==1
+tab anaph_all2_`drug'
 
 }
 
