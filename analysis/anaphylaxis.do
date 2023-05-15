@@ -69,11 +69,11 @@ sum hospitalisation_allcause,format
 
 *describe COVID therapy*
 gen treated=(date_treated!=.)
-gen sotrovimab=(sotrovimab_covid_therapeutics== start_date)
-gen molnupiravir=(molnupiravir_covid_therapeutics== start_date)
-gen casirivimab=(casirivimab_covid_therapeutics== start_date)
-gen paxlovid=(paxlovid_covid_therapeutics== start_date)
-gen remdesivir=(remdesivir_covid_therapeutics== start_date)
+gen sotrovimab=(sotrovimab_covid_therapeutics!=.)
+gen molnupiravir=(molnupiravir_covid_therapeutics!=.)
+gen casirivimab=(casirivimab_covid_therapeutics!=.)
+gen paxlovid=(paxlovid_covid_therapeutics!=.)
+gen remdesivir=(remdesivir_covid_therapeutics!=.)
 tab sotrovimab ,m
 tab molnupiravir ,m 
 tab casirivimab ,m
@@ -85,7 +85,7 @@ count if paxlovid==1&molnupiravir==1
 count if sotrovimab==1&paxlovid==1
 count if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics & molnupiravir_covid_therapeutics!=.
 count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics & paxlovid_covid_therapeutics!=.
-count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics & molnupiravir_covid_therapeutics!=.
+count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics & paxlovid_covid_therapeutics!=.
 
 *exclusion criteria*
 sum age,de
