@@ -145,7 +145,7 @@ study = StudyDefinition(
     },
   ),
   
-  covid_test_positive_date = patients.with_test_result_in_sgss(
+  start_date = patients.with_test_result_in_sgss(
     pathogen = "SARS-CoV-2",
     test_result = "positive",
     find_first_match_in_period = True,
@@ -159,10 +159,8 @@ study = StudyDefinition(
     },
   ),
   
-  registered_eligible = patients.registered_as_of("covid_test_positive_date"),
+  registered_eligible = patients.registered_as_of("start_date"),
 
-  ## Study start date for extracting variables
-  start_date = covid_test_positive_date,
   
 
   # CENSORING ----
