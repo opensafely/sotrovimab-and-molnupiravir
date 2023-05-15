@@ -84,7 +84,7 @@ count if sotrovimab==1&molnupiravir==1
 count if paxlovid==1&molnupiravir==1
 count if sotrovimab==1&paxlovid==1
 count if sotrovimab_covid_therapeutics==molnupiravir_covid_therapeutics & molnupiravir_covid_therapeutics!=.
-count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics & &paxlovid_covid_therapeutics!=.
+count if molnupiravir_covid_therapeutics==paxlovid_covid_therapeutics & paxlovid_covid_therapeutics!=.
 count if sotrovimab_covid_therapeutics==paxlovid_covid_therapeutics & molnupiravir_covid_therapeutics!=.
 
 *exclusion criteria*
