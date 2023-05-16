@@ -149,17 +149,17 @@ gen AE_`drug'=(AE_anaph!=.) if `drug'==1
 tab AE_`drug'
 gen day_AE_`drug'=AE_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_AE_`drug', de
-gen AE_`drug'_28d=(AE_anaph!=.&day_AE_`drug'<=28) if `drug'==1
+gen AE_`drug'_28d=(AE_anaph!=.&day_AE_`drug'<=28&day_AE_`drug'>=0) if `drug'==1
 tab AE_`drug'_28d
 
 sum AE_anaph2 if `drug'==1,f
 sum AE_anaph3 if `drug'==1,f
 sum AE_anaph4 if `drug'==1,f
-gen AE_`drug'_28d2=(AE_anaph2!=.&day_AE_`drug'<=28) if `drug'==1
+gen AE_`drug'_28d2=(AE_anaph2!=.&day_AE_`drug'<=28&day_AE_`drug'>=0) if `drug'==1
 tab AE_`drug'_28d2
-sum AE_anaph2 if `drug'==1&day_AE_`drug'<=28,f
-sum AE_anaph3 if `drug'==1&day_AE_`drug'<=28,f
-sum AE_anaph4 if `drug'==1&day_AE_`drug'<=28,f
+sum AE_anaph2 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
+sum AE_anaph3 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
+sum AE_anaph4 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
 
 sum AE_anaph_pre if `drug'==1,f
 sum AE_anaph2_pre if `drug'==1,f
@@ -173,6 +173,7 @@ gen GP_`drug'_28d=(GP_anaph!=.&day_GP_`drug'<=28) if `drug'==1
 tab GP_`drug'_28d
 tostring GP_anaph_code,replace
 tab GP_anaph_code  if `drug'==1,m
+tab GP_anaph_code  if `drug'==1&day_GP_`drug'<=28,m
 
 sum GP_anaph2 if `drug'==1,f
 sum GP_anaph2 if `drug'==1&day_GP_`drug'<=28,f
