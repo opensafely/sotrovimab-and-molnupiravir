@@ -180,6 +180,7 @@ gen GP_28d=(GP_anaph!=.&day_GP<=28)
 tab GP_28d
 tostring GP_anaph_code,replace
 tab GP_anaph_code ,m
+tab GP_anaph_code if day_GP<=28,m
 
 sum GP_anaph2 ,f
 sum GP_anaph2 if day_GP<=28,f
