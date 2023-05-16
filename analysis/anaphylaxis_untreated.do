@@ -198,9 +198,9 @@ tab anaph_all
 gen anaph_all2=(death_28d+hosp_28d+AE_28d2+GP_28d)>0 
 tab anaph_all2
 
-gen anaph_ever=(hospitalisation_anaph_pre+AE_anaph_pre+GP_anaph_pre)>0
+gen anaph_ever=(hospitalisation_anaph_pre!=.|AE_anaph_pre!=.|GP_anaph_pre!=.)
 tab anaph_ever
-gen anaph_ever2=(hospitalisation_anaph_pre+AE_anaph2_pre+GP_anaph_pre)>0 
+gen anaph_ever2=(hospitalisation_anaph_pre!=.|AE_anaph2_pre!=.|GP_anaph_pre!=.)
 tab anaph_ever2
 
 *by age*
