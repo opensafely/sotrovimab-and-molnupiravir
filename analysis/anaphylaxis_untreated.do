@@ -178,6 +178,8 @@ gen day_GP=GP_anaph-start_date
 sum day_GP, de
 gen GP_28d=(GP_anaph!=.&day_GP<=28) 
 tab GP_28d
+tostring GP_anaph_code,replace
+tab GP_anaph_code ,m
 
 sum GP_anaph2 ,f
 sum GP_anaph2 if day_GP<=28,f
@@ -195,7 +197,7 @@ tab anaph_all
 gen anaph_all2=(death_28d+hosp_28d+AE_28d2+GP_28d)>0 
 tab anaph_all2
 
-}
+
 
 *by age*
 
