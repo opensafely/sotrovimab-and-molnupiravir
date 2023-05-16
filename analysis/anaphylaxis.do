@@ -191,6 +191,11 @@ tab anaph_all_`drug'
 gen anaph_all2_`drug'=(death_`drug'_28d+hosp_`drug'_28d+AE_`drug'_28d2+GP_`drug'_28d)>0 if `drug'==1
 tab anaph_all2_`drug'
 
+gen anaph_ever_`drug'=(hospitalisation_anaph_pre+AE_anaph_pre+GP_anaph_pre)>0 if `drug'==1
+tab anaph_ever_`drug'
+gen anaph_ever2_`drug'=(hospitalisation_anaph_pre+AE_anaph2_pre+GP_anaph_pre)>0 if `drug'==1
+tab anaph_ever2_`drug'
+
 }
 
 *by age*
