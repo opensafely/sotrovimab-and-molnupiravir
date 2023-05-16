@@ -126,6 +126,7 @@ gen hosp_`drug'=(hospitalisation_anaph!=.) if `drug'==1
 tab hosp_`drug'
 gen day_hosp_`drug'=hospitalisation_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_hosp_`drug', de
+tab day_hosp_`drug' if day_hosp_`drug'<=28
 gen hosp_`drug'_28d=(hospitalisation_anaph!=.&day_hosp_`drug'<=28) if `drug'==1
 tab hosp_`drug'_28d
 gen day_discharge_`drug'=hosp_discharge_anaph-hospitalisation_anaph  if `drug'==1
@@ -149,6 +150,7 @@ gen AE_`drug'=(AE_anaph!=.) if `drug'==1
 tab AE_`drug'
 gen day_AE_`drug'=AE_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_AE_`drug', de
+tab day_AE_`drug' if day_AE_`drug'<=28
 gen AE_`drug'_28d=(AE_anaph!=.&day_AE_`drug'<=28&day_AE_`drug'>=0) if `drug'==1
 tab AE_`drug'_28d
 
@@ -157,6 +159,7 @@ sum AE_anaph3 if `drug'==1,f
 sum AE_anaph4 if `drug'==1,f
 gen AE_`drug'_28d2=(AE_anaph2!=.&day_AE_`drug'<=28&day_AE_`drug'>=0) if `drug'==1
 tab AE_`drug'_28d2
+tab day_AE_`drug' if day_AE_`drug'<=28&AE_`drug'_28d2==1
 sum AE_anaph2 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
 sum AE_anaph3 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
 sum AE_anaph4 if `drug'==1&day_AE_`drug'<=28&day_AE_`drug'>=0,f
@@ -169,6 +172,7 @@ gen GP_`drug'=(GP_anaph!=.) if `drug'==1
 tab GP_`drug'
 gen day_GP_`drug'=GP_anaph-`drug'_covid_therapeutics  if `drug'==1
 sum day_GP_`drug', de
+tab day_GP_`drug' if day_GP_`drug'<=28
 gen GP_`drug'_28d=(GP_anaph!=.&day_GP_`drug'<=28) if `drug'==1
 tab GP_`drug'_28d
 tostring GP_anaph_code,replace
