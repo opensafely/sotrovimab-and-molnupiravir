@@ -192,86 +192,6 @@ study = StudyDefinition(
   ),
   
   
-
-  ## Sotrovimab
-  sotrovimab_covid_therapeutics1 = patients.with_covid_therapeutics(
-    #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = "Sotrovimab",
-    on_or_after = "index_date",
-    find_first_match_in_period = True,
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2021-12-16"},
-      "incidence": 0.4
-    },
-  ),
-  ### Molnupiravir
-  molnupiravir_covid_therapeutics1 = patients.with_covid_therapeutics(
-    #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = "Molnupiravir",
-    on_or_after = "index_date",
-    find_first_match_in_period = True,
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2021-12-16"},
-      "incidence": 0.4
-    },
-  ),
-
-  ### Paxlovid
-  paxlovid_covid_therapeutics1 = patients.with_covid_therapeutics(
-    #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = "Paxlovid",
-    on_or_after = "index_date",
-    find_first_match_in_period = True,
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2022-02-10"},
-      "incidence": 0.05
-    },
-  ), 
-
-  ## Remdesivir
-  remdesivir_covid_therapeutics1 = patients.with_covid_therapeutics(
-    #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = "Remdesivir",
-    on_or_after = "index_date",
-    find_first_match_in_period = True,
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2021-12-16"},
-      "incidence": 0.05
-    },
-  ),
-  
-  ### Casirivimab and imdevimab
-  casirivimab_covid_therapeutics1 = patients.with_covid_therapeutics(
-    #with_these_statuses = ["Approved", "Treatment Complete"],
-    with_these_therapeutics = "Casirivimab and imdevimab",
-    on_or_after = "index_date",
-    find_first_match_in_period = True,
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2021-12-16"},
-      "incidence": 0.05
-    },
-  ), 
-
-  date_treated1 = patients.minimum_of(
-    "sotrovimab_covid_therapeutics1",
-    "molnupiravir_covid_therapeutics1",
-    "casirivimab_covid_therapeutics1",
-    "paxlovid_covid_therapeutics1",
-    "remdesivir_covid_therapeutics1",
-  ),
-
-
-
   # CENSORING ----
   
   ## Death of any cause
@@ -746,22 +666,7 @@ study = StudyDefinition(
       "incidence": 0.6
     },
   ),  
-  hosp_anaph_pre_1y = patients.admitted_to_hospital(
-    returning = "date_admitted",
-    with_these_diagnoses = anaphylaxis_icd10_codes,
-    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
-    # see https://docs.opensafely.org/study-def-variables/#sus for more info
-    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    between = ["start_date - 1459 days", "start_date - 1095 days"],
-    find_last_match_in_period = True,
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2022-02-18"},
-      "rate": "uniform",
-      "incidence": 0.6
-    },
-  ),
-  registered_pre_4y = patients.registered_as_of("start_date - 1459 days"), 
+
 
 
   ## A&E
@@ -850,30 +755,7 @@ study = StudyDefinition(
             "incidence": 0.05,
           },
   ),  
-  AE_anaph_pre_1y = patients.attended_emergency_care(
-          returning="date_arrived",
-          between = ["start_date - 1459 days", "start_date - 1095 days"],
-          date_format="YYYY-MM-DD",
-          find_last_match_in_period = True,
-          with_these_diagnoses = codelist(["39579001","62014003","609328004"], system="snomed"),
-          return_expectations={
-            "date": {"earliest": "2022-02-18"},
-            "rate": "uniform",
-            "incidence": 0.05,
-          },
-  ),  
-  AE_anaph2_pre_1y = patients.attended_emergency_care(
-          returning="date_arrived",
-          between = ["start_date - 1459 days", "start_date - 1095 days"],
-          date_format="YYYY-MM-DD",
-          find_last_match_in_period = True,
-          with_these_diagnoses = codelist(["39579001"], system="snomed"),
-          return_expectations={
-            "date": {"earliest": "2022-02-18"},
-            "rate": "uniform",
-            "incidence": 0.05,
-          },
-  ),  
+
 
 
   ## GP records
@@ -913,12 +795,6 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
   ),
-  GP_anaph_pre_1y = patients.with_these_clinical_events(
-    anaphylaxis_snomed_codes,
-    between = ["start_date - 1459 days", "start_date - 1095 days"],
-    returning = "date",
-    date_format = "YYYY-MM-DD",
-    find_last_match_in_period = True,
-  ),
+
 
 )
