@@ -248,7 +248,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     #with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    between = ["covid_test_positive_date - 30 days", "covid_test_positive_date - 1 day"],
+    between = ["start_date - 30 days", "start_date - 1 day"],
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
     return_expectations = {
@@ -263,7 +263,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     #with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    between = ["covid_test_positive_date - 30 days", "covid_test_positive_date - 1 day"],
+    between = ["start_date - 30 days", "start_date - 1 day"],
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
     return_expectations = {
@@ -278,7 +278,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     #with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    between = ["covid_test_positive_date - 30 days", "covid_test_positive_date - 1 day"],
+    between = ["start_date - 30 days", "start_date - 1 day"],
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
     return_expectations = {
@@ -293,7 +293,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     #with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    between = ["covid_test_positive_date - 30 days", "covid_test_positive_date - 1 day"],
+    between = ["start_date - 30 days", "start_date - 1 day"],
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
     return_expectations = {
