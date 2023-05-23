@@ -78,228 +78,227 @@ dataset$high_risk_group_new <- as.integer((dataset$downs_syndrome==1| dataset$so
                                              dataset$immunosupression_new==1| dataset$hiv_aids==1|
                                              dataset$solid_organ_new==1| dataset$rare_neuro==1) )
 
-# Generate frequency table for high_risk_group_new variable
+print("Generate frequency table for high_risk_group_new variable")
 table(dataset$high_risk_group_new)
 
 # Keep observations where high_risk_group_new is equal to 1
-dataset <- dataset[dataset$high_risk_group_new == 1, ]
+dataset <- subset(dataset,high_risk_group_new == 1)
 
-
-
+print("summary(dataset$death_with_anaphylaxis_date)")
 summary(dataset$death_with_anaphylaxis_date)
 
-# Generate binary variable death based on death_with_anaphylaxis_date
+print("Generate binary variable death based on death_with_anaphylaxis_date")
 dataset$death <- as.integer(!is.na(dataset$death_with_anaphylaxis_date))
 
-# Frequency table for death variable
+print("Frequency table for death variable")
 table(dataset$death)
 
 # Calculate day_death variable as the difference between death_with_anaphylaxis_date and start_date
 dataset$day_death <- as.integer(dataset$death_with_anaphylaxis_date - dataset$start_date)
 
-# Summarize day_death variable
+print("Summarize day_death variable")
 summary(dataset$day_death)
 
 # Generate binary variable death_28d based on conditions
 dataset$death_28d <- as.integer(!is.na(dataset$death_with_anaphylaxis_date) & dataset$day_death <= 28)
 
-# Frequency table for death_28d variable
+print("Frequency table for death_28d variable")
 table(dataset$death_28d)
 
-# Summarize death_with_anaph_underly_date variable
+print("Summarize death_with_anaph_underly_date variable")
 summary(dataset$death_with_anaph_underly_date)
 
-# Summarize death_with_anaph_underly_date variable based on condition
+print("Summarize death_with_anaph_underly_date variable based on condition")
 summary(dataset$death_with_anaph_underly_date[dataset$day_death <= 28])
 
-# Summarize death_with_anaphylaxis_date2 variable
+print("Summarize death_with_anaphylaxis_date2 variable")
 summary(dataset$death_with_anaphylaxis_date2)
 
-# Summarize death_with_anaph_underly_date2 variable
+print("Summarize death_with_anaph_underly_date2 variable")
 summary(dataset$death_with_anaph_underly_date2)
 
-# Summarize death_with_anaphylaxis_date3 variable
+print("Summarize death_with_anaphylaxis_date3 variable")
 summary(dataset$death_with_anaphylaxis_date3)
 
-# Summarize death_with_anaphylaxis_date_pre variable
+print("Summarize death_with_anaphylaxis_date_pre variable")
 summary(dataset$death_with_anaphylaxis_date_pre)
 
-# Summarize death_with_anaph_underly_date_pr variable
+print("Summarize death_with_anaph_underly_date_pr variable")
 summary(dataset$death_with_anaph_underly_date_pre)
 
 
-# Summarize hospitalisation_anaph variable
+print("Summarize hospitalisation_anaph variable")
 summary(dataset$hospitalisation_anaph)
 
-# Generate binary variable hosp based on hospitalisation_anaph
+print("Generate binary variable hosp based on hospitalisation_anaph")
 dataset$hosp <- as.integer(!is.na(dataset$hospitalisation_anaph))
 
-# Frequency table for hosp variable
+print("Frequency table for hosp variable")
 table(dataset$hosp)
 
-# Calculate day_hosp variable as the difference between hospitalisation_anaph and start_date
+print("Calculate day_hosp variable as the difference between hospitalisation_anaph and start_date")
 dataset$day_hosp <- as.integer(dataset$hospitalisation_anaph - dataset$start_date)
 
-# Summarize day_hosp variable
+print("Summarize day_hosp variable")
 summary(dataset$day_hosp)
 
-# Generate binary variable hosp_28d based on conditions
+print("Generate binary variable hosp_28d based on conditions")
 dataset$hosp_28d <- as.integer(!is.na(dataset$hospitalisation_anaph) & dataset$day_hosp <= 28)
 
-# Frequency table for hosp_28d variable
+print("Frequency table for hosp_28d variable")
 table(dataset$hosp_28d)
 
-# Frequency table for hospitalisation_anaph variable when hosp_28d is equal to 1
+print("Frequency table for hospitalisation_anaph variable when hosp_28d is equal to 1")
 table(dataset$hospitalisation_anaph[dataset$hosp_28d == 1])
 
 # Calculate day_discharge variable as the difference between hosp_discharge_anaph and hospitalisation_anaph
 dataset$day_discharge <- as.integer(dataset$hosp_discharge_anaph - dataset$hospitalisation_anaph)
 
-# Summarize day_discharge variable
+print("Summarize day_discharge variable")
 summary(dataset$day_discharge)
 
-# Summarize hospitalisation_anaph_underly variable
+print("Summarize hospitalisation_anaph_underly variable")
 summary(dataset$hospitalisation_anaph_underly)
 
-# Summarize hospitalisation_anaph_underly variable based on condition
+print("Summarize hospitalisation_anaph_underly variable based on condition")
 summary(dataset$hospitalisation_anaph_underly[dataset$day_hosp <= 28])
 
-# Summarize hospitalisation_anaph2 variable
+print("Summarize hospitalisation_anaph2 variable")
 summary(dataset$hospitalisation_anaph2)
 
-# Summarize hospitalisation_anaph2 variable based on condition
+print("Summarize hospitalisation_anaph2 variable based on condition")
 summary(dataset$hospitalisation_anaph2[dataset$day_hosp <= 28])
 
-# Summarize hospitalisation_anaph_underly2 variable
+print("Summarize hospitalisation_anaph_underly2 variable")
 summary(dataset$hospitalisation_anaph_underly2)
 
-# Summarize hospitalisation_anaph3 variable
+print("Summarize hospitalisation_anaph3 variable")
 summary(dataset$hospitalisation_anaph3)
 
-# Summarize hospitalisation_anaph3 variable based on condition
+print("Summarize hospitalisation_anaph3 variable based on condition")
 summary(dataset$hospitalisation_anaph3[dataset$day_hosp <= 28])
 
-# Summarize hospitalisation_anaph_pre variable
+print("Summarize hospitalisation_anaph_pre variable")
 summary(dataset$hospitalisation_anaph_pre)
 
-# Summarize hosp_anaph_underly_pre variable
+print("Summarize hosp_anaph_underly_pre variable")
 summary(dataset$hosp_anaph_underly_pre)
 
-# Summarize hosp_anaph_pre_1y variable
+print("Summarize hosp_anaph_pre_1y variable")
 summary(dataset$hosp_anaph_pre_1y)
 
 table(dataset$registered_pre_4y)
 
-# Summarize AE_anaph variable
+print("Summarize AE_anaph variable")
 summary(dataset$AE_anaph)
 
 # Generate binary variable AE based on AE_anaph
 dataset$AE <- as.integer(!is.na(dataset$AE_anaph))
 
-# Frequency table for AE variable
+print("Frequency table for AE variable")
 table(dataset$AE)
 
 # Calculate day_AE variable as the difference between AE_anaph and start_date
 dataset$day_AE <- as.integer(dataset$AE_anaph - dataset$start_date)
 
-# Summarize day_AE variable
+print("Summarize day_AE variable")
 summary(dataset$day_AE)
 
 # Generate binary variable AE_28d based on conditions
 dataset$AE_28d <- as.integer(!is.na(dataset$AE_anaph) & dataset$day_AE <= 28)
 
-# Frequency table for AE_28d variable
+print("Frequency table for AE_28d variable")
 table(dataset$AE_28d)
 
-# Frequency table for AE_anaph variable when AE_28d is equal to 1
+print("Frequency table for AE_anaph variable when AE_28d is equal to 1")
 table(dataset$AE_anaph[dataset$AE_28d == 1])
 
-# Summarize AE_anaph2 variable
+print("Summarize AE_anaph2 variable")
 summary(dataset$AE_anaph2)
 
-# Summarize AE_anaph3 variable
+print("Summarize AE_anaph3 variable")
 summary(dataset$AE_anaph3)
 
-# Summarize AE_anaph4 variable
+print("Summarize AE_anaph4 variable")
 summary(dataset$AE_anaph4)
 
 # Generate binary variable AE_28d2 based on conditions
 dataset$AE_28d2 <- as.integer(!is.na(dataset$AE_anaph2) & dataset$day_AE <= 28)
 
-# Frequency table for AE_28d2 variable
+print("Frequency table for AE_28d2 variable")
 table(dataset$AE_28d2)
 
-# Frequency table for AE_anaph variable when AE_28d2 is equal to 1
+print("Frequency table for AE_anaph variable when AE_28d2 is equal to 1")
 table(dataset$AE_anaph[dataset$AE_28d2 == 1])
 
-# Summarize AE_anaph2 variable based on condition
+print("Summarize AE_anaph2 variable based on condition")
 summary(dataset$AE_anaph2[dataset$day_AE <= 28])
 
-# Summarize AE_anaph3 variable based on condition
+print("Summarize AE_anaph3 variable based on condition")
 summary(dataset$AE_anaph3[dataset$day_AE <= 28])
 
-# Summarize AE_anaph4 variable based on condition
+print("Summarize AE_anaph4 variable based on condition")
 summary(dataset$AE_anaph4[dataset$day_AE <= 28])
 
-# Summarize AE_anaph_pre variable
+print("Summarize AE_anaph_pre variable")
 summary(dataset$AE_anaph_pre)
 
-# Summarize AE_anaph2_pre variable
+print("Summarize AE_anaph2_pre variable")
 summary(dataset$AE_anaph2_pre)
 
-# Summarize AE_anaph_pre_1y variable
+print("Summarize AE_anaph_pre_1y variable")
 summary(dataset$AE_anaph_pre_1y)
 
-# Summarize AE_anaph2_pre_1y variable
+print("Summarize AE_anaph2_pre_1y variable")
 summary(dataset$AE_anaph2_pre_1y)
 
 
-# Summarize GP_anaph variable
+print("Summarize GP_anaph variable")
 summary(dataset$GP_anaph)
 
 # Generate binary variable GP based on GP_anaph
 dataset$GP <- as.integer(!is.na(dataset$GP_anaph) )
 
-# Frequency table for GP variable
+print("Frequency table for GP variable")
 table(dataset$GP)
 
 # Calculate day_GP variable as the difference between GP_anaph and start_date
 dataset$day_GP <- as.integer(dataset$GP_anaph - dataset$start_date)
 
-# Summarize day_GP variable
+print("Summarize day_GP variable")
 summary(dataset$day_GP)
 
 # Generate binary variable GP_28d based on conditions
 dataset$GP_28d <- as.integer(!is.na(dataset$GP_anaph) & dataset$day_GP <= 28)
 
-# Frequency table for GP_28d variable
+print("Frequency table for GP_28d variable")
 table(dataset$GP_28d)
 
-# Frequency table for GP_anaph variable when GP_28d is equal to 1
+print("Frequency table for GP_anaph variable when GP_28d is equal to 1")
 table(dataset$GP_anaph[dataset$GP_28d == 1])
 
 # Convert GP_anaph_code variable to string type
 dataset$GP_anaph_code <- as.character(dataset$GP_anaph_code)
 
-# Frequency table for GP_anaph_code variable
+print("Frequency table for GP_anaph_code variable")
 table(dataset$GP_anaph_code)
 
-# Frequency table for GP_anaph_code variable when day_GP is less than or equal to 28
+print("Frequency table for GP_anaph_code variable when day_GP is less than or equal to 28")
 table(dataset$GP_anaph_code[dataset$day_GP <= 28])
 
-# Summarize GP_anaph2 variable
+print("Summarize GP_anaph2 variable")
 summary(dataset$GP_anaph2)
 
-# Summarize GP_anaph2 variable based on condition
+print("Summarize GP_anaph2 variable based on condition")
 summary(dataset$GP_anaph2[dataset$day_GP <= 28])
 
-# Summarize GP_anaph_pre variable
+print("Summarize GP_anaph_pre variable")
 summary(dataset$GP_anaph_pre)
 
-# Summarize GP_anaph2_pre variable
+print("Summarize GP_anaph2_pre variable")
 summary(dataset$GP_anaph2_pre)
 
-# Summarize GP_anaph_pre_1y variable
+print("Summarize GP_anaph_pre_1y variable")
 summary(dataset$GP_anaph_pre_1y)
 
 # Combine data from four sources and generate frequency tables
@@ -312,37 +311,37 @@ table(dataset$AE_28d2, dataset$GP_28d, useNA = "ifany", dnn = c("AE_28d2", "GP_2
 # Generate anaph_all variable based on conditions
 dataset$anaph_all <- as.integer((dataset$death_28d + dataset$hosp_28d + dataset$AE_28d + dataset$GP_28d) > 0)
 
-# Frequency table for anaph_all variable
+print("Frequency table for anaph_all variable")
 table(dataset$anaph_all)
 
-# Generate anaph_all2 variable based on conditions
+print("Generate anaph_all2 variable based on conditions")
 dataset$anaph_all2 <- as.integer((dataset$death_28d + dataset$hosp_28d + dataset$AE_28d2 + dataset$GP_28d) > 0)
 
-# Frequency table for anaph_all2 variable
+print("Frequency table for anaph_all2 variable")
 table(dataset$anaph_all2)
 
 # Generate anaph_ever variable based on conditions
 dataset$anaph_ever <- as.integer((!is.na(dataset$hospitalisation_anaph_pre) | !is.na(dataset$AE_anaph_pre) | !is.na(dataset$GP_anaph_pre) ))
 
-# Frequency table for anaph_ever variable
+print("Frequency table for anaph_ever variable")
 table(dataset$anaph_ever)
 
 # Generate anaph_ever2 variable based on conditions
 dataset$anaph_ever2 <- as.integer((!is.na(dataset$hospitalisation_anaph_pre) | !is.na(dataset$AE_anaph2_pre) | !is.na(dataset$GP_anaph_pre) ))
 
-# Frequency table for anaph_ever2 variable
+print("Frequency table for anaph_ever2 variable")
 table(dataset$anaph_ever2)
 
 # Generate anaph_pre_1y variable based on conditions
 dataset$anaph_pre_1y <- as.integer((!is.na(dataset$hosp_anaph_pre_1y) | !is.na(dataset$AE_anaph_pre_1y) | !is.na(dataset$GP_anaph_pre_1y)))
 
-# Frequency table for anaph_pre_1y variable
+print("Frequency table for anaph_pre_1y variable")
 table(dataset$anaph_pre_1y)
 
 # Generate anaph_pre_1y2 variable based on conditions
 dataset$anaph_pre_1y2 <- as.integer((!is.na(dataset$hosp_anaph_pre_1y) | !is.na(dataset$AE_anaph2_pre_1y) | !is.na(dataset$GP_anaph_pre_1y)))
 
-# Frequency table for anaph_pre_1y2 variable
+print("Frequency table for anaph_pre_1y2 variable")
 table(dataset$anaph_pre_1y2)
 
 
