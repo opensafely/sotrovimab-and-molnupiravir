@@ -189,6 +189,14 @@ actions:
       moderately_sensitive:
         log: logs/anaphylaxis_update.log
 
+  anaphylaxis_update_R:
+    run: r:latest  analysis/anaphylaxis_update.r
+    needs: [generate_study_population_anaphylaxis_update]
+    outputs:
+      moderately_sensitive:
+        log: logs/anaphylaxis_update.txt
+
+
   generate_study_population_anaphylaxis_untreated_update:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_anaphylaxis_untreated_update
     outputs:
@@ -201,3 +209,10 @@ actions:
     outputs:
       moderately_sensitive:
         log: logs/anaphylaxis_untreated_update.log
+
+  anaphylaxis_untreated_update_R:
+    run: r:latest analysis/anaphylaxis_untreated_update.r
+    needs: [generate_study_population_anaphylaxis_untreated_update]
+    outputs:
+      moderately_sensitive:
+        log: logs/anaphylaxis_untreated_update.txt
