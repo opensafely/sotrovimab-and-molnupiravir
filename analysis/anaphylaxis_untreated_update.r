@@ -33,7 +33,7 @@ date_vars <- c("sotrovimab_covid_therapeutics", "molnupiravir_covid_therapeutics
                "motor_neurone_disease_nhsd", "myasthenia_gravis_nhsd", "huntingtons_disease_nhsd",
                "death_with_anaphylaxis_date", "death_with_anaph_underly_date", "death_with_anaphylaxis_date2",
                "death_with_anaph_underly_date2", "death_with_anaphylaxis_date3", "death_with_anaphylaxis_date_pre",
-               "death_with_anaph_underly_date_pr", "hospitalisation_anaph", "hosp_discharge_anaph",
+               "death_with_anaph_underly_date_pre", "hospitalisation_anaph", "hosp_discharge_anaph",
                "hospitalisation_anaph_underly", "hospitalisation_anaph2", "hospitalisation_anaph_underly2",
                "hospitalisation_anaph3", "hospitalisation_anaph_pre", "hosp_anaph_underly_pre", "AE_anaph",
                "AE_anaph2", "AE_anaph3", "AE_anaph4", "AE_anaph_pre", "AE_anaph2_pre", "GP_anaph", "GP_anaph2",
@@ -55,10 +55,10 @@ dataset <- subset(dataset, registered_eligible == 1&(is.na(dataset$date_treated)
 dataset$oral_steroid_drugs_nhsd[dataset$oral_steroid_drug_nhsd_3m_count < 2 & dataset$oral_steroid_drug_nhsd_12m_count < 4] <- NA
 
 # Generate imid_nhsd variable as the minimum of oral_steroid_drugs_nhsd and immunosuppresant_drugs_nhsd
-dataset$imid_nhsd <- pmin(dataset$oral_steroid_drugs_nhsd, dataset$immunosuppresant_drugs_nhsd)
+dataset$imid_nhsd <- pmin(dataset$oral_steroid_drugs_nhsd, dataset$immunosuppresant_drugs_nhsd, na.rm = T)
 
 # Generate rare_neuro_nhsd variable as the minimum of multiple_sclerosis_nhsd, motor_neurone_disease_nhsd, myasthenia_gravis_nhsd, and huntingtons_disease_nhsd
-dataset$rare_neuro_nhsd <- pmin(dataset$multiple_sclerosis_nhsd, dataset$motor_neurone_disease_nhsd, dataset$myasthenia_gravis_nhsd, dataset$huntingtons_disease_nhsd)
+dataset$rare_neuro_nhsd <- pmin(dataset$multiple_sclerosis_nhsd, dataset$motor_neurone_disease_nhsd, dataset$myasthenia_gravis_nhsd, dataset$huntingtons_disease_nhsd, na.rm = T)
 
 # Generate binary variables based on conditions
 dataset$downs_syndrome <- as.integer(dataset$downs_syndrome_nhsd <= dataset$start_date)
@@ -73,10 +73,10 @@ dataset$solid_organ_new <- as.integer(dataset$solid_organ_transplant_nhsd_new <=
 dataset$rare_neuro <- as.integer(dataset$rare_neuro_nhsd <= dataset$start_date)
 
 # Generate high_risk_group_new variable based on the combination of binary variables
-dataset$high_risk_group_new <- as.integer((dataset$downs_syndrome + dataset$solid_cancer_new + dataset$haema_disease +
-                                             dataset$renal_disease + dataset$liver_disease + dataset$imid +
-                                             dataset$immunosupression_new + dataset$hiv_aids +
-                                             dataset$solid_organ_new + dataset$rare_neuro) > 0)
+dataset$high_risk_group_new <- as.integer((dataset$downs_syndrome==1| dataset$solid_cancer_new==1|dataset$haema_disease==1|
+                                             dataset$renal_disease==1| dataset$liver_disease==1| dataset$imid==1|
+                                             dataset$immunosupression_new==1| dataset$hiv_aids==1|
+                                             dataset$solid_organ_new==1| dataset$rare_neuro==1) )
 
 # Generate frequency table for high_risk_group_new variable
 table(dataset$high_risk_group_new)
@@ -125,7 +125,7 @@ summary(dataset$death_with_anaphylaxis_date3)
 summary(dataset$death_with_anaphylaxis_date_pre)
 
 # Summarize death_with_anaph_underly_date_pr variable
-summary(dataset$death_with_anaph_underly_date_pr)
+summary(dataset$death_with_anaph_underly_date_pre)
 
 
 # Summarize hospitalisation_anaph variable
