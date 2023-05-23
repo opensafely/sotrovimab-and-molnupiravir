@@ -137,6 +137,7 @@ gen day_hosp=hospitalisation_anaph-start_date
 sum day_hosp, de
 gen hosp_28d=(hospitalisation_anaph!=.&day_hosp<=28) 
 tab hosp_28d
+tab hospitalisation_anaph if hosp_28d==1
 gen day_discharge=hosp_discharge_anaph-hospitalisation_anaph 
 sum day_discharge,de
 sum hospitalisation_anaph_underly ,f
@@ -158,12 +159,14 @@ gen day_AE=AE_anaph-start_date
 sum day_AE, de
 gen AE_28d=(AE_anaph!=.&day_AE<=28) 
 tab AE_28d
+tab AE_anaph if AE_28d==1
 
 sum AE_anaph2 ,f
 sum AE_anaph3 ,f
 sum AE_anaph4 ,f
 gen AE_28d2=(AE_anaph2!=.&day_AE<=28) 
 tab AE_28d2
+tab AE_anaph if AE_28d2==1
 sum AE_anaph2 if day_AE<=28,f
 sum AE_anaph3 if day_AE<=28,f
 sum AE_anaph4 if day_AE<=28,f
@@ -178,6 +181,7 @@ gen day_GP=GP_anaph-start_date
 sum day_GP, de
 gen GP_28d=(GP_anaph!=.&day_GP<=28) 
 tab GP_28d
+tab GP_anaph if GP_28d==1
 tostring GP_anaph_code,replace
 tab GP_anaph_code ,m
 tab GP_anaph_code if day_GP<=28,m
