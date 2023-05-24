@@ -770,7 +770,22 @@ study = StudyDefinition(
     between = ["start_date - 1459 days", "start_date - 1095 days"],
   ),
   registered_pre_4y = patients.registered_as_of("start_date - 1459 days"), 
-
+  hosp_anaph_pre_1m = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    with_these_diagnoses = anaphylaxis_icd10_codes,
+    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    between = ["start_date - 1095 days", "start_date - 1067 days"],
+    find_last_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.6
+    },
+  ),
+  registered_pre_3y = patients.registered_as_of("start_date - 1095 days"), 
 
   ## A&E
   AE_allcause = patients.attended_emergency_care(
@@ -887,6 +902,18 @@ study = StudyDefinition(
           between = ["start_date - 1459 days", "start_date - 1095 days"],
           with_these_diagnoses = codelist(["39579001"], system="snomed"),
   ),  
+  AE_anaph2_pre_1m = patients.attended_emergency_care(
+          returning="date_arrived",
+          between = ["start_date - 1095 days", "start_date - 1067 days"],
+          date_format="YYYY-MM-DD",
+          find_last_match_in_period = True,
+          with_these_diagnoses = codelist(["39579001"], system="snomed"),
+          return_expectations={
+            "date": {"earliest": "2022-02-18"},
+            "rate": "uniform",
+            "incidence": 0.05,
+          },
+  ),  
 
   ## GP records
   GP_anaph = patients.with_these_clinical_events(
@@ -941,5 +968,12 @@ study = StudyDefinition(
     anaphylaxis_snomed_codes,
     between = ["start_date - 1459 days", "start_date - 1095 days"],
     returning = "number_of_episodes",
+  ),
+  GP_anaph_pre_1m = patients.with_these_clinical_events(
+    anaphylaxis_snomed_codes,
+    between = ["start_date - 1095 days", "start_date - 1067 days"],
+    returning = "date",
+    date_format = "YYYY-MM-DD",
+    find_last_match_in_period = True,
   ),
 )
