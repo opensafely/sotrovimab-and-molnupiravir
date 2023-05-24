@@ -41,7 +41,7 @@ date_vars <- c("sotrovimab_covid_therapeutics", "molnupiravir_covid_therapeutics
                "molnupiravir_covid_therapeutics1", "paxlovid_covid_therapeutics1",
                "primary_covid_hospital_discharge_date", "primary_covid_hospital_admission_date",
                "any_covid_hospital_discharge_date", "any_covid_hospital_admission_date", "hosp_anaph_pre_1y",
-               "AE_anaph_pre_1y", "AE_anaph2_pre_1y", "GP_anaph_pre_1y")
+               "AE_anaph_pre_1y", "AE_anaph2_pre_1y", "GP_anaph_pre_1y", "hosp_anaph_pre_1m", "AE_anaph2_pre_1m", "GP_anaph_pre_1m")
 
 for (var in date_vars) {
   if (var %in% names(dataset)) {
@@ -189,6 +189,11 @@ summary(dataset$hosp_anaph_pre_1y)
 
 table(dataset$registered_pre_4y)
 
+table(dataset$hosp_anaph_pre_1y_n)
+summary(dataset$hosp_anaph_pre_1m)
+
+
+
 print("Summarize AE_anaph variable")
 summary(dataset$AE_anaph)
 
@@ -252,6 +257,9 @@ summary(dataset$AE_anaph_pre_1y)
 print("Summarize AE_anaph2_pre_1y variable")
 summary(dataset$AE_anaph2_pre_1y)
 
+table(dataset$AE_anaph2_pre_1y_n)
+print("Summarize AE_anaph2_pre_1m variable")
+summary(dataset$AE_anaph2_pre_1m)
 
 print("Summarize GP_anaph variable")
 summary(dataset$GP_anaph)
@@ -301,6 +309,10 @@ summary(dataset$GP_anaph2_pre)
 print("Summarize GP_anaph_pre_1y variable")
 summary(dataset$GP_anaph_pre_1y)
 
+table(dataset$GP_anaph_pre_1y_n)
+table(dataset$GP_anaph_pre_1y_episode)
+summary(dataset$GP_anaph_pre_1m)
+
 # Combine data from four sources and generate frequency tables
 table(dataset$hosp_28d, dataset$AE_28d, useNA = "ifany", dnn = c("hosp_28d", "AE_28d"))
 table(dataset$hosp_28d, dataset$AE_28d2, useNA = "ifany", dnn = c("hosp_28d", "AE_28d2"))
@@ -344,7 +356,11 @@ dataset$anaph_pre_1y2 <- as.integer((!is.na(dataset$hosp_anaph_pre_1y) | !is.na(
 print("Frequency table for anaph_pre_1y2 variable")
 table(dataset$anaph_pre_1y2)
 
+# Generate anaph_pre_1m2 variable based on conditions
+dataset$anaph_pre_1m2 <- as.integer((!is.na(dataset$hosp_anaph_pre_1m) | !is.na(dataset$AE_anaph2_pre_1m) | !is.na(dataset$GP_anaph_pre_1m)))
 
+print("Frequency table for anaph_pre_1m2 variable")
+table(dataset$anaph_pre_1m2)
 
 
 
