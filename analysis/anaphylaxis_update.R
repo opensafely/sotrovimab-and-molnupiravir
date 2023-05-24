@@ -22,7 +22,7 @@ date_vars <- c("sotrovimab_covid_therapeutics", "molnupiravir_covid_therapeutics
                "GP_anaph_pre", "GP_anaph2_pre", "date_treated1", "sotrovimab_covid_therapeutics1",
                "molnupiravir_covid_therapeutics1", "paxlovid_covid_therapeutics1",
                 "hosp_anaph_pre_1y",
-               "AE_anaph_pre_1y", "AE_anaph2_pre_1y", "GP_anaph_pre_1y")
+               "AE_anaph_pre_1y", "AE_anaph2_pre_1y", "GP_anaph_pre_1y", "hosp_anaph_pre_1m", "AE_anaph2_pre_1m", "GP_anaph_pre_1m")
 
 for (var in date_vars) {
   if (var %in% names(dataset)) {
@@ -54,7 +54,8 @@ summary(dataset_sotro$hosp_anaph_pre_1y)
 table(dataset_sotro$registered_pre_4y)
 table(dataset_sotro$registered_treated)
 table(dataset_sotro$registered_treated, dataset_sotro$registered_pre_4y, useNA = "ifany")
-
+table(dataset_sotro$hosp_anaph_pre_1y_n)
+summary(dataset_sotro$hosp_anaph_pre_1m)
 
 # Calculate day_AE variable as the difference between AE_anaph and start_date
 dataset_sotro$day_AE2 <- as.integer(dataset_sotro$AE_anaph2 - dataset_sotro$start_date)
@@ -79,7 +80,8 @@ summary(dataset_sotro$AE_anaph_pre_1y)
 
 print("Summarize AE_anaph2_pre_1y variable")
 summary(dataset_sotro$AE_anaph2_pre_1y)
-
+table(dataset_sotro$AE_anaph2_pre_1y_n)
+summary(dataset_sotro$AE_anaph2_pre_1m)
 
 # Calculate day_GP variable as the difference between GP_anaph and start_date
 dataset_sotro$day_GP <- as.integer(dataset_sotro$GP_anaph - dataset_sotro$start_date)
@@ -101,7 +103,9 @@ summary(dataset_sotro$GP_anaph_pre)
 
 print("Summarize GP_anaph_pre_1y variable")
 summary(dataset_sotro$GP_anaph_pre_1y)
-
+table(dataset_sotro$GP_anaph_pre_1y_n)
+table(dataset_sotro$GP_anaph_pre_1y_episode)
+summary(dataset_sotro$GP_anaph_pre_1m)
 
 # Generate anaph_all variable based on conditions
 dataset_sotro$anaph_all2 <- as.integer((dataset_sotro$hosp_28d + dataset_sotro$AE_28d2 + dataset_sotro$GP_28d) > 0)
@@ -122,7 +126,11 @@ dataset_sotro$anaph_pre_1y2 <- as.integer((!is.na(dataset_sotro$hosp_anaph_pre_1
 print("Frequency table for anaph_pre_1y2 variable")
 table(dataset_sotro$anaph_pre_1y2)
 
+# Generate anaph_pre_1m2 variable based on conditions
+dataset_sotro$anaph_pre_1m2 <- as.integer((!is.na(dataset_sotro$hosp_anaph_pre_1m) | !is.na(dataset_sotro$AE_anaph2_pre_1m) | !is.na(dataset_sotro$GP_anaph_pre_1m)))
 
+print("Frequency table for anaph_pre_1m2 variable")
+table(dataset_sotro$anaph_pre_1m2)
 
 
 
@@ -148,7 +156,8 @@ summary(dataset_pax$hosp_anaph_pre_1y)
 table(dataset_pax$registered_pre_4y)
 table(dataset_pax$registered_treated)
 table(dataset_pax$registered_treated, dataset_pax$registered_pre_4y, useNA = "ifany")
-
+table(dataset_pax$hosp_anaph_pre_1y_n)
+summary(dataset_pax$hosp_anaph_pre_1m)
 
 # Calculate day_AE variable as the difference between AE_anaph and start_date
 dataset_pax$day_AE2 <- as.integer(dataset_pax$AE_anaph2 - dataset_pax$start_date)
@@ -173,6 +182,8 @@ summary(dataset_pax$AE_anaph_pre_1y)
 
 print("Summarize AE_anaph2_pre_1y variable")
 summary(dataset_pax$AE_anaph2_pre_1y)
+table(dataset_pax$AE_anaph2_pre_1y_n)
+summary(dataset_pax$AE_anaph2_pre_1m)
 
 
 # Calculate day_GP variable as the difference between GP_anaph and start_date
@@ -195,7 +206,9 @@ summary(dataset_pax$GP_anaph_pre)
 
 print("Summarize GP_anaph_pre_1y variable")
 summary(dataset_pax$GP_anaph_pre_1y)
-
+table(dataset_pax$GP_anaph_pre_1y_n)
+table(dataset_pax$GP_anaph_pre_1y_episode)
+summary(dataset_pax$GP_anaph_pre_1m)
 
 # Generate anaph_all variable based on conditions
 dataset_pax$anaph_all2 <- as.integer((dataset_pax$hosp_28d + dataset_pax$AE_28d2 + dataset_pax$GP_28d) > 0)
@@ -216,7 +229,11 @@ dataset_pax$anaph_pre_1y2 <- as.integer((!is.na(dataset_pax$hosp_anaph_pre_1y) |
 print("Frequency table for anaph_pre_1y2 variable")
 table(dataset_pax$anaph_pre_1y2)
 
+# Generate anaph_pre_1m2 variable based on conditions
+dataset_pax$anaph_pre_1m2 <- as.integer((!is.na(dataset_pax$hosp_anaph_pre_1m) | !is.na(dataset_pax$AE_anaph2_pre_1m) | !is.na(dataset_pax$GP_anaph_pre_1m)))
 
+print("Frequency table for anaph_pre_1m2 variable")
+table(dataset_pax$anaph_pre_1m2)
 
 
 
@@ -242,7 +259,8 @@ summary(dataset_mol$hosp_anaph_pre_1y)
 table(dataset_mol$registered_pre_4y)
 table(dataset_mol$registered_treated)
 table(dataset_mol$registered_treated, dataset_mol$registered_pre_4y, useNA = "ifany")
-
+table(dataset_mol$hosp_anaph_pre_1y_n)
+summary(dataset_mol$hosp_anaph_pre_1m)
 
 # Calculate day_AE variable as the difference between AE_anaph and start_date
 dataset_mol$day_AE2 <- as.integer(dataset_mol$AE_anaph2 - dataset_mol$start_date)
@@ -267,6 +285,8 @@ summary(dataset_mol$AE_anaph_pre_1y)
 
 print("Summarize AE_anaph2_pre_1y variable")
 summary(dataset_mol$AE_anaph2_pre_1y)
+table(dataset_mol$AE_anaph2_pre_1y_n)
+summary(dataset_mol$AE_anaph2_pre_1m)
 
 
 # Calculate day_GP variable as the difference between GP_anaph and start_date
@@ -289,7 +309,9 @@ summary(dataset_mol$GP_anaph_pre)
 
 print("Summarize GP_anaph_pre_1y variable")
 summary(dataset_mol$GP_anaph_pre_1y)
-
+table(dataset_mol$GP_anaph_pre_1y_n)
+table(dataset_mol$GP_anaph_pre_1y_episode)
+summary(dataset_mol$GP_anaph_pre_1m)
 
 # Generate anaph_all variable based on conditions
 dataset_mol$anaph_all2 <- as.integer((dataset_mol$hosp_28d + dataset_mol$AE_28d2 + dataset_mol$GP_28d) > 0)
@@ -309,6 +331,12 @@ dataset_mol$anaph_pre_1y2 <- as.integer((!is.na(dataset_mol$hosp_anaph_pre_1y) |
 
 print("Frequency table for anaph_pre_1y2 variable")
 table(dataset_mol$anaph_pre_1y2)
+
+# Generate anaph_pre_1m2 variable based on conditions
+dataset_mol$anaph_pre_1m2 <- as.integer((!is.na(dataset_mol$hosp_anaph_pre_1m) | !is.na(dataset_mol$AE_anaph2_pre_1m) | !is.na(dataset_mol$GP_anaph_pre_1m)))
+
+print("Frequency table for anaph_pre_1m2 variable")
+table(dataset_mol$anaph_pre_1m2)
 
 
 sink()
