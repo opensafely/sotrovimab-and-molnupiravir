@@ -761,6 +761,14 @@ study = StudyDefinition(
       "incidence": 0.6
     },
   ),
+  hosp_anaph_pre_1y_n = patients.admitted_to_hospital(
+    returning = "number_of_matches_in_period",
+    with_these_diagnoses = anaphylaxis_icd10_codes,
+    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    between = ["start_date - 1459 days", "start_date - 1095 days"],
+  ),
   registered_pre_4y = patients.registered_as_of("start_date - 1459 days"), 
 
 
@@ -874,7 +882,11 @@ study = StudyDefinition(
             "incidence": 0.05,
           },
   ),  
-
+  AE_anaph2_pre_1y_n = patients.attended_emergency_care(
+          returning="number_of_matches_in_period",
+          between = ["start_date - 1459 days", "start_date - 1095 days"],
+          with_these_diagnoses = codelist(["39579001"], system="snomed"),
+  ),  
 
   ## GP records
   GP_anaph = patients.with_these_clinical_events(
@@ -920,5 +932,14 @@ study = StudyDefinition(
     date_format = "YYYY-MM-DD",
     find_last_match_in_period = True,
   ),
-
+  GP_anaph_pre_1y_n = patients.with_these_clinical_events(
+    anaphylaxis_snomed_codes,
+    between = ["start_date - 1459 days", "start_date - 1095 days"],
+    returning = "number_of_matches_in_period",
+  ),
+  GP_anaph_pre_1y_episode = patients.with_these_clinical_events(
+    anaphylaxis_snomed_codes,
+    between = ["start_date - 1459 days", "start_date - 1095 days"],
+    returning = "number_of_episodes",
+  ),
 )
