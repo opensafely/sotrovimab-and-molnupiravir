@@ -263,10 +263,10 @@ foreach var of varlist sotrovimab_covid_therapeutics molnupiravir_covid_therapeu
 
 *describe COVID therapy*
 gen treated=(date_treated!=.)
-gen sotrovimab=(sotrovimab_covid_therapeutics!=.&paxlovid_covid_therapeutics>(sotrovimab_covid_therapeutics+28))
+gen sotrovimab=(sotrovimab_covid_therapeutics!=.&(paxlovid_covid_therapeutics>(sotrovimab_covid_therapeutics+28)|paxlovid_covid_therapeutics<(sotrovimab_covid_therapeutics-28)))
 gen molnupiravir=(molnupiravir_covid_therapeutics!=.)
 gen casirivimab=(casirivimab_covid_therapeutics!=.)
-gen paxlovid=(paxlovid_covid_therapeutics!=.&sotrovimab_covid_therapeutics>(paxlovid_covid_therapeutics+28))
+gen paxlovid=(paxlovid_covid_therapeutics!=.&(sotrovimab_covid_therapeutics>(paxlovid_covid_therapeutics+28)|sotrovimab_covid_therapeutics<(paxlovid_covid_therapeutics-28)))
 gen remdesivir=(remdesivir_covid_therapeutics!=.)
 tab sotrovimab ,m
 tab molnupiravir ,m 
