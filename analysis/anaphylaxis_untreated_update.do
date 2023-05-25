@@ -43,7 +43,7 @@ foreach var of varlist  sotrovimab_covid_therapeutics molnupiravir_covid_therape
 		death_with_anaph_underly_date2 death_with_anaphylaxis_date3 death_with_anaphylaxis_date_pre death_with_anaph_underly_date_pr hospitalisation_anaph ///
 		hosp_discharge_anaph hospitalisation_anaph_underly hospitalisation_anaph2 hospitalisation_anaph_underly2 hospitalisation_anaph3 hospitalisation_anaph_pre ///
 		hosp_anaph_underly_pre AE_anaph AE_anaph2 AE_anaph3 AE_anaph4 AE_anaph_pre AE_anaph2_pre GP_anaph GP_anaph2 GP_anaph_pre GP_anaph2_pre ///
-		date_treated1 sotrovimab_covid_therapeutics1 molnupiravir_covid_therapeutics1 paxlovid_covid_therapeutics1 primary_covid_hospital_discharge_date primary_covid_hospital_admission_date ///
+		date_treated1 sotrovimab_covid_therapeutics1 molnupiravir_covid_therapeutics1 paxlovid_covid_therapeutics1 primary_covid_hospital_discharge primary_covid_hospital_admission ///
 		any_covid_hospital_discharge_dat any_covid_hospital_admission_dat hosp_anaph_pre_1y AE_anaph_pre_1y AE_anaph2_pre_1y GP_anaph_pre_1y {
   capture confirm string variable `var'
   if _rc==0 {
@@ -249,7 +249,7 @@ foreach var of varlist  sotrovimab_covid_therapeutics molnupiravir_covid_therape
 		death_with_anaph_underly_date2 death_with_anaphylaxis_date3 death_with_anaphylaxis_date_pre death_with_anaph_underly_date_pr hospitalisation_anaph ///
 		hosp_discharge_anaph hospitalisation_anaph_underly hospitalisation_anaph2 hospitalisation_anaph_underly2 hospitalisation_anaph3 hospitalisation_anaph_pre ///
 		hosp_anaph_underly_pre AE_anaph AE_anaph2 AE_anaph3 AE_anaph4 AE_anaph_pre AE_anaph2_pre GP_anaph GP_anaph2 GP_anaph_pre GP_anaph2_pre ///
-		date_treated1 sotrovimab_covid_therapeutics1 molnupiravir_covid_therapeutics1 paxlovid_covid_therapeutics1 primary_covid_hospital_discharge_date primary_covid_hospital_admission_date ///
+		date_treated1 sotrovimab_covid_therapeutics1 molnupiravir_covid_therapeutics1 paxlovid_covid_therapeutics1 primary_covid_hospital_discharge primary_covid_hospital_admission ///
 		any_covid_hospital_discharge_dat any_covid_hospital_admission_dat hosp_anaph_pre_1y AE_anaph_pre_1y AE_anaph2_pre_1y GP_anaph_pre_1y {
   capture confirm string variable `var'
   if _rc==0 {
