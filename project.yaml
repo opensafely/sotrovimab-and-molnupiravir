@@ -131,8 +131,8 @@ actions:
       moderately_sensitive:
         log: logs/data_preparation_ukrr_untreated.log
       highly_sensitive:
-        data: output/ukrr/ukrr_untreated.dta
-        data: output/ukrr/main_ukrr_untreated.dta
+        data1: output/ukrr/ukrr_untreated.dta
+        data2: output/ukrr/main_ukrr_untreated.dta
 
   cox_regression_ukrr_untreated:
     run: stata-mp:latest analysis/cox_ukrr_untreated.do
