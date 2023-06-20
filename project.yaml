@@ -118,6 +118,30 @@ actions:
       moderately_sensitive:
         log: logs/MI_ukrr.log
 
+  generate_study_population_ukrr_untreated:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ukrr_untreated
+    outputs:
+      highly_sensitive:
+        cohort: output/ukrr/input_ukrr_untreated.csv
+
+  data_preparation_ukrr_untreated:
+    run: stata-mp:latest analysis/data_preparation_and_descriptives_ukrr_untreated.do
+    needs: [generate_study_population_ukrr_untreated]
+    outputs:
+      moderately_sensitive:
+        log: logs/data_preparation_ukrr_untreated.log
+      highly_sensitive:
+        data: output/ukrr/ukrr_untreated.dta
+        data: output/ukrr/main_ukrr_untreated.dta
+
+  cox_regression_ukrr_untreated:
+    run: stata-mp:latest analysis/cox_ukrr_untreated.do
+    needs: [data_preparation_ukrr_untreated]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_ukrr_untreated.log
+
+
   data_preparation_ukrr_raw_rate:
     run: stata-mp:latest analysis/data_preparation_and_descriptives_ukrr_raw_rate.do
     needs: [generate_study_population_ukrr]
