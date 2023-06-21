@@ -407,7 +407,7 @@ replace end_date_allcause=min(death_date, dereg_date, study_end_date, covid_date
 replace end_date_allcause=min(death_date, dereg_date, study_end_date, covid_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,hosp_date_day_cases_mab) if failure_allcause==0&drug==0
 stset end_date_allcause ,  origin(covid_test_positive_date) failure(failure_allcause==1)
 
-append using "./output/ukrr/ukrr_untreated.dta"
+append using "./output/ukrr/ukrr_untreated.dta",force
 save ./output/ukrr/main_ukrr_untreated.dta, replace
 duplicates drop patient_id, force
 stset end_date ,  origin(covid_test_positive_date) failure(failure==1)
