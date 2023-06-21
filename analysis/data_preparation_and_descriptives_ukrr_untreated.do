@@ -144,9 +144,32 @@ gen event_date=min( covid_hospitalisation_outcome_da, death_with_covid_on_the_de
 gen failure=(event_date!=.&event_date<=min(study_end_date,start_date_29))
 tab failure,m
 gen end_date=event_date if failure==1
-replace end_date=min(death_date, dereg_date, study_end_date, start_date_29,covid_hosp_date_day_cases_mab)
+replace end_date=min(death_date, dereg_date, study_end_date, start_date_29,covid_hosp_date_day_cases_mab)  if failure==0
 
 stset end_date ,  origin(start_date) failure(failure==1)
+
+*secondary outcome: all-cause hosp/death within 29 days*
+*correct all cause hosp date *
+replace hospitalisation_outcome_date0=. if hospitalisation_outcome_date0==hosp_discharge_date0&hospitalisation_outcome_date0!=.
+replace hospitalisation_outcome_date1=. if hospitalisation_outcome_date1==hosp_discharge_date1&hospitalisation_outcome_date1!=.
+
+gen hospitalisation_outcome_date=hospitalisation_outcome_date2
+replace hospitalisation_outcome_date=hospitalisation_outcome_date1 if hospitalisation_outcome_date1!=.
+replace hospitalisation_outcome_date=hospitalisation_outcome_date0 if hospitalisation_outcome_date0!=.
+
+gen days_to_any_hosp_admission=hospitalisation_outcome_date-start_date if hospitalisation_outcome_date!=.
+*ignore and censor day cases on or after day 2 from this analysis*
+*ignore and censor admissions for mab procedure >= day 2 and with same-day or 1-day discharge*
+gen hosp_date_day_cases_mab=hospitalisation_outcome_date if hospitalisation_outcome_date2==hosp_discharge_date2&hospitalisation_outcome_date2!=.&hospitalisation_outcome_date0==.&hospitalisation_outcome_date1==.
+replace hospitalisation_outcome_date=. if hospitalisation_outcome_date2==hosp_discharge_date2&hospitalisation_outcome_date2!=.&hospitalisation_outcome_date0==.&hospitalisation_outcome_date1==.
+
+gen event_date_allcause=min( death_date, hospitalisation_outcome_date,covid_hospitalisation_outcome_da )
+gen failure_allcause=(event_date_allcause!=.&event_date_allcause<=min(study_end_date,start_date_29))
+tab failure_allcause,m
+gen end_date_allcause=event_date_allcause if failure_allcause==1
+replace end_date_allcause=min(death_date, dereg_date, study_end_date, start_date_29) if failure_allcause==0
+
+stset end_date_allcause ,  origin(start_date) failure(failure_allcause==1)
 
 
 
@@ -373,8 +396,17 @@ tab failure,m
 gen end_date=event_date if failure==1
 replace end_date=min(death_date, dereg_date, study_end_date, covid_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,covid_hosp_date_day_cases_mab) if failure==0&drug==1
 replace end_date=min(death_date, dereg_date, study_end_date, covid_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,covid_hosp_date_day_cases_mab) if failure==0&drug==0
-
 stset end_date ,  origin(covid_test_positive_date) failure(failure==1)
+
+drop  failure_allcause end_date_allcause 
+gen failure_allcause=(event_date_allcause!=.&event_date_allcause<=min(study_end_date,covid_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==1
+replace failure_allcause=(event_date_allcause!=.&event_date_allcause<=min(study_end_date,covid_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics)) if drug==0
+tab failure_allcause,m
+gen end_date_allcause=event_date_allcause if failure_allcause==1
+replace end_date_allcause=min(death_date, dereg_date, study_end_date, covid_date_29,molnupiravir_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,hosp_date_day_cases_mab) if failure_allcause==0&drug==1
+replace end_date_allcause=min(death_date, dereg_date, study_end_date, covid_date_29,sotrovimab_covid_therapeutics,paxlovid_covid_therapeutics,remdesivir_covid_therapeutics,casirivimab_covid_therapeutics,hosp_date_day_cases_mab) if failure_allcause==0&drug==0
+stset end_date_allcause ,  origin(covid_test_positive_date) failure(failure_allcause==1)
+
 append using "./output/ukrr/ukrr_untreated.dta"
 save ./output/ukrr/main_ukrr_untreated.dta, replace
 duplicates drop patient_id, force
