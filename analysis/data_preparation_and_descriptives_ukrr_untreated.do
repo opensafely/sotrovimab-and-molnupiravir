@@ -102,7 +102,7 @@ drop if region_nhs==""
 tab covid_test_positive covid_positive_previous_30_days,m
 keep if (covid_test_positive==1 & covid_positive_previous_30_days==0)
 drop if primary_covid_hospital_discharge!=.|primary_covid_hospital_admission!=.
-drop if any_covid_hospital_admission_dat!=.|any_covid_hospital_discharge_dat!=.
+drop if any_covid_hospital_discharge_dat!=.
 *restrict start_date*
 keep if covid_test_positive_date>=mdy(12,16,2021)&covid_test_positive_date<=mdy(08,01,2022)
 sum covid_test_positive_date,de
