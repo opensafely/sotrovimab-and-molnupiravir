@@ -34,6 +34,7 @@ stsplit timeband, at(0) after(time=start_date)
 replace drug=-1 if _t0==0&covid_test_positive_date<start_date
 tab drug,m
 
+drop age_spline* calendar_day_spline*
 mkspline age_spline = age, cubic nknots(4)
 mkspline calendar_day_spline = day_after_campaign, cubic nknots(4)
 *un-stratified Cox, missing values as a separate category*
@@ -86,6 +87,7 @@ stsplit timeband, at(0) after(time=start_date)
 replace drug=-1 if _t0==0&covid_test_positive_date<start_date
 tab drug,m
 
+drop age_spline* calendar_day_spline*
 mkspline age_spline = age, cubic nknots(4)
 mkspline calendar_day_spline = day_after_campaign, cubic nknots(4)
 *stratified Cox, missing values as a separate category*
