@@ -407,6 +407,12 @@
       "url": "https://www.opencodelists.org/codelist/user/katiebechman/anaphylaxis/3ea7fc86/",
       "downloaded_at": "2023-05-10 18:24:08.819245Z",
       "sha": "6dc8f35faa9356b30b7d84701d124627d4c37062"
+    },
+    "user-katiebechman-anaphylaxis-snomed.csv": {
+      "id": "user/katiebechman/anaphylaxis-snomed/01b4ad47",
+      "url": "https://www.opencodelists.org/codelist/user/katiebechman/anaphylaxis-snomed/01b4ad47/",
+      "downloaded_at": "2024-02-27 16:22:44.377806Z",
+      "sha": "4245595d018af9e546ca56520b08cc1c6b4a8eb0"
     }
   }
 }
