@@ -131,7 +131,7 @@ non_haematological_cancer_opensafely_snomed_codes = codelist_from_csv(
   column = "id",
 )
 non_haematological_cancer_opensafely_snomed_codes_new = codelist_from_csv(
-  "codelists/opensafely-cancer-excluding-lung-and-haematological-snomed-new.csv",
+  "codelists/opensafely-cancer-excluding-lung-and-haematological-snomed.csv",
   system = "snomed",
   column = "id",
 )
