@@ -91,7 +91,7 @@ strate, per(100000)
 
 * Write to file 
 safecount if covid==1 
-local denominator = r(N) 
+local denominator = round(r(N), 5) 
 safecount if has_died==1 
 local died = round(r(N), 5)
 di `died'
@@ -116,21 +116,21 @@ strate covid_therapeutics, per(100000)
 
 * Write to file 
 safecount if covid_therapeutics==0 
-local denominator_none = r(N) 
+local denominator_none = round(r(N), 5) 
 safecount if has_died==1 & covid_therapeutics==0 
 local died_none = round(r(N), 5)
 local rate_none = (`died_none'/`denominator_none')*100
 di `rate_none'
 
 safecount if covid_therapeutics==1 
-local denominator_sotrov = r(N) 
+local denominator_sotrov = round(r(N), 5) 
 safecount if has_died==1 & covid_therapeutics==1 
 local died_sotrov = round(r(N), 5)
 local rate_sotrov = (`died_sotrov'/`denominator_sotrov')*100
 di `rate_sotrov'
 
 safecount if covid_therapeutics==2 
-local denominator_molnu = r(N) 
+local denominator_molnu = round(r(N), 5) 
 safecount if has_died==1 & covid_therapeutics==2
 local died_molnu = round(r(N), 5)
 local rate_molnu = (`died_molnu'/`denominator_molnu')*100
@@ -162,14 +162,14 @@ strate critical_care, per(100000)
 
 * Write to file 
 safecount if critical_care==0 
-local denominator_hosp = r(N) 
+local denominator_hosp = round(r(N), 5) 
 safecount if has_died==1 & critical_care==0 
 local died_hosp = round(r(N), 5)
 local rate_hosp = (`died_hosp'/`denominator_hosp')*100
 di `rate_hosp'
 
 safecount if critical_care==1 
-local denominator_crit = r(N) 
+local denominator_crit = round(r(N), 5)
 safecount if has_died==1 & critical_care==1 
 local died_crit = round(r(N), 5)
 local rate_crit = (`died_crit'/`denominator_crit')*100
@@ -194,7 +194,7 @@ else {
 strate early_2023, per(100000)
 
 safecount if early_2023==1 
-local denominator_early = r(N) 
+local denominator_early = round(r(N), 5) 
 safecount if has_died==1 & early_2023==1 
 local died_early = round(r(N), 5)
 di `died_early'
@@ -202,7 +202,7 @@ local rate_early = (`died_early'/`denominator_early')*100
 di `rate_early'
 
 safecount if early_2023==0 
-local denominator_late = r(N) 
+local denominator_late = round(r(N), 5)
 safecount if has_died==1 & early_2023==0 
 local died_late = round(r(N), 5)
 local rate_late = (`died_late'/`denominator_late')*100
@@ -227,7 +227,7 @@ else {
 strate primary, per(100000)
 
 safecount if primary==1 
-local denominator_primary = r(N) 
+local denominator_primary = round(r(N), 5) 
 safecount if has_died==1 & primary==1 
 local died_primary = round(r(N), 5)
 di `died_primary'
@@ -235,7 +235,7 @@ local rate_primary = (`died_primary'/`denominator_primary')*100
 di `rate_primary'
 
 safecount if primary==0 
-local denominator_any = r(N) 
+local denominator_any = round(r(N), 5)
 safecount if has_died==1 & primary==0 
 local died_any = round(r(N), 5)
 local rate_any = (`died_any'/`denominator_any')*100

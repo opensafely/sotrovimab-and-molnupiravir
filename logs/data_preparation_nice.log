@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/data_preparation_nice.log
   log type:  text
- opened on:  28 Feb 2024, 16:04:36
+ opened on:  28 Feb 2024, 16:22:51
 
 . clear
 
@@ -250,7 +250,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if covid==1 
   500,000
 
-. local denominator = r(N) 
+. local denominator = round(r(N), 5) 
 
 . safecount if has_died==1 
   389,316
@@ -321,7 +321,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if covid_therapeutics==0 
   179,941
 
-. local denominator_none = r(N) 
+. local denominator_none = round(r(N), 5) 
 
 . safecount if has_died==1 & covid_therapeutics==0 
   140,114
@@ -331,13 +331,13 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local rate_none = (`died_none'/`denominator_none')*100
 
 . di `rate_none'
-77.86719
+77.867623
 
 . 
 . safecount if covid_therapeutics==1 
   120,059
 
-. local denominator_sotrov = r(N) 
+. local denominator_sotrov = round(r(N), 5) 
 
 . safecount if has_died==1 & covid_therapeutics==1 
   93,628
@@ -347,13 +347,13 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local rate_sotrov = (`died_sotrov'/`denominator_sotrov')*100
 
 . di `rate_sotrov'
-77.986657
+77.986007
 
 . 
 . safecount if covid_therapeutics==2 
   200,000
 
-. local denominator_molnu = r(N) 
+. local denominator_molnu = round(r(N), 5) 
 
 . safecount if has_died==1 & covid_therapeutics==2
   155,574
@@ -422,7 +422,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if critical_care==0 
   475,000
 
-. local denominator_hosp = r(N) 
+. local denominator_hosp = round(r(N), 5) 
 
 . safecount if has_died==1 & critical_care==0 
   369,835
@@ -438,7 +438,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if critical_care==1 
   25,000
 
-. local denominator_crit = r(N) 
+. local denominator_crit = round(r(N), 5)
 
 . safecount if has_died==1 & critical_care==1 
   19,481
@@ -496,7 +496,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if early_2023==1 
   61,169
 
-. local denominator_early = r(N) 
+. local denominator_early = round(r(N), 5) 
 
 . safecount if has_died==1 & early_2023==1 
   6,109
@@ -509,13 +509,13 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local rate_early = (`died_early'/`denominator_early')*100
 
 . di `rate_early'
-9.9887198
+9.9885565
 
 . 
 . safecount if early_2023==0 
   438,831
 
-. local denominator_late = r(N) 
+. local denominator_late = round(r(N), 5)
 
 . safecount if has_died==1 & early_2023==0 
   383,207
@@ -525,7 +525,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local rate_late = (`died_late'/`denominator_late')*100
 
 . di `rate_late'
-87.32405
+87.324249
 
 . 
 . if `died_early' > 10 & `died_early'!=. {
@@ -572,7 +572,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if primary==1 
   500,000
 
-. local denominator_primary = r(N) 
+. local denominator_primary = round(r(N), 5) 
 
 . safecount if has_died==1 & primary==1 
   389,316
@@ -591,7 +591,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . safecount if primary==0 
   0
 
-. local denominator_any = r(N) 
+. local denominator_any = round(r(N), 5)
 
 . safecount if has_died==1 & primary==0 
   0
@@ -629,7 +629,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . 
 end of do-file
 
-. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.UO8M
+. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.g0LQ
 > .out", write text replace
 
 . . file write output "success" 
