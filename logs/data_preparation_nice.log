@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/data_preparation_nice.log
   log type:  text
- opened on:  28 Feb 2024, 15:41:55
+ opened on:  28 Feb 2024, 16:04:36
 
 . clear
 
@@ -260,10 +260,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . di `died'
 389315
 
-. local rate = (`died'/`denominator')
+. local rate = (`died'/`denominator')*100
 
 . di `rate'
-.77863
+77.863
 
 . 
 . if `died' > 10 & `died'!=. {
@@ -328,10 +328,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_none = round(r(N), 5)
 
-. local rate_none = (`died_none'/`denominator_none')
+. local rate_none = (`died_none'/`denominator_none')*100
 
 . di `rate_none'
-.7786719
+77.86719
 
 . 
 . safecount if covid_therapeutics==1 
@@ -344,10 +344,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_sotrov = round(r(N), 5)
 
-. local rate_sotrov = (`died_sotrov'/`denominator_sotrov')
+. local rate_sotrov = (`died_sotrov'/`denominator_sotrov')*100
 
 . di `rate_sotrov'
-.77986657
+77.986657
 
 . 
 . safecount if covid_therapeutics==2 
@@ -360,13 +360,14 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_molnu = round(r(N), 5)
 
-. local rate_molnu = (`died_molnu'/`denominator_molnu')
+. local rate_molnu = (`died_molnu'/`denominator_molnu')*100
 
 . di `rate_molnu'
-.777875
+77.7875
 
 . 
-. if `died_none' > 10 & `died_none'!=. {
+. if `died_none' > 10 & `died_none'!=. & (`died_sotrov' > 10 & `died_sotrov'!=.
+> ) & (`died_molnu' > 10 & `died_molnu'!=.) {
 .   file write tablecontent ("No prior therapeutics") _tab (`denominator_none')
 >  _tab (`died_none') _tab (`rate_none') _n 
 . }
@@ -428,10 +429,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_hosp = round(r(N), 5)
 
-. local rate_hosp = (`died_hosp'/`denominator_hosp')
+. local rate_hosp = (`died_hosp'/`denominator_hosp')*100
 
 . di `rate_hosp'
-.7786
+77.86
 
 . 
 . safecount if critical_care==1 
@@ -444,10 +445,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_crit = round(r(N), 5)
 
-. local rate_crit = (`died_crit'/`denominator_crit')
+. local rate_crit = (`died_crit'/`denominator_crit')*100
 
 . di `rate_crit'
-.7792
+77.92
 
 . 
 . if `died_hosp' > 10 & `died_hosp'!=. {
@@ -505,10 +506,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . di `died_early'
 6110
 
-. local rate_early = (`died_early'/`denominator_early')
+. local rate_early = (`died_early'/`denominator_early')*100
 
 . di `rate_early'
-.0998872
+9.9887198
 
 . 
 . safecount if early_2023==0 
@@ -521,10 +522,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_late = round(r(N), 5)
 
-. local rate_late = (`died_late'/`denominator_late')
+. local rate_late = (`died_late'/`denominator_late')*100
 
 . di `rate_late'
-.8732405
+87.32405
 
 . 
 . if `died_early' > 10 & `died_early'!=. {
@@ -581,10 +582,10 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . di `died_primary'
 389315
 
-. local rate_primary = (`died_primary'/`denominator_primary')
+. local rate_primary = (`died_primary'/`denominator_primary')*100
 
 . di `rate_primary'
-.77863
+77.863
 
 . 
 . safecount if primary==0 
@@ -597,7 +598,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 
 . local died_any = round(r(N), 5)
 
-. local rate_any = (`died_any'/`denominator_any')
+. local rate_any = (`died_any'/`denominator_any')*100
 
 . di `rate_any'
 .
@@ -628,7 +629,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . 
 end of do-file
 
-. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.0dHY
+. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.UO8M
 > .out", write text replace
 
 . . file write output "success" 
