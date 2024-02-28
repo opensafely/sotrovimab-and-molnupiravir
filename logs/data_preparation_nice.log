@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/data_preparation_nice.log
   log type:  text
- opened on:  28 Feb 2024, 13:48:19
+ opened on:  28 Feb 2024, 14:05:50
 
 . clear
 
@@ -100,18 +100,7 @@ has_follow_ |
 . drop has_died
 
 . 
-. gen has_died = death_date!=.
-
-. tab has_died
-
-   has_died |      Freq.     Percent        Cum.
-------------+-----------------------------------
-          0 |    450,000       90.00       90.00
-          1 |     50,000       10.00      100.00
-------------+-----------------------------------
-      Total |    500,000      100.00
-
-. 
+. * death_date any time after date admitted
 . sum death_date death_with_covid_date
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
@@ -128,9 +117,24 @@ death_with~e |    300,000     22857.5    332.7807      22282      23433
 (377,015 missing values generated)
 
 . 
+. gen has_died = death_date <=patient_28_days
+
+. tab has_died
+
+   has_died |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    110,684       22.14       22.14
+          1 |    389,316       77.86      100.00
+------------+-----------------------------------
+      Total |    500,000      100.00
+
+. 
 . * Checks
 . count if death_date<=patient_28_days
   389,316
+
+. count if death_date<patient_28_days
+  50,000
 
 . 
 . * Find first of death or 28 days 
@@ -213,12 +217,12 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local denominator = r(N) 
 
 . safecount if has_died==1 
-  50,000
+  389,316
 
 . local died = round(r(N), 5)
 
 . di `died'
-50000
+389315
 
 . sum _t
 
@@ -242,7 +246,7 @@ total_foll~p |    500,000     3099152           0    3099152    3099152
 . local rate = 100000*(`died'/`person_mth')
 
 . di `rate'
-48400.368
+376859.78
 
 . 
 . if `died' > 10 & `died'!=. {
@@ -304,7 +308,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local denominator = r(N) 
 
 . safecount if has_died==1 & covid_therapeutics==0 
-  17,968
+  140,114
 
 . local died_none = round(r(N), 5)
 
@@ -325,7 +329,7 @@ total_foll~e |    179,941     1115156           0    1115156    1115156
 . local rate_none = 100000*(`died_none'/`person_mth_none')
 
 . di `rate_none'
-48343.055
+376938.63
 
 . 
 . safecount if covid_therapeutics==1 
@@ -334,7 +338,7 @@ total_foll~e |    179,941     1115156           0    1115156    1115156
 . local denominator = r(N) 
 
 . safecount if has_died==1 & covid_therapeutics==1 
-  11,967
+  93,628
 
 . local died_sotrov = round(r(N), 5)
 
@@ -355,7 +359,7 @@ total_foll~v |    120,059      740068           0     740068     740068
 . local rate_sotrov = 100000*(`died_sotrov'/`person_mth_sotrov')
 
 . di `rate_sotrov'
-48502.169
+379545.18
 
 . 
 . safecount if covid_therapeutics==2 
@@ -364,7 +368,7 @@ total_foll~v |    120,059      740068           0     740068     740068
 . local denominator = r(N) 
 
 . safecount if has_died==1 & covid_therapeutics==2
-  20,065
+  155,574
 
 . local died_molnu = round(r(N), 5)
 
@@ -385,7 +389,7 @@ total_foll~u |    200,000     1243928           0    1243928    1243928
 . local rate_molnu = 100000*(`died_molnu'/`person_mth_molnu')
 
 . di `rate_molnu'
-48390.987
+375201.98
 
 . 
 . if `died_none' > 10 & `died_none'!=. {
@@ -449,7 +453,7 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local denominator = r(N) 
 
 . safecount if has_died==1 & critical_care==0 
-  47,528
+  369,835
 
 . local died_hosp = round(r(N), 5)
 
@@ -470,7 +474,7 @@ total_fol~sp |    475,000     2944620           0    2944620    2944620
 . local rate_hosp = 100000*(`died_hosp'/`person_mth_hosp')
 
 . di `rate_hosp'
-48423.905
+376790.55
 
 . 
 . safecount if critical_care==1 
@@ -479,7 +483,7 @@ total_fol~sp |    475,000     2944620           0    2944620    2944620
 . local denominator = r(N) 
 
 . safecount if has_died==1 & critical_care==1 
-  2,472
+  19,481
 
 . local died_crit = round(r(N), 5)
 
@@ -500,7 +504,7 @@ total_foll~t |     25,000      154532           0     154532     154532
 . local rate_crit = 100000*(`died_crit'/`person_mth_crit')
 
 . di `rate_crit'
-47951.854
+378178.99
 
 . 
 . if `died_hosp' > 10 & `died_hosp'!=. {
@@ -587,7 +591,7 @@ total_foll~y |     61,169     1541680           0    1541680    1541680
 . local denominator = r(N) 
 
 . safecount if has_died==1 & early_2023==0 
-  43,891
+  383,207
 
 . local died_late = round(r(N), 5)
 
@@ -608,7 +612,7 @@ total_fol~te |    438,831     1557472           0    1557472    1557472
 . local rate_late = 100000*(`died_late'/`person_mth_late')
 
 . di `rate_late'
-84540.954
+738129.79
 
 . 
 . if `died_early' > 10 & `died_early'!=. {
@@ -660,12 +664,12 @@ Estimated rates (per 100000) and lower/upper bounds of 95% confidence intervals
 . local denominator = r(N) 
 
 . safecount if has_died==1 & primary==1 
-  50,000
+  389,316
 
 . local died_primary = round(r(N), 5)
 
 . di `died_primary'
-50000
+389315
 
 . egen total_follow_up_primary = total(_t) if primary==1
 
@@ -683,7 +687,7 @@ total_fol~ry |    500,000     3099152           0    3099152    3099152
 . local rate_primary = 100000*(`died_primary'/`person_mth_primary')
 
 . di `rate_primary'
-48400.368
+376859.78
 
 . 
 . safecount if primary==0 
@@ -742,7 +746,7 @@ total_fol~ny |          0
 . 
 end of do-file
 
-. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.TVe6
+. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.ZCyj
 > .out", write text replace
 
 . . file write output "success" 

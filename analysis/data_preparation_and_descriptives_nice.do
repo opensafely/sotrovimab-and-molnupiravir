@@ -50,9 +50,7 @@ tab deceased, m
 * has_died variable defined incorrectly
 drop has_died
 
-gen has_died = death_date!=.
-tab has_died
-
+* death_date any time after date admitted
 sum death_date death_with_covid_date
 
 * End of study period
@@ -60,8 +58,12 @@ gen study_end = date("31Dec2023", "DMY")
 * 28 days after persons hospitalisation 
 gen patient_28_days = patient_index_date + 28
 
+gen has_died = death_date <=patient_28_days
+tab has_died
+
 * Checks
 count if death_date<=patient_28_days
+count if death_date<patient_28_days
 
 * Find first of death or 28 days 
 egen patient_end_date = rowmin(patient_28_days death_date)
