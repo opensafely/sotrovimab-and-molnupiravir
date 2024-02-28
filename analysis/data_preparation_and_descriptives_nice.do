@@ -28,7 +28,7 @@ clear
 
 * import dataset
 import delimited ./output/input_nice.csv, delimiter(comma) varnames(1) case(preserve) 
-*describe
+describe
 
 *  Convert strings to dates  *
 foreach var of varlist patient_index_date death_date death_with_covid_date dereg_date {
@@ -47,13 +47,26 @@ tab sex, m
 tab has_follow_up, m 
 tab deceased, m 
 
+* has_died variable defined incorrectly
+drop has_died
+
+gen has_died = death_date!=.
+tab has_died
+
+sum death_date death_with_covid_date
+
 * End of study period
 gen study_end = date("31Dec2023", "DMY") 
 * 28 days after persons hospitalisation 
 gen patient_28_days = patient_index_date + 28
 
+* Checks
+count if death_date<=patient_28_days
+
 * Find first of death or 28 days 
 egen patient_end_date = rowmin(patient_28_days death_date)
+
+count if patient_end_date!=patient_28_days 
 
 * Flag if first 6 months of 2023
 gen early_2023 = patient_index_date <= date("30Jun2023", "DMY")
