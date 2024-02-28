@@ -97,7 +97,7 @@ egen total_follow_up = total(_t)
 sum total_follow_up
 local person_mth = round(r(mean), 5)/30 
 di `person_mth'
-local rate = 100000*(`died'/`person_mth')
+local rate = (`died'/`person_mth')
 di `rate'
 
 if `died' > 10 & `died'!=. {
@@ -125,7 +125,7 @@ egen total_follow_up_none = total(_t) if covid_therapeutics==0
 sum total_follow_up_none if covid_therapeutics==0
 local person_mth_none = round(r(mean), 5)/30 
 di `person_mth_none'
-local rate_none = 100000*(`died_none'/`person_mth_none')
+local rate_none = (`died_none'/`person_mth_none')
 di `rate_none'
 
 safecount if covid_therapeutics==1 
@@ -136,7 +136,7 @@ egen total_follow_up_sotrov = total(_t) if covid_therapeutics==1
 sum total_follow_up_sotrov if covid_therapeutics==1
 local person_mth_sotrov = round(r(mean), 5)/30 
 di `person_mth_sotrov'
-local rate_sotrov = 100000*(`died_sotrov'/`person_mth_sotrov')
+local rate_sotrov = (`died_sotrov'/`person_mth_sotrov')
 di `rate_sotrov'
 
 safecount if covid_therapeutics==2 
@@ -147,7 +147,7 @@ egen total_follow_up_molnu = total(_t) if covid_therapeutics==2
 sum total_follow_up_molnu if covid_therapeutics==2
 local person_mth_molnu = round(r(mean), 5)/30 
 di `person_mth_molnu'
-local rate_molnu = 100000*(`died_molnu'/`person_mth_molnu')
+local rate_molnu = (`died_molnu'/`person_mth_molnu')
 di `rate_molnu'
 
 if `died_none' > 10 & `died_none'!=. {
@@ -183,7 +183,7 @@ egen total_follow_up_hosp = total(_t) if critical_care==0
 sum total_follow_up_hosp if critical_care==0
 local person_mth_hosp = round(r(mean), 5)/30 
 di `person_mth_hosp'
-local rate_hosp = 100000*(`died_hosp'/`person_mth_hosp')
+local rate_hosp = (`died_hosp'/`person_mth_hosp')
 di `rate_hosp'
 
 safecount if critical_care==1 
@@ -194,7 +194,7 @@ egen total_follow_up_crit = total(_t) if critical_care==1
 sum total_follow_up_crit if critical_care==1
 local person_mth_crit = round(r(mean), 5)/30 
 di `person_mth_crit'
-local rate_crit = 100000*(`died_crit'/`person_mth_crit')
+local rate_crit = (`died_crit'/`person_mth_crit')
 di `rate_crit'
 
 if `died_hosp' > 10 & `died_hosp'!=. {
@@ -224,7 +224,7 @@ egen total_follow_up_early = total(_t) if early_2023==1
 sum total_follow_up_early if early_2023==1
 local person_mth_early = round(r(mean), 5)/30 
 di `person_mth_early'
-local rate_early = 100000*(`died_early'/`person_mth_early')
+local rate_early = (`died_early'/`person_mth_early')
 di `rate_early'
 
 safecount if early_2023==0 
@@ -235,7 +235,7 @@ egen total_follow_up_late = total(_t) if early_2023==0
 sum total_follow_up_late if early_2023==0
 local person_mth_late = round(r(mean), 5)/30 
 di `person_mth_late'
-local rate_late = 100000*(`died_late'/`person_mth_late')
+local rate_late = (`died_late'/`person_mth_late')
 di `rate_late'
 
 if `died_early' > 10 & `died_early'!=. {
@@ -265,7 +265,7 @@ egen total_follow_up_primary = total(_t) if primary==1
 sum total_follow_up_primary if primary==1
 local person_mth_primary = round(r(mean), 5)/30 
 di `person_mth_primary'
-local rate_primary = 100000*(`died_primary'/`person_mth_primary')
+local rate_primary = (`died_primary'/`person_mth_primary')
 di `rate_primary'
 
 safecount if primary==0 
@@ -276,7 +276,7 @@ egen total_follow_up_any = total(_t) if primary==0
 sum total_follow_up_any if primary==0
 local person_mth_any = round(r(mean), 5)/30 
 di `person_mth_any'
-local rate_any = 100000*(`died_any'/`person_mth_any')
+local rate_any = (`died_any'/`person_mth_any')
 di `rate_any'
 
 if `died_primary' > 10 & `died_primary'!=. {
