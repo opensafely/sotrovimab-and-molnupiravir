@@ -104,8 +104,7 @@ if `died' > 10 & `died'!=. {
   file write tablecontent ("All") _tab (`died') _tab (`person_mth') _tab (`rate') _n 
 }
 else { 
-    file write tablecontent ("All") _tab ("redact") _n
-    continue
+  file write tablecontent ("All") _tab ("redact") _n
 }
 
 * 28-day mortality for people treated with sotruvimab and molnupiravir 
@@ -155,24 +154,21 @@ if `died_none' > 10 & `died_none'!=. {
   file write tablecontent ("No prior therapeutics") _tab (`died_none') _tab (`person_mth_none') _tab (`rate_none') _n 
 }
 else { 
-    file write tablecontent ("No prior therapeutics") _tab ("redact") _n
-    continue
-}
+  file write tablecontent ("No prior therapeutics") _tab ("redact") _n
+  }
 
 if `died_sotrov' > 10 & `died_sotrov'!=. {
   file write tablecontent ("Sotruvimab") _tab (`died_sotrov') _tab (`person_mth_sotrov') _tab (`rate_sotrov') _n 
 }
 else { 
-    file write tablecontent ("Sotruvimab") _tab ("redact") _n
-    continue
+  file write tablecontent ("Sotruvimab") _tab ("redact") _n
 }
 
 if `died_molnu' > 10 & `died_molnu'!=. {
   file write tablecontent ("Molnupiravir") _tab (`died_molnu') _tab (`person_mth_molnu') _tab (`rate_molnu') _n 
 }
 else { 
-    file write tablecontent ("Molnupiravir") _tab ("redact") _n
-    continue
+  file write tablecontent ("Molnupiravir") _tab ("redact") _n
 }
 
 * 28-day mortality for people in critical care vs not 
@@ -205,16 +201,14 @@ if `died_hosp' > 10 & `died_hosp'!=. {
   file write tablecontent ("Hospitalised (not critical)") _tab (`died_hosp') _tab (`person_mth_hosp') _tab (`rate_hosp') _n 
 }
 else { 
-    file write tablecontent ("Hospitalised (not critical)") _tab ("redact") _n
-    continue
+  file write tablecontent ("Hospitalised (not critical)") _tab ("redact") _n
 }
 
 if `died_crit' > 10 & `died_crit'!=. {
   file write tablecontent ("Hospitalised (critical)") _tab (`died_crit') _tab (`person_mth_crit') _tab (`rate_crit') _n 
 }
 else { 
-    file write tablecontent ("Hospitalised (critical)") _tab ("redact") _n
-    continue
+  file write tablecontent ("Hospitalised (critical)") _tab ("redact") _n
 }
 
 * First 6 months 2023 vs last 6 months 2023
@@ -248,16 +242,14 @@ if `died_early' > 10 & `died_early'!=. {
   file write tablecontent ("Jan-June 2023") _tab (`died_early') _tab (`person_mth_early') _tab (`rate_early') _n 
 }
 else { 
-    file write tablecontent ("Jan-June 2023") _tab ("redact") _n
-    continue
+  file write tablecontent ("Jan-June 2023") _tab ("redact") _n
 }
 
 if `died_late' > 10 & `died_late'!=. {
   file write tablecontent ("July-Dec 2023") _tab (`died_late') _tab (`person_mth_late') _tab (`rate_late') _n 
 }
 else { 
-    file write tablecontent ("July-Dec 2023") _tab ("redact") _n
-    continue
+  file write tablecontent ("July-Dec 2023") _tab ("redact") _n
 }
 
 * Primary reason COVID vs any position
@@ -291,15 +283,14 @@ if `died_primary' > 10 & `died_primary'!=. {
   file write tablecontent ("Primary") _tab (`died_primary') _tab (`person_mth_primary') _tab (`rate_primary') _n 
 }
 else { 
-    file write tablecontent ("Primary") _tab ("redact") _n
-    continue
+  file write tablecontent ("Primary") _tab ("redact") _n
 }
 
 if `died_any' > 10 & `died_any'!=. {
   file write tablecontent ("Other position") _tab (`died_any') _tab (`person_mth_any') _tab (`rate_any') _n 
 }
 else { 
-    file write tablecontent ("Other position") _tab ("redact") _n
+  file write tablecontent ("Other position") _tab ("redact") _n
 }
 
 file close tablecontent

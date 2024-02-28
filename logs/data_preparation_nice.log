@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /workspace/logs/data_preparation_nice.log
   log type:  text
- opened on:  28 Feb 2024, 14:05:50
+ opened on:  28 Feb 2024, 14:35:14
 
 . clear
 
@@ -255,8 +255,7 @@ total_foll~p |    500,000     3099152           0    3099152    3099152
 . }
 
 . else { 
-.     file write tablecontent ("All") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("All") _tab ("redact") _n
 . }
 
 . 
@@ -398,9 +397,8 @@ total_foll~u |    200,000     1243928           0    1243928    1243928
 . }
 
 . else { 
-.     file write tablecontent ("No prior therapeutics") _tab ("redact") _n
-.     continue
-. }
+.   file write tablecontent ("No prior therapeutics") _tab ("redact") _n
+.   }
 
 . 
 . if `died_sotrov' > 10 & `died_sotrov'!=. {
@@ -409,8 +407,7 @@ total_foll~u |    200,000     1243928           0    1243928    1243928
 . }
 
 . else { 
-.     file write tablecontent ("Sotruvimab") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("Sotruvimab") _tab ("redact") _n
 . }
 
 . 
@@ -420,8 +417,7 @@ total_foll~u |    200,000     1243928           0    1243928    1243928
 . }
 
 . else { 
-.     file write tablecontent ("Molnupiravir") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("Molnupiravir") _tab ("redact") _n
 . }
 
 . 
@@ -513,9 +509,7 @@ total_foll~t |     25,000      154532           0     154532     154532
 . }
 
 . else { 
-.     file write tablecontent ("Hospitalised (not critical)") _tab ("redact") _
-> n
-.     continue
+.   file write tablecontent ("Hospitalised (not critical)") _tab ("redact") _n
 . }
 
 . 
@@ -525,8 +519,7 @@ total_foll~t |     25,000      154532           0     154532     154532
 . }
 
 . else { 
-.     file write tablecontent ("Hospitalised (critical)") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("Hospitalised (critical)") _tab ("redact") _n
 . }
 
 . 
@@ -621,8 +614,7 @@ total_fol~te |    438,831     1557472           0    1557472    1557472
 . }
 
 . else { 
-.     file write tablecontent ("Jan-June 2023") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("Jan-June 2023") _tab ("redact") _n
 . }
 
 . 
@@ -632,8 +624,7 @@ total_fol~te |    438,831     1557472           0    1557472    1557472
 . }
 
 . else { 
-.     file write tablecontent ("July-Dec 2023") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("July-Dec 2023") _tab ("redact") _n
 . }
 
 . 
@@ -726,8 +717,7 @@ total_fol~ny |          0
 . }
 
 . else { 
-.     file write tablecontent ("Primary") _tab ("redact") _n
-.     continue
+.   file write tablecontent ("Primary") _tab ("redact") _n
 . }
 
 . 
@@ -737,7 +727,7 @@ total_fol~ny |          0
 . }
 
 . else { 
-.     file write tablecontent ("Other position") _tab ("redact") _n
+.   file write tablecontent ("Other position") _tab ("redact") _n
 . }
 
 . 
@@ -746,7 +736,7 @@ total_fol~ny |          0
 . 
 end of do-file
 
-. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.ZCyj
+. . file open output using "/tmp/data_preparation_and_descriptives_nice.do.PJl6
 > .out", write text replace
 
 . . file write output "success" 
