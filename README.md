@@ -10,6 +10,8 @@ You can run this project via [Gitpod](https://gitpod.io) in a web browser by cli
 * If you are interested in how we defined our variables, take a look at the [study definition](analysis/study_definition.py); this is written in `python`, but non-programmers should be able to understand what is going on there
 * If you are interested in how we defined our code lists, look in the [codelists folder](./codelists/).
 * Developers and epidemiologists interested in the framework should review [the OpenSAFELY documentation](https://docs.opensafely.org)
+* NICE requested OpenSAFELY provide up-to-date information to inform their deliberations. Specifically, they wanted to understand the mortality rates for individuals admitted to hospital with COVID-19 and how this varies if the individual was admitted and / or needed ICU. The analysis that was possible to use to support NICE involved a study looking at how antiviral / monoclonal antibody provision to patients affected their mortality; however, due to the change in delivery of the COVID therapeutics away from Community Medicines Delivery units this additional breakdown by treatments was not available. Nevertheless, the information that could be supplied was shared with NICE to inform their wider work.
+
 
 # About the OpenSAFELY framework
 
