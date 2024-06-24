@@ -128,7 +128,7 @@ sickle_cell_disease_nhsd_icd10_codes = codelist_from_csv(
 non_haematological_cancer_opensafely_snomed_codes_new = codelist_from_csv(
   "codelists/opensafely-cancer-excluding-lung-and-haematological-snomed-new.csv",
   system = "snomed",
-  column = "id",
+  column = "code",
 )
 
 lung_cancer_opensafely_snomed_codes = codelist_from_csv(
