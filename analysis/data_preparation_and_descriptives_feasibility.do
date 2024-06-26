@@ -34,8 +34,7 @@ rename v55 haematological_malig_snomed_ever
 rename v56 haematological_malig_icd10_ever
 
 
-log close
-exit, clear
+
 
 *  Convert strings to dates  *
 foreach var of varlist  sotrovimab_covid_out molnupiravir_covid_out paxlovid_covid_out remdesivir_covid_out casirivimab_covid_out date_treated_out ///
@@ -64,36 +63,22 @@ foreach var of varlist  sotrovimab_covid_out molnupiravir_covid_out paxlovid_cov
 
 *check hosp records*
 keep if start_date!=.
-gen covid_hosp_not_pri_admission_d=start_date - covid_hosp_not_pri_admission
-start_date>=covid_hosp_not_pri_admission&date_treated_hosp<=covid_hosp_not_pri_discharge)|(date_treated_hosp>=covid_hosp_not_pri_admission2&date_treated_hosp<=covid_hosp_not_pri_discharge2))
-count if treated_hosp==1&((date_treated_hosp>=covid_hosp_admission&date_treated_hosp<=covid_hosp_discharge)|(date_treated_hosp>=covid_hosp_admission2&date_treated_hosp<=covid_hosp_discharge2))
-count if treated_hosp==1&((date_treated_hosp>=all_hosp_admission&date_treated_hosp<=all_hosp_discharge)|(date_treated_hosp>=all_hosp_admission2&date_treated_hosp<=all_hosp_discharge2))
-count if treated_hosp==1&(((date_treated_hosp+1)>=covid_hosp_not_pri_admission&(date_treated_hosp-1)<=covid_hosp_not_pri_discharge)|((date_treated_hosp+1)>=covid_hosp_not_pri_admission2&(date_treated_hosp-1)<=covid_hosp_not_pri_discharge2))
-count if treated_hosp==1&(((date_treated_hosp+3)>=covid_hosp_not_pri_admission&(date_treated_hosp-3)<=covid_hosp_not_pri_discharge)|((date_treated_hosp+3)>=covid_hosp_not_pri_admission2&(date_treated_hosp-3)<=covid_hosp_not_pri_discharge2))
-count if treated_hosp==1&(((date_treated_hosp+1)>=covid_hosp_admission&(date_treated_hosp-1)<=covid_hosp_discharge)|((date_treated_hosp+1)>=covid_hosp_admission2&(date_treated_hosp-1)<=covid_hosp_discharge2))
-count if treated_hosp==1&(((date_treated_hosp+3)>=covid_hosp_admission&(date_treated_hosp-3)<=covid_hosp_discharge)|((date_treated_hosp+3)>=covid_hosp_admission2&(date_treated_hosp-3)<=covid_hosp_discharge2))
-count if treated_hosp==1&all_hosp_admission_hosp!=.
-count if treated_hosp==1&covid_hosp_admission_hosp!=.
-count if treated_hosp==1&covid_hosp_not_pri_hosp!=.
-*check covid test*
-count if treated_onset==1&covid_test_positive_onset!=.
-count if treated_hosp==1&covid_test_positive_hosp!=.
-
-*distinguish onset and hosp*
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_not_pri_admission&start_date<=covid_hosp_not_pri_discharge)|(start_date>=covid_hosp_not_pri_admission2&start_date<=covid_hosp_not_pri_discharge2))
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_admission&start_date<=covid_hosp_discharge)|(start_date>=covid_hosp_admission2&start_date<=covid_hosp_discharge2))
-tab treated_hosp if start_date!=.&((start_date>=covid_hosp_not_pri_admission&start_date<=covid_hosp_not_pri_discharge)|(start_date>=covid_hosp_not_pri_admission2&start_date<=covid_hosp_not_pri_discharge2))
-tab treated_hosp if start_date!=.&((start_date>=covid_hosp_admission&start_date<=covid_hosp_discharge)|(start_date>=covid_hosp_admission2&start_date<=covid_hosp_discharge2))
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_not_pri_admission&start_date<=covid_hosp_not_pri_discharge&covid_test_positive_not_pri>covid_hosp_not_pri_admission)|(start_date>=covid_hosp_not_pri_admission2&start_date<=covid_hosp_not_pri_discharge2&covid_test_positive_not_pri2>covid_hosp_not_pri_admission2))
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_admission&start_date<=covid_hosp_discharge&covid_test_positive_covid_hosp>covid_hosp_admission)|(start_date>=covid_hosp_admission2&start_date<=covid_hosp_discharge2&covid_test_positive_covid_hosp2>covid_hosp_admission2))
-tab treated_onset if start_date!=.&((start_date>=all_hosp_admission&start_date<=all_hosp_discharge&covid_test_positive_all_hosp>all_hosp_admission)|(start_date>=all_hosp_admission2&start_date<=all_hosp_discharge2&covid_test_positive_all_hosp2>all_hosp_admission2))
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_not_pri_admission&start_date<=covid_hosp_not_pri_discharge&covid_test_positive_not_pri>covid_hosp_not_pri_admission&covid_test_positive_not_pri!=.)|(start_date>=covid_hosp_not_pri_admission2&start_date<=covid_hosp_not_pri_discharge2&covid_test_positive_not_pri2>covid_hosp_not_pri_admission2&covid_test_positive_not_pri2!=.))
-tab treated_onset if start_date!=.&((start_date>=covid_hosp_admission&start_date<=covid_hosp_discharge&covid_test_positive_covid_hosp>covid_hosp_admission&covid_test_positive_covid_hosp!=.)|(start_date>=covid_hosp_admission2&start_date<=covid_hosp_discharge2&covid_test_positive_covid_hosp2>covid_hosp_admission2&covid_test_positive_covid_hosp2!=.))
-tab treated_onset if start_date!=.&((start_date>=all_hosp_admission&start_date<=all_hosp_discharge&covid_test_positive_all_hosp>all_hosp_admission&covid_test_positive_all_hosp!=.)|(start_date>=all_hosp_admission2&start_date<=all_hosp_discharge2&covid_test_positive_all_hosp2>all_hosp_admission2&covid_test_positive_all_hosp2!=.))
-tab treated_hosp if start_date!=.&((start_date>=covid_hosp_not_pri_admission&start_date<=covid_hosp_not_pri_discharge&covid_test_positive_not_pri<=covid_hosp_not_pri_admission)|(start_date>=covid_hosp_not_pri_admission2&start_date<=covid_hosp_not_pri_discharge2&covid_test_positive_not_pri2<=covid_hosp_not_pri_admission2))
-tab treated_hosp if start_date!=.&((start_date>=covid_hosp_admission&start_date<=covid_hosp_discharge&covid_test_positive_covid_hosp<=covid_hosp_admission)|(start_date>=covid_hosp_admission2&start_date<=covid_hosp_discharge2&covid_test_positive_covid_hosp2<=covid_hosp_admission2))
-tab treated_hosp if start_date!=.&((start_date>=all_hosp_admission&start_date<=all_hosp_discharge&covid_test_positive_all_hosp<=all_hosp_admission)|(start_date>=all_hosp_admission2&start_date<=all_hosp_discharge2&covid_test_positive_all_hosp2<=all_hosp_admission2))
-
+count if  covid_hosp_not_pri_admission!=.
+sum covid_hosp_not_pri_admission,f
+count if covid_hosp_not_pri_admission==covid_hosp_not_pri_discharge
+sum covid_hosp_not_pri_admission if covid_hosp_not_pri_admission==covid_hosp_not_pri_discharge,f
+count if  all_hosp_admission!=.
+sum all_hosp_admission,f
+count if all_hosp_admission==all_hosp_discharge
+sum all_hosp_admission if all_hosp_admission==all_hosp_discharge, f
+gen covid_hosp_not_pri_adm_d= start_date - covid_hosp_not_pri_admission
+sum covid_hosp_not_pri_adm_d,de
+gen all_hosp_adm_d= start_date - all_hosp_admission
+sum all_hosp_adm_d,de
+gen covid_hosp_not_pri_duration= covid_hosp_not_pri_discharge - covid_hosp_not_pri_admission
+sum covid_hosp_not_pri_duration,de
+gen all_hosp_duration= all_hosp_discharge - all_hosp_admission
+sum all_hosp_duration,de
 
 
 count  if tocilizumab_covid_hosp!=.&death_with_covid_date!=.
@@ -101,6 +86,10 @@ count  if sarilumab_covid_hosp!=.&death_with_covid_date!=.
 count  if tocilizumab_covid_hosp!=.&death_date!=.
 count  if sarilumab_covid_hosp!=.&death_date!=.
 
+
+
+log close
+exit, clear
 
 
 
