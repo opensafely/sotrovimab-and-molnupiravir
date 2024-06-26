@@ -1444,7 +1444,7 @@ study = StudyDefinition(
     with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "all_hosp_admission_index2 + 1 day",
+    on_or_after = "all_hosp_admission2_index + 1 day",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
