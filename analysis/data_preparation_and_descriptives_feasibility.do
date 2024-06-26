@@ -30,8 +30,8 @@ import delimited ./output/input_feasibility.csv, delimiter(comma) varnames(1) ca
 keep if date_treated_out!=""|date_treated_hosp!=""|date_treated_onset!=""
 *describe
 codebook
-rename v55 haematological_malig_snomed_ever
-rename v56 haematological_malig_icd10_ever
+rename v57 haematological_malig_snomed_ever
+rename v58 haematological_malig_icd10_ever
 
 
 
