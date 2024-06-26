@@ -256,6 +256,12 @@ actions:
       highly_sensitive:
         data: output/main_feasibility.dta
 
+  generate_study_population_feasibility2:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_feasibility2
+    outputs:
+      highly_sensitive:
+        cohort: output/input_feasibility2.csv
+
   # Study population for NICE figures 26th February 2024
   generate_study_population_nice:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_nice
