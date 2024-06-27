@@ -30,10 +30,6 @@ import delimited ./output/input_feasibility2.csv, delimiter(comma) varnames(1) c
 keep if date_treated_out!=""|date_treated_hosp!=""|date_treated_onset!=""
 *describe
 codebook
-
-log close
-exit, clear
-
 rename v57 haematological_malig_snomed_ever
 rename v58 haematological_malig_icd10_ever
 
@@ -54,35 +50,50 @@ foreach var of varlist  sotrovimab_covid_out molnupiravir_covid_out paxlovid_cov
 		covid_hosp_not_pri_discharge2 covid_hosp_not_pri_admission2  covid_hosp_not_pri_discharge2_1d  all_hosp_discharge_1d all_hosp_admission2 all_hosp_discharge2_1d ///
 		covid_hosp_not_pri_admission0 covid_hosp_not_pri_discharge0 covid_hosp_admission covid_hosp_discharge all_hosp_admission all_hosp_discharge ///
 		all_hosp_discharge2 all_hosp_admission0 all_hosp_discharge0 covid_test_positive_date covid_test_positive_date0 covid_test_positive_date00 ///
-		dereg_date	{
+		dereg_date	all_hosp_admission_index all_hosp_discharge_index all_hosp_admission2_index all_hosp_discharge2_index all_hosp_admission3_index all_hosp_discharge3_index {
   capture confirm string variable `var'
   if _rc==0 {
   rename `var' a
   gen `var' = date(a, "YMD")
   drop a
   format %td `var'
-  sum `var',f
+  sum `var',f de
   }
 }
 
 *check hosp records*
 keep if start_date!=.
 count if  covid_hosp_not_pri_admission!=.
-sum covid_hosp_not_pri_admission,f
-count if covid_hosp_not_pri_admission==covid_hosp_not_pri_discharge
-sum covid_hosp_not_pri_admission if covid_hosp_not_pri_admission==covid_hosp_not_pri_discharge,f
-count if  all_hosp_admission!=.
-sum all_hosp_admission,f
-count if all_hosp_admission==all_hosp_discharge
-sum all_hosp_admission if all_hosp_admission==all_hosp_discharge, f
+sum covid_hosp_not_pri_admission,f de
+count if  covid_hosp_not_pri_admission2!=.
+sum covid_hosp_not_pri_admission2,f de
+count if  all_hosp_admission!=. 
+sum all_hosp_admission,f de
+count if  all_hosp_admission2!=. 
+sum all_hosp_admission2,f de
+count if 
+
 gen covid_hosp_not_pri_adm_d= start_date - covid_hosp_not_pri_admission
 sum covid_hosp_not_pri_adm_d,de
 gen all_hosp_adm_d= start_date - all_hosp_admission
 sum all_hosp_adm_d,de
+gen covid_hosp_not_pri_adm2_d= start_date - covid_hosp_not_pri_admission2
+sum covid_hosp_not_pri_adm2_d,de
+gen all_hosp_adm2_d= start_date - all_hosp_admission2
+sum all_hosp_adm2_d,de
+count if (covid_hosp_not_pri_admission<=start_date&covid_hosp_not_pri_discharge>=start_date)|(covid_hosp_not_pri_admission2<=start_date&covid_hosp_not_pri_discharge2>=start_date)
+count if (all_hosp_admission<=start_date&all_hosp_discharge>=start_date)|(all_hosp_admission2<=start_date&all_hosp_discharge2>=start_date)
+count if (all_hosp_admission_index<=start_date&all_hosp_discharge_index>=start_date)|(all_hosp_admission2_index<=start_date&all_hosp_discharge2_index>=start_date)|(all_hosp_admission3_index<=start_date&all_hosp_discharge3_index>=start_date)
+
+
 gen covid_hosp_not_pri_duration= covid_hosp_not_pri_discharge - covid_hosp_not_pri_admission
 sum covid_hosp_not_pri_duration,de
 gen all_hosp_duration= all_hosp_discharge - all_hosp_admission
 sum all_hosp_duration,de
+gen covid_hosp_not_pri2_duration= covid_hosp_not_pri_discharge2 - covid_hosp_not_pri_admission2
+sum covid_hosp_not_pri2_duration,de
+gen all_hosp2_duration= all_hosp_discharge2- all_hosp_admission2
+sum all_hosp2_duration,de
 
 
 count  if tocilizumab_covid_hosp!=.&death_with_covid_date!=.
@@ -187,31 +198,30 @@ stcox i.drug##i.drug1
 
 
 *covariates* 
+sum start_date,f de
+
 replace oral_steroid_drugs_nhsd=. if oral_steroid_drug_nhsd_3m_count < 2 & oral_steroid_drug_nhsd_12m_count < 4
 gen imid_nhsd=min(oral_steroid_drugs_nhsd, immunosuppresant_drugs_nhsd)
-gen solid_cancer=(cancer_opensafely_snomed<=start_date)
-gen haema_disease=( haematological_disease_nhsd <=start_date|haema_disease_therapeutics==1)
-gen renal_disease=( ckd_stage_5_nhsd <=start_date|renal_therapeutics==1)
-gen liver_disease=( liver_disease_nhsd <=start_date|liver_therapeutics==1)
+gen solid_cancer=(cancer_opensafely_snomed_new<=start_date)
+gen solid_cancer_ever=(cancer_opensafely_snomed_ever<=start_date)
+gen haema_disease=( haematological_disease_nhsd <=start_date)
+gen haema_disease_ever=( haematological_disease_nhsd_ever <=start_date)
+gen haematological_cancer=(haematological_malignancies_snomed<=start_date|haematological_malignancies_icd10<=start_date)
+gen haematological_cancer_ever=(haematological_malig_snomed_ever<=start_date|haematological_malig_icd10_ever<=start_date)
+gen renal_disease=( ckd_stage_5_nhsd <=start_date)
+gen liver_disease=( liver_disease_nhsd <=start_date)
 gen imid=( imid_nhsd <=start_date)
-gen immunosupression=( immunosupression_nhsd <=start_date|immunosup_therapeutics==1)
-gen hiv_aids=( hiv_aids_nhsd <=start_date|hiv_aids_therapeutics==1)
-gen solid_organ=( solid_organ_transplant_nhsd<=start_date|solid_organ_therapeutics==1)
-gen rare_neuro=( rare_neuro_nhsd <=start_date|rare_neuro_therapeutics==1)
-gen high_risk_group=(( downs_syndrome + solid_cancer + haema_disease + renal_disease + liver_disease + imid + immunosupression + hiv_aids + solid_organ + rare_neuro )>0)
-tab high_risk_group,m
+gen immunosupression=( immunosupression_nhsd_new <=start_date)
+gen solid_organ=( solid_organ_transplant_nhsd_new<=start_date)
 
-*Time between positive test and treatment*
-gen d_postest_treat=start_date - covid_test_positive_date
-tab d_postest_treat,m
-replace d_postest_treat=. if d_postest_treat<0|d_postest_treat>7
-gen d_postest_treat_g2=(d_postest_treat>=3) if d_postest_treat<=5
-label define d_postest_treat_g2 0 "<3 days" 1 "3-5 days" 
-label values d_postest_treat_g2 d_postest_treat_g2
-gen d_postest_treat_missing=d_postest_treat_g2
-replace d_postest_treat_missing=9 if d_postest_treat_g2==.
-label define d_postest_treat_missing 0 "<3 days" 1 "3-5 days" 9 "missing" 
-label values d_postest_treat_missing d_postest_treat_missing
+sum covid_test_positive_date,f de
+gen covid_test_positive_date_d=start_date - covid_test_positive_date
+sum covid_test_positive_date_d,de
+sum covid_test_positive_date00,f de
+gen covid_reinfection=(min(covid_test_positive_date,covid_test_positive_date0,covid_test_positive_date00,date_treated_hosp,date_treated_onset, ///
+      date_treated_out,remdesivir_covid_hosp0, tocilizumab_covid_hosp0, sarilumab_covid_hosp0, covid_hosp_not_pri_admission, covid_hosp_not_pri_admission0)<=(start_date-90))
+tab covid_reinfection,m
+
 *demo*
 gen age_group3=(age>=40)+(age>=60)
 label define age_group3 0 "18-39" 1 "40-59" 2 ">=60" 
@@ -257,15 +267,9 @@ tab region_covid_therapeutics ,m
 rename region_covid_therapeutics region_covid_therapeutics_str
 encode  region_covid_therapeutics_str ,gen( region_covid_therapeutics )
 label list region_covid_therapeutics
-
-tab stp ,m
-rename stp stp_str
-encode  stp_str ,gen(stp)
-label list stp
-*combine stps with low N (<100) as "Other"*
-by stp, sort: gen stp_N=_N if stp!=.
-replace stp=99 if stp_N<100
-tab stp ,m
+tab region_nhs,m
+tab region_covid_therapeutics,m
+tab region_nhs region_covid_therapeutics,m
 
 tab rural_urban,m
 replace rural_urban=. if rural_urban<1
@@ -277,12 +281,6 @@ gen rural_urban_with_missing=rural_urban
 replace rural_urban_with_missing=99 if rural_urban==.
 
 *comor*
-tab autism_nhsd,m
-tab care_home_primis,m
-tab dementia_nhsd,m
-tab housebound_opensafely,m
-tab learning_disability_primis,m
-tab serious_mental_illness_nhsd,m
 sum bmi,de
 replace bmi=. if bmi<10|bmi>60
 rename bmi bmi_all
@@ -305,7 +303,7 @@ tab diabetes,m
 tab chronic_cardiac_disease,m
 tab hypertension,m
 tab chronic_respiratory_disease,m
-*vac and variant*
+*vac *
 tab vaccination_status,m
 rename vaccination_status vaccination_status_g5
 gen vaccination_status=0 if vaccination_status_g5=="Un-vaccinated"|vaccination_status_g5=="Un-vaccinated (declined)"
@@ -316,36 +314,24 @@ label define vac 0 "Un-vaccinated" 1 "One vaccination" 2 "Two vaccinations" 3 "T
 label values vaccination_status vac
 gen vaccination_3=1 if vaccination_status==3
 replace vaccination_3=0 if vaccination_status<3
-tab sgtf,m
-tab sgtf_new, m
-label define sgtf_new 0 "S gene detected" 1 "confirmed SGTF" 9 "NA"
-label values sgtf_new sgtf_new
-tab variant_recorded ,m
-*tab sgtf variant_recorded ,m
-by sgtf, sort: tab variant_recorded ,m
 *Time between last vaccination and treatment*
 gen d_vaccinate_treat=start_date - last_vaccination_date
 sum d_vaccinate_treat,de
 gen month_after_vaccinate=ceil(d_vaccinate_treat/30)
 tab month_after_vaccinate,m
-gen week_after_vaccinate=ceil(d_vaccinate_treat/7)
-tab week_after_vaccinate,m
-*combine month6-14 due to small N*
-replace month_after_vaccinate=6 if month_after_vaccinate>6&month_after_vaccinate!=.
 gen month_after_vaccinate_missing=month_after_vaccinate
 replace month_after_vaccinate_missing=99 if month_after_vaccinate_missing==.
 *calendar time*
-gen month_after_campaign=ceil((start_date-mdy(12,15,2021))/30)
-tab month_after_campaign,m
-gen week_after_campaign=ceil((start_date-mdy(12,15,2021))/7)
-tab week_after_campaign,m
-*combine 9 and 10 due to small N*
-*replace week_after_campaign=9 if week_after_campaign==10
+gen calendar_day=start_date - mdy(7,1,2021)
+sum calendar_day,de
+gen calendar_month=ceil((start_date-mdy(7,1,2021))/30)
+tab calendar_month,m
 
 
 
 
-save ./output/main_feasibility.dta, replace
+
+save ./output/main_feasibility2.dta, replace
 log close
 
 
