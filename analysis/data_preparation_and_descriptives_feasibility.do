@@ -86,17 +86,101 @@ count  if sarilumab_covid_hosp!=.&death_with_covid_date!=.
 count  if tocilizumab_covid_hosp!=.&death_date!=.
 count  if sarilumab_covid_hosp!=.&death_date!=.
 
+*exclusion*
+sum age,de
+keep if age>=18 & age<110
+tab sex,m
+keep if sex=="F"|sex=="M"
+keep if has_died==0
+drop if start_date==death_date
+*keep if registered_treated_hosp==1
+keep if region_nhs!=""|region_covid_therapeutics!=""
+keep if start_date>=mdy(07,01,2021)&start_date<=mdy(02,28,2022)
+drop if tocilizumab_covid_hosp==sarilumab_covid_hosp
+gen drug1=1 if sotrovimab_covid_out!=.
+replace drug1=2 if molnupiravir_covid_out!=.
+replace drug1=0 if molnupiravir_covid_out==.&sotrovimab_covid_out==.
+label define drug1 1 "sotrovimab" 2 "molnupiravia" 0 "neither" 
+label values drug1 drug1
+tab drug1,m
+gen drug=1 if sarilumab_covid_hosp==start_date
+replace drug=0 if tocilizumab_covid_hosp ==start_date
+label define drug 1 "sarilumab" 0 "tocilizumab"
+label values drug drug
+tab drug,m
 
+*define outcome and follow-up time*
+gen study_end_date=mdy(03,01,2024)
+gen start_date_29=start_date+28
+*primary outcome*
+gen failure=(death_date!=.&death_date<=min(study_end_date,start_date_29,tocilizumab_covid_hosp)) if drug==1
+replace failure=(death_date!=.&death_date<=min(study_end_date,start_date_29,sarilumab_covid_hosp)) if drug==0
+tab drug failure,m
+gen end_date=death_date if failure==1
+replace end_date=min(study_end_date, start_date_29,tocilizumab_covid_hosp) if failure==0&drug==1
+replace end_date=min(study_end_date, start_date_29,sarilumab_covid_hosp) if failure==0&drug==0
+format %td  end_date study_end_date start_date_29
 
-log close
-exit, clear
+stset end_date ,  origin(start_date) failure(failure==1)
+stcox drug
+stcox i.drug##i.drug1
 
+*secondary outcome: within 90 day*
+gen start_date_90d=start_date+90
+gen failure_90d=(death_date!=.&death_date<=min(study_end_date,start_date_90d,tocilizumab_covid_hosp)) if drug==1
+replace failure_90d=(death_date!=.&death_date<=min(study_end_date,start_date_90d,sarilumab_covid_hosp)) if drug==0
+tab drug failure_90d,m
+gen end_date_90d=death_date if failure_90d==1
+replace end_date_90d=min(study_end_date, start_date_90d,tocilizumab_covid_hosp) if failure_90d==0&drug==1
+replace end_date_90d=min(study_end_date, start_date_90d,sarilumab_covid_hosp) if failure_90d==0&drug==0
+format %td  end_date_90d  start_date_90d
 
+stset end_date_90d ,  origin(start_date) failure(failure_90d==1)
+stcox drug
+stcox i.drug##i.drug1
 
-*check hosp/death event date range*
-*codebook covid_hosp_outcome_date2 hospitalisation_outcome_date2 death_date
+*secondary outcome: within 180 day*
+gen start_date_180d=start_date+180
+gen failure_180d=(death_date!=.&death_date<=min(study_end_date,start_date_180d,tocilizumab_covid_hosp)) if drug==1
+replace failure_180d=(death_date!=.&death_date<=min(study_end_date,start_date_180d,sarilumab_covid_hosp)) if drug==0
+tab drug failure_180d,m
+gen end_date_180d=death_date if failure_180d==1
+replace end_date_180d=min(study_end_date, start_date_180d,tocilizumab_covid_hosp) if failure_180d==0&drug==1
+replace end_date_180d=min(study_end_date, start_date_180d,sarilumab_covid_hosp) if failure_180d==0&drug==0
+format %td  end_date_180d  start_date_180d
 
-*exclusion criteria*
+stset end_date_180d ,  origin(start_date) failure(failure_180d==1)
+stcox drug
+stcox i.drug##i.drug1
+
+*secondary outcome: within 1 year*
+gen start_date_1y=start_date+365
+gen failure_1y=(death_date!=.&death_date<=min(study_end_date,start_date_1y,tocilizumab_covid_hosp)) if drug==1
+replace failure_1y=(death_date!=.&death_date<=min(study_end_date,start_date_1y,sarilumab_covid_hosp)) if drug==0
+tab drug failure_1y,m
+gen end_date_1y=death_date if failure_1y==1
+replace end_date_1y=min(study_end_date, start_date_1y,tocilizumab_covid_hosp) if failure_1y==0&drug==1
+replace end_date_1y=min(study_end_date, start_date_1y,sarilumab_covid_hosp) if failure_1y==0&drug==0
+format %td  end_date_1y  start_date_1y
+
+stset end_date_1y ,  origin(start_date) failure(failure_1y==1)
+stcox drug
+stcox i.drug##i.drug1
+
+*secondary outcome: within 2 year*
+gen start_date_2y=start_date+365*2
+gen failure_2y=(death_date!=.&death_date<=min(study_end_date,start_date_2y,tocilizumab_covid_hosp)) if drug==1
+replace failure_2y=(death_date!=.&death_date<=min(study_end_date,start_date_2y,sarilumab_covid_hosp)) if drug==0
+tab drug failure_2y,m
+gen end_date_2y=death_date if failure_2y==1
+replace end_date_2y=min(study_end_date, start_date_2y,tocilizumab_covid_hosp) if failure_2y==0&drug==1
+replace end_date_2y=min(study_end_date, start_date_2y,sarilumab_covid_hosp) if failure_2y==0&drug==0
+format %td  end_date_2y  start_date_2y
+
+stset end_date_1y ,  origin(start_date) failure(failure_1y==1)
+stcox drug
+stcox i.drug##i.drug1
+
 
 log close
 
