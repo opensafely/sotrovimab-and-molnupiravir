@@ -188,7 +188,17 @@ ckd_stage_5_nhsd_icd10_codes = codelist_from_csv(
   system = "icd10", 
   column = "code"
 )
-
+chronic_kidney_disease_stages_3_5_codes = codelist_from_csv(
+    "codelists/primis-covid19-vacc-uptake-ckd35.csv",
+    system="snomed",
+    column="code",
+)
+primis_ckd_stage = codelist_from_csv(
+    "codelists/user-Louis-ckd-stage.csv",
+    system="snomed",
+    column="code",
+    category_column="stage"
+)
 ### Patients with liver disease
 liver_disease_nhsd_snomed_codes = codelist_from_csv(
   "codelists/nhsd-liver-cirrhosis.csv", 
