@@ -71,7 +71,6 @@ count if  all_hosp_admission!=.
 sum all_hosp_admission,f de
 count if  all_hosp_admission2!=. 
 sum all_hosp_admission2,f de
-count if 
 
 gen covid_hosp_not_pri_adm_d= start_date - covid_hosp_not_pri_admission
 sum covid_hosp_not_pri_adm_d,de
