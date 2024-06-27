@@ -738,7 +738,7 @@ study = StudyDefinition(
     },
   ),
   
-  haematological_malignancies_snomed_ever = patients.with_these_clinical_events(
+  haematological_malig_snomed_ever = patients.with_these_clinical_events(
     haematological_malignancies_nhsd_snomed_codes,
     on_or_before = "start_date",
     returning = "date",
@@ -746,7 +746,7 @@ study = StudyDefinition(
     find_last_match_in_period = True,
   ),
   
-  haematological_malignancies_icd10_ever = patients.admitted_to_hospital(
+  haematological_malig_icd10_ever = patients.admitted_to_hospital(
     returning = "date_admitted",
     on_or_before = "start_date",
     with_these_diagnoses = haematological_malignancies_nhsd_icd10_codes,
@@ -757,8 +757,8 @@ study = StudyDefinition(
   haematological_disease_nhsd_ever = patients.minimum_of("haematopoietic_stem_cell_snomed_ever", 
                                                     "haematopoietic_stem_cell_icd10_ever", 
                                                     "haematopoietic_stem_cell_opcs4_ever", 
-                                                    "haematological_malignancies_snomed_ever", 
-                                                    "haematological_malignancies_icd10_ever",
+                                                    "haematological_malig_snomed_ever", 
+                                                    "haematological_malig_icd10_ever",
                                                     "sickle_cell_disease_nhsd_snomed", 
                                                     "sickle_cell_disease_nhsd_icd10"), 
 
@@ -983,7 +983,61 @@ study = StudyDefinition(
   ),
   
   ckd_stage_5_nhsd = patients.minimum_of("ckd_stage_5_nhsd_snomed", "ckd_stage_5_nhsd_icd10"), 
-  
+
+  ## CKD DEFINITIONS - adapted from https://github.com/opensafely/risk-factors-research
+  #  recorded 3-5 CKD
+  ckd_stages_3_5 = patients.with_these_clinical_events(
+    chronic_kidney_disease_stages_3_5_codes,
+    on_or_before = "start_date",
+    returning = "date",
+    date_format = "YYYY-MM-DD",
+    find_last_match_in_period = True,
+  ),
+  ckd_primis_stage=patients.with_these_clinical_events(
+        codelist=primis_ckd_stage,
+        on_or_before = "start_date",
+        returning="category",
+        find_last_match_in_period = True,
+        include_date_of_match=True,
+        date_format = "YYYY-MM-DD",
+        return_expectations={
+            "rate": "universal",
+            "category": {"ratios": {"1": 0.5, "2": 0.5}},
+        },
+  ),
+  ckd3_icd10 = patients.admitted_to_hospital(
+        returning="date_admitted",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        with_these_diagnoses=codelist(["N183"], system="icd10"),
+        on_or_before="start_date",
+        return_expectations={
+            "rate": "uniform",
+            "date": {"earliest": "1900-01-01", "latest": "today"},
+        },
+  ),
+  ckd4_icd10 = patients.admitted_to_hospital(
+        returning="date_admitted",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        with_these_diagnoses=codelist(["N184"], system="icd10"),
+        on_or_before="start_date",
+        return_expectations={
+            "rate": "uniform",
+            "date": {"earliest": "1900-01-01", "latest": "today"},
+        },
+  ),
+  ckd5_icd10 = patients.admitted_to_hospital(
+        returning="date_admitted",
+        find_last_match_in_period=True,
+        date_format="YYYY-MM-DD",
+        with_these_diagnoses=codelist(["N185"], system="icd10"),
+        on_or_before="start_date",
+        return_expectations={
+            "rate": "uniform",
+            "date": {"earliest": "1900-01-01", "latest": "today"},
+        },
+  ),    
   ## Liver disease
   liver_disease_nhsd_snomed = patients.with_these_clinical_events(
     liver_disease_nhsd_snomed_codes,
@@ -1149,21 +1203,6 @@ study = StudyDefinition(
       "incidence": 0.46
     },
   ),
-  covid_hosp_not_pri_discharge_1d = patients.admitted_to_hospital(
-    returning = "date_discharged",
-    with_these_diagnoses = covid_icd10_codes,
-    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
-    # see https://docs.opensafely.org/study-def-variables/#sus for more info
-    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "covid_hosp_not_pri_admission + 1 day",
-    find_first_match_in_period = True,
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2022-02-18"},
-      "rate": "uniform",
-      "incidence": 0.46
-    },
-  ),
   covid_hosp_not_pri_admission0 = patients.admitted_to_hospital(
     returning = "date_admitted",
     with_these_diagnoses = covid_icd10_codes,
@@ -1200,7 +1239,7 @@ study = StudyDefinition(
     # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "covid_hosp_not_pri_admission + 1 day",
+    on_or_after = "start_date + 1 day",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
@@ -1216,21 +1255,6 @@ study = StudyDefinition(
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
     on_or_after = "covid_hosp_not_pri_admission2",
-    find_first_match_in_period = True,
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2022-02-18"},
-      "rate": "uniform",
-      "incidence": 0.46
-    },
-  ),
-  covid_hosp_not_pri_discharge2_1d = patients.admitted_to_hospital(
-    returning = "date_discharged",
-    with_these_diagnoses = covid_icd10_codes,
-    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
-    # see https://docs.opensafely.org/study-def-variables/#sus for more info
-    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "covid_hosp_not_pri_admission2 + 1 day",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
@@ -1297,20 +1321,6 @@ study = StudyDefinition(
       "incidence": 0.46
     },
   ),  
-  all_hosp_discharge_1d = patients.admitted_to_hospital(
-    returning = "date_discharged",
-    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
-    # see https://docs.opensafely.org/study-def-variables/#sus for more info
-    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "all_hosp_admission + 1 day",
-    find_first_match_in_period = True,
-    date_format = "YYYY-MM-DD",
-    return_expectations = {
-      "date": {"earliest": "2022-02-18"},
-      "rate": "uniform",
-      "incidence": 0.46
-    },
-  ),  
   all_hosp_admission0 = patients.admitted_to_hospital(
     returning = "date_admitted",
     # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
@@ -1344,7 +1354,7 @@ study = StudyDefinition(
     # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "all_hosp_admission + 1 day",
+    on_or_after = "start_date + 1 day",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
@@ -1367,12 +1377,152 @@ study = StudyDefinition(
       "incidence": 0.46
     },
   ),  
-  all_hosp_discharge2_1d = patients.admitted_to_hospital(
-    returning = "date_discharged",
-    # with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+
+ 
+  all_hosp_admission_index = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
     # see https://docs.opensafely.org/study-def-variables/#sus for more info
     # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
-    on_or_after = "all_hosp_admission2 + 1 day",
+    on_or_after = "index_date - 30 days",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  all_hosp_discharge_index = patients.admitted_to_hospital(
+    returning = "date_discharged",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "all_hosp_admission_index",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  all_hosp_admission2_index = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "all_hosp_admission_index + 1 day",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  all_hosp_discharge2_index = patients.admitted_to_hospital(
+    returning = "date_discharged",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "all_hosp_admission2_index",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  all_hosp_admission3_index = patients.admitted_to_hospital(
+    returning = "date_admitted",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "all_hosp_admission2_index + 1 day",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  all_hosp_discharge3_index = patients.admitted_to_hospital(
+    returning = "date_discharged",
+    #with_patient_classification = ["1"], # ordinary admissions only - exclude day cases and regular attenders
+    # see https://docs.opensafely.org/study-def-variables/#sus for more info
+    # with_admission_method=["21", "22", "23", "24", "25", "2A", "2B", "2C", "2D", "28"], # emergency admissions only to exclude incidental COVID
+    on_or_after = "all_hosp_admission3_index",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+#A&E
+  emergency_care=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_before = "start_date",
+    find_last_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  emergency_care0=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_before = "emergency_care - 1 day",
+    find_last_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  emergency_care2=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_after = "start_date + 1 day",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+
+  emergency_care_index=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_after = "index_date - 30 days",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  emergency_care2_index=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_after = "emergency_care_index + 1 day",
+    find_first_match_in_period = True,
+    date_format = "YYYY-MM-DD",
+    return_expectations = {
+      "date": {"earliest": "2022-02-18"},
+      "rate": "uniform",
+      "incidence": 0.46
+    },
+  ),  
+  emergency_care3_index=patients.attended_emergency_care(
+    returning="date_arrived",
+    on_or_after = "emergency_care2_index + 1 day",
     find_first_match_in_period = True,
     date_format = "YYYY-MM-DD",
     return_expectations = {
