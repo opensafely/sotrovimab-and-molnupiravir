@@ -205,7 +205,7 @@ gen solid_cancer=(cancer_opensafely_snomed_new<=start_date)
 gen solid_cancer_ever=(cancer_opensafely_snomed_ever<=start_date)
 gen haema_disease=( haematological_disease_nhsd <=start_date)
 gen haema_disease_ever=( haematological_disease_nhsd_ever <=start_date)
-gen haematological_cancer=(haematological_malignancies_snomed<=start_date|haematological_malignancies_icd10<=start_date)
+gen haematological_cancer=(haematological_malignancies_snom<=start_date|haematological_malignancies_icd1<=start_date)
 gen haematological_cancer_ever=(haematological_malig_snomed_ever<=start_date|haematological_malig_icd10_ever<=start_date)
 gen renal_disease=( ckd_stage_5_nhsd <=start_date)
 gen liver_disease=( liver_disease_nhsd <=start_date)
@@ -325,8 +325,60 @@ gen calendar_day=start_date - mdy(7,1,2021)
 sum calendar_day,de
 gen calendar_month=ceil((start_date-mdy(7,1,2021))/30)
 tab calendar_month,m
+gen omicron=(start_date>=mdy(12,6,2021))
+tab omicron,m
+gen previous_drug=(date_treated_hosp<start_date|date_treated_onset<start_date|date_treated_out<start_date|date_treated_onset<start_date|date_treated_onset<start_date| ///
+                   remdesivir_covid_hosp0 <start_date|tocilizumab_covid_hosp0 <start_date|sarilumab_covid_hosp0 <start_date)
+tab previous_drug,m
 
+*descriptives by drug groups*
+by drug,sort: sum start_date, f de
+by drug,sort: sum age,de
+ttest age , by( drug )
+by drug,sort: sum bmi,de
+ttest bmi, by( drug )
+by drug,sort: sum covid_test_positive_date_d ,de
+ttest covid_test_positive_date_d , by( drug )
+ranksum covid_test_positive_date_d,by(drug)
+by drug,sort: sum calendar_day,de
+ttest calendar_day , by( drug )
+ranksum calendar_day,by(drug)
+by drug,sort: sum d_vaccinate_treat,de
+ttest d_vaccinate_treat , by( drug )
+ranksum d_vaccinate_treat,by(drug)
 
+tab drug sex,row chi
+tab drug ethnicity,row chi
+tab drug imd,row chi
+ranksum imd,by(drug)
+tab drug rural_urban,row chi
+ranksum rural_urban,by(drug)
+tab drug region_nhs,row chi
+tab drug region_covid_therapeutics,row chi
+tab drug age_group3 ,row chi
+tab drug covid_test_positive_date_d ,row chi
+tab drug solid_cancer ,row chi
+tab drug solid_cancer_ever ,row chi
+tab drug haema_disease ,row chi
+tab drug haema_disease_ever ,row chi
+tab drug haematological_cancer ,row chi
+tab drug haematological_cancer_ever ,row chi
+tab drug renal_disease ,row chi
+tab drug liver_disease ,row chi
+tab drug imid ,row chi
+tab drug immunosupression ,row chi
+tab drug solid_organ ,row chi
+tab drug bmi_group4 ,row chi
+tab drug diabetes ,row chi
+tab drug chronic_cardiac_disease ,row chi
+tab drug hypertension ,row chi
+tab drug chronic_respiratory_disease ,row chi
+tab drug vaccination_status ,row chi
+tab drug month_after_vaccinate,row chi
+tab drug calendar_month,row chi
+tab drug omicron,row chi
+tab drug previous_drug,row chi
+tab drug covid_reinfection,row chi
 
 
 
