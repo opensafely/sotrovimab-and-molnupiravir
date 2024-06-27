@@ -271,6 +271,16 @@ actions:
       highly_sensitive:
         data: output/main_feasibility2.dta
 
+  cox_regression_feasibility2:
+    run: stata-mp:latest analysis/cox_feasibility2.do
+    needs: [data_preparation_feasibility2]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_feasibility2.log
+        figure1: output/phtest_feasibility2.svg  
+        figure2: output/phtest_psw_feasibility2.svg
+        figure3: output/psgraph_feasibility2.svg
+
   # Study population for NICE figures 26th February 2024
   generate_study_population_nice:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_nice
