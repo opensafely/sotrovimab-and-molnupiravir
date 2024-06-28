@@ -37,6 +37,7 @@ mkspline calendar_day_spline = calendar_day, cubic nknots(4)
 stcox i.drug age_spline* i.sex  calendar_day_spline* , strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 by drug, sort: stcox age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
 *stratified Cox, missing values as a separate category*
@@ -45,7 +46,9 @@ stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_diseas
 estat phtest,de
 estat phtest, plot(1.drug)
 graph export ./output/phtest_feasibility.svg, as(svg) replace
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 by drug, sort: stcox age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+by drug, sort: stcox i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
 
 
@@ -82,7 +85,7 @@ stcox i.drug
 estat phtest,de
 estat phtest, plot(1.drug)
 graph export ./output/phtest_psw_feasibility2.svg, as(svg) replace
-
+stcox i.drug##i.drug1
 
 
 *secondary outcomes*
@@ -96,6 +99,7 @@ stcox i.drug age_spline* i.sex, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex  calendar_day_spline* , strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
 *180 day death*
 stset end_date_180d ,  origin(start_date) failure(failure_180d==1)
@@ -107,8 +111,9 @@ stcox i.drug age_spline* i.sex, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex  calendar_day_spline* , strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
-*180 day death*
+*1 y death*
 stset end_date_1y ,  origin(start_date) failure(failure_1y==1)
 tab _t drug,m col
 by drug, sort: sum _t ,de
@@ -118,8 +123,9 @@ stcox i.drug age_spline* i.sex, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex  calendar_day_spline* , strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
-*180 day death*
+*2 y death*
 stset end_date_2y ,  origin(start_date) failure(failure_2y==1)
 tab _t drug,m col
 by drug, sort: sum _t ,de
@@ -129,6 +135,7 @@ stcox i.drug age_spline* i.sex, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex  calendar_day_spline* , strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_group4 b6.ethnicity b5.imd i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 
 
 *subgroup analysis*
@@ -136,6 +143,8 @@ stset end_date ,  origin(start_date) failure(failure==1)
 stcox i.drug##i.omicron age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug if omicron==0, strata(region_covid_therapeutics)
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug if omicron==1, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug if omicron==0, strata(region_covid_therapeutics)
+stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug if omicron==1, strata(region_covid_therapeutics)
 
 
 
