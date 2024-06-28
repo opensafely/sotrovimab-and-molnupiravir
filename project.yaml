@@ -256,6 +256,16 @@ actions:
       highly_sensitive:
         data: output/main_feasibility.dta
 
+  cox_regression_feasibility:
+    run: stata-mp:latest analysis/cox_feasibility.do
+    needs: [data_preparation_feasibility]
+    outputs:
+      moderately_sensitive:
+        log: logs/cox_feasibility.log
+        figure1: output/phtest_feasibility.svg  
+        figure2: output/phtest_psw_feasibility.svg
+        figure3: output/psgraph_feasibility.svg
+
   generate_study_population_feasibility2:
     run: cohortextractor:latest generate_cohort --study-definition study_definition_feasibility2
     outputs:
