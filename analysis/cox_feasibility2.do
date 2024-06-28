@@ -45,7 +45,7 @@ stcox i.drug age_spline* i.sex b6.ethnicity_with_missing b5.imd_with_missing i.v
 stcox i.drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 estat phtest,de
 estat phtest, plot(1.drug)
-graph export ./output/phtest_feasibility.svg, as(svg) replace
+graph export ./output/phtest_feasibility2.svg, as(svg) replace
 stcox i.drug##i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 by drug, sort: stcox age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
 by drug, sort: stcox i.drug1 age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, strata(region_covid_therapeutics)
@@ -74,6 +74,8 @@ stset end_date [pwei=psweight],  origin(start_date) failure(failure==1)
 stcox i.drug
 
 psmatch2 drug age_spline* i.sex solid_cancer_ever haema_disease_ever renal_disease liver_disease imid immunosupression solid_organ diabetes chronic_cardiac_disease hypertension chronic_respiratory_disease b1.bmi_g4_with_missing b6.ethnicity_with_missing b5.imd_with_missing i.vaccination_status calendar_day_spline* covid_reinfection previous_drug, logit
+histogram _pscore, by(drug, col(1))
+graph export ./output/psgraph_feasibility2.svg, as(svg) replace
 drop psweight
 gen psweight=cond( drug ==1,1/_pscore,1/(1-_pscore)) if _pscore!=.
 sum psweight,de
